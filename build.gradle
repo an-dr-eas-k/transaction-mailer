@@ -7,6 +7,14 @@ repositories {
     mavenCentral()
 }
 
+//sourceSets {
+//    main {
+//        resources {
+//           from (':hbci4java')
+//        }
+//    }
+//}
+
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
     compile project(':hbci4java')
