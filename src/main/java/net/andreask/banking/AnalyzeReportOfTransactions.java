@@ -111,7 +111,8 @@ public final class AnalyzeReportOfTransactions
         HBCIHandler  hbciHandle = null;
 
         // HBCI4Java initialisieren
-        HBCIUtils.init(HBCIUtils.loadPropertiesFile(new FileSystemClassLoader(),"/home/stefan.palme/temp/a.props"),
+        HBCIUtils.init(HBCIUtils.loadPropertiesFile(new FileSystemClassLoader(),
+                "sparda.properties"),
                        new MyHBCICallback());
 
         // Nutzer-Passport initialisieren
@@ -121,7 +122,7 @@ public final class AnalyzeReportOfTransactions
         try {
             // ein HBCI-Handle für einen Nutzer erzeugen
             String version=passport.getHBCIVersion();
-            hbciHandle=new HBCIHandler((version.length()!=0)?version:"plus",passport);
+            hbciHandle=new HBCIHandler((version.length()!=0)?version:"300",passport);
 
             // Kontoauszüge auflisten
             analyzeReportOfTransactions(passport, hbciHandle);
