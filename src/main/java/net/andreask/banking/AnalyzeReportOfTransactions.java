@@ -46,51 +46,7 @@ import org.kapott.hbci.passport.HBCIPassport;
 import org.kapott.hbci.status.HBCIExecStatus;
 import org.kapott.hbci.structures.Konto;
 
-/** <p>Tool zum Abholen und Auswerten von Kontoauszügen, gleichzeitig
-    Beispielprogramm für die Verwendung von <em>HBCI4Java</em>. Dieses Tool sollte nicht 
-    out-of-the-box benutzt werden, da erst einige Anpassungen im Quelltext
-    vorgenommen werden müssen. Es dient eher als Vorlage, wie <em>HBCI4Java</em>
-    im konkreten Anwendungsfall eingesetzt werden kann.</p>
-    <p>Die Methode {@link #main(String[])} zeigt die Verwendung mit einem einzelnen Haupt-
-    Thread. die Methode {@link #main_multithreaded(String[])} skizziert die Implementierung
-    für Anwendungen mit mehreren Threads.</p>
-    <p>Im Quelltext müssen folgende Stellen angepasst werden:</p>
-    <ul>
-      <li><p>Beim Aufruf der Methode <code>HBCIUtils.init()</code> wird
-          der Name eines Property-Files angegeben, in welchem alle benötigten
-          Kernel-Parameter aufgelistet sind. Diese Datei muss erst erzeugt
-          (Kopieren und Anpassen von <code>hbci.props.template</code>)
-          und der Dateiname beim Aufruf angepasst werden.</p></li>
-      <li><p>Zum Festlegen des abzufragenden Kontos wird zurzeit automatisch das
-          erste Konto benutzt, auf welches über HBCI zugegriffen werden kann. Ist
-          diese Information nicht verfügbar (einige Banken senden keine Informationen
-          über die verfügbaren Konten), oder soll eine andere Kontoverbindung
-          benutzt werden, so sind entsprechende Änderungen bei der Initialisierung
-          der Variablen <code>myaccount</code> vorzunehmen.</p></li>
-      <li><p>Soll der Kontoauszug nur ab einem bestimmten Zeitpunkt (und nicht alle
-          verfügbaren Daten) abgeholt werden, so ist beim Erzeugen des entsprechenden
-          Auftrages das Startdatum einzustellen (im Quelltext zur Zeit auskommentiert).</p></li>
-      <li><p>Außerdem ist im Quelltext Code zur eigentlichen Auswertung der Auszüge
-          zu implementieren. In dieser Vorlage wird nur nach einer fest codierten
-          Rechnungsnummer im Verwendungszweck gesucht. Der entsprechende Abschnitt im
-          Quelltext ist den eigenen Bedürfnissen anzupassen.</p></li>
-    </ul>
-    <p>Anschließend kann der Quelltext compiliert und mit
-    <pre>java&nbsp;-cp&nbsp;...&nbsp;org.kapott.hbci.tools.AnalyzeReportOfTransactions</pre>
-    gestartet werden.</p>
-    <p>Der Quellcode dieser Klasse zeigt die prinzipielle Benutzung von <em>HBCI4Java</em>.
-       Wurde der HBCI-Zugang, der mit diesem Programm benutzt werden soll, noch nie verwendet,
-       so werden alle benötigten Schritte zur Initialisierung der Zugangsdaten und
-       Sicherheitsmedien automatisch von <em>HBCI4Java</em> durchgeführt. Es ist nicht
-       nötigt, für die Initialisierung von "frischen" Sicherheitsmedien speziellen
-       Code in die HBCI-Anwendung einzubauen -- die entsprechenden Aktionen werden
-       automatisch und völlig transparent von <em>HBCI4Java</em> durchgeführt. Das hat
-       den Vorteil, dass jede beliebige Anwendung, die <em>HBCI4Java</em> als HBCI-Bibliothek
-       benutzt, gleichzeitig zum Initialisieren von HBCI-Sicherheitsmedien benutzt
-       werden kann, ohne dass dafür spezieller Programmcode nötig wäre. Außerdem wird dadurch
-       sichergestellt, dass nur initialisierte und funktionierende HBCI-Sicherheitsmedien
-       benutzt werden (weil <em>HBCI4Java</em> beim Laden eines Sicherheitsmediums automatisch
-       entsprechende Überprüfungen vornimmt).</p>*/
+
 public final class AnalyzeReportOfTransactions 
 {
     private static class MyHBCICallback
