@@ -1,5 +1,5 @@
 rootProject.name = 'banking-server'
-include ':hbci4java'
-project(":hbci4java").projectDir = new File(settingsDir, '../hbci4java')
-include ':thirdparty/cryptalgs4java'
-project(":thirdparty/cryptalgs4java").projectDir = new File(settingsDir, '../hbci4java/thirdparty/cryptalgs4java')
+//include ':hbci4java'
+//project(":hbci4java").projectDir = new File(settingsDir, '../hbci4java')
+//include ':thirdparty/cryptalgs4java'
+//project(":thirdparty/cryptalgs4java").projectDir = new File(settingsDir, '../hbci4java/thirdparty/cryptalgs4java')

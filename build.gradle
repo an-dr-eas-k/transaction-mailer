@@ -5,6 +5,8 @@ apply plugin: 'java'
 
 repositories {
     mavenCentral()
+
+
 }
 
 //sourceSets {
@@ -15,7 +17,29 @@ repositories {
 //    }
 //}
 
+
+
+task getHBCI(dependsOn: init, group:'build setup'){
+    println "executing getHBCI ..."
+    def sirDir = new File(project.projectDir, "/lib")
+    sirDir.mkdirs()
+    ant.get(src: 'https://github.com/willuhn/hibiscus/raw/master/lib/hbci4java-2.5.12.jar', dest: 'lib/hbci4java-2.5.12.jar', skipexisting:
+            'true')
+}
+
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
-    compile project(':hbci4java')
+//    compile project(':hbci4java')
+    compile files('lib/hbci4java-2.5.12.jar')
+//    compile ('org.kabott:hbci4java:2.5.12') {
+//        artifact {
+//            name = 'hbci4java'
+//            extension = 'jar'
+//            type = 'jar'
+//            url = 'https://github.com/willuhn/hibiscus/raw/master/lib/hbci4java-2.5.12.jar'
+//        }
+//    }
+
+
+
 }
