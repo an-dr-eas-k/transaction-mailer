@@ -1,25 +1,22 @@
 group 'net.andreask'
 version '0.0.1-SNAPSHOT'
 
+def glassfishHome = 'C:/Program Files/glassfish4'
+
 apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'ear'
+apply plugin: 'idea'
 
 repositories {
     mavenCentral()
-
-
 }
 
-//sourceSets {
-//    main {
-//        resources {
-//           from (':hbci4java')
-//        }
-//    }
-//}
 
 
 
-task getHBCI(dependsOn: init, group:'build setup'){
+
+task getHBCI(group: 'build setup') {
     println "executing getHBCI ..."
     def sirDir = new File(project.projectDir, "/lib")
     sirDir.mkdirs()
@@ -28,18 +25,52 @@ task getHBCI(dependsOn: init, group:'build setup'){
 }
 
 dependencies {
+    println "read dependencies ..."
+    providedCompile group: 'javax', name: 'javaee-api', version: '7.0'
     testCompile group: 'junit', name: 'junit', version: '4.11'
-//    compile project(':hbci4java')
     compile files('lib/hbci4java-2.5.12.jar')
-//    compile ('org.kabott:hbci4java:2.5.12') {
-//        artifact {
-//            name = 'hbci4java'
-//            extension = 'jar'
-//            type = 'jar'
-//            url = 'https://github.com/willuhn/hibiscus/raw/master/lib/hbci4java-2.5.12.jar'
-//        }
-//    }
+//    compile project(':hbci4java')
+}
 
+//task(run, dependsOn: 'classes', type: JavaExec) {
+//    description = 'Runs the main application'
+//    main = 'je7hb.common.webcontainer.embedded.glassfish.EmbeddedRunner'
+//    classpath = sourceSets.main.runtimeClasspath
+//}
 
+task serverStart(type: Exec, group: 'build setup') {
+    println "executing serverStart ..."
+    workingDir "${glassfishHome}${File.separator}bin"
 
+    if (System.properties['os.name'].toLowerCase().contains('windows')) {
+        commandLine 'cmd', '/c', 'asadmin.bat'
+    } else {
+        commandLine "./asadmin"
+    }
+
+    args "start-domain"
+}
+task serverStop(type: Exec) {
+    println "executing serverStop ..."
+    workingDir "${glassfishHome}${File.separator}bin"
+
+    if (System.properties['os.name'].toLowerCase().contains('windows')) {
+        commandLine 'cmd', '/c', 'asadmin.bat'
+    } else {
+        commandLine "./asadmin"
+    }
+
+    args "stop-domain"
+}
+task reDeploy(dependsOn: 'war', type: Exec) {
+    println "executing reDeploy ..."
+    workingDir "${glassfishHome}${File.separator}bin"
+
+    if (System.properties['os.name'].toLowerCase().contains('windows')) {
+        commandLine 'cmd', '/c', 'asadmin.bat'
+    } else {
+        commandLine "./asadmin"
+    }
+    println "${war.archivePath}"
+    args "deploy", "--force=true", "${war.archivePath}"
 }
