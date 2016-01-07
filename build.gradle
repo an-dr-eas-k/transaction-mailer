@@ -32,7 +32,7 @@ task getHBCI(group: 'build setup') {
 }
 
 
-task dbStart(type:Exec, group:'build setup'){
+task startDB(type:Exec, group:'build setup'){
     println "executing dbStart ..."
     workingDir "${glassfishHome}${File.separator}bin"
 
@@ -49,7 +49,7 @@ task dbStart(type:Exec, group:'build setup'){
 
 
 
-task serverStart(type: Exec, group: 'build setup') {
+task startServer(type: Exec, group: 'build setup') {
     println "executing serverStart ..."
     workingDir "${glassfishHome}${File.separator}bin"
 
@@ -64,7 +64,7 @@ task serverStart(type: Exec, group: 'build setup') {
 
 dbStart.mustRunAfter serverStart
 
-task serverStop(type: Exec) {
+task stopServer(type: Exec) {
     println "executing serverStop ..."
     workingDir "${glassfishHome}${File.separator}bin"
 
