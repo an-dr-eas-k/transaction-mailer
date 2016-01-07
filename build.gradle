@@ -1,20 +1,27 @@
 group 'net.andreask'
 version '0.0.1-SNAPSHOT'
 
-def glassfishHome = 'C:/Program Files/glassfish4'
-
 apply plugin: 'java'
 apply plugin: 'war'
-apply plugin: 'ear'
 apply plugin: 'idea'
 
 repositories {
     mavenCentral()
 }
+// initialize property ${glassfishHome} in ~/.gradle/gradle.properties and set
+// glassfishHome=< home of your glassfish folder e.g. glassfishHome=C:/Program Files/glassfish4 >
 
 
 
-
+dependencies {
+    println "read dependencies ..."
+    providedCompile group: 'javax', name: 'javaee-api', version: '7.0'
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile files('lib/hbci4java-2.5.12.jar')
+    compile 'org.apache.logging.log4j:log4j-1.2-api:2.5'
+    testCompile 'org.mockito:mockito-all:2.0.2-beta'
+//    compile project(':hbci4java')
+}
 
 task getHBCI(group: 'build setup') {
     println "executing getHBCI ..."
@@ -24,19 +31,23 @@ task getHBCI(group: 'build setup') {
             'true')
 }
 
-dependencies {
-    println "read dependencies ..."
-    providedCompile group: 'javax', name: 'javaee-api', version: '7.0'
-    testCompile group: 'junit', name: 'junit', version: '4.11'
-    compile files('lib/hbci4java-2.5.12.jar')
-//    compile project(':hbci4java')
+
+task dbStart(type:Exec, group:'build setup'){
+    println "executing dbStart ..."
+    workingDir "${glassfishHome}${File.separator}bin"
+
+    if (System.properties['os.name'].toLowerCase().contains('windows')) {
+        commandLine 'cmd', '/c', 'asadmin.bat'
+    } else {
+        commandLine "./asadmin"
+    }
+
+    args "start-database"
+
 }
 
-//task(run, dependsOn: 'classes', type: JavaExec) {
-//    description = 'Runs the main application'
-//    main = 'je7hb.common.webcontainer.embedded.glassfish.EmbeddedRunner'
-//    classpath = sourceSets.main.runtimeClasspath
-//}
+
+
 
 task serverStart(type: Exec, group: 'build setup') {
     println "executing serverStart ..."
@@ -48,8 +59,11 @@ task serverStart(type: Exec, group: 'build setup') {
         commandLine "./asadmin"
     }
 
-    args "start-domain"
+    args "start-domain", "--debug"
 }
+
+dbStart.mustRunAfter serverStart
+
 task serverStop(type: Exec) {
     println "executing serverStop ..."
     workingDir "${glassfishHome}${File.separator}bin"
