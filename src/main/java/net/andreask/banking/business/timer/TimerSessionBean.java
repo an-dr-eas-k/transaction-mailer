@@ -5,11 +5,9 @@
  * compliance with  the terms of the License at:
  * http://java.net/projects/javaeetutorial/pages/BerkeleyLicense
  */
-package net.andreask.banking;
+package net.andreask.banking.business.timer;
 
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 import javax.ejb.Schedule;
@@ -18,6 +16,9 @@ import javax.ejb.Startup;
 import javax.ejb.Timeout;
 import javax.ejb.Timer;
 import javax.ejb.TimerService;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * TimerBean is a singleton session bean that creates a timer and prints out a
@@ -34,12 +35,12 @@ public class TimerSessionBean {
     private Date lastAutomaticTimeout;
 
     private static final Logger logger =
-            Logger.getLogger("timersession.ejb.TimerSessionBean");
+            LogManager.getLogger(TimerSessionBean.class);
 
     public void setTimer(long intervalDuration) {
-        logger.log(Level.INFO,
-                "Setting a programmatic timeout for {0} milliseconds from now.",
-                intervalDuration);
+        logger.info(String.format(
+                "Setting a programmatic timeout for %d milliseconds from now.",
+                intervalDuration));
         Timer timer = timerService.createTimer(intervalDuration,
                 "Created new programmatic timer");
     }
@@ -50,10 +51,12 @@ public class TimerSessionBean {
         logger.info("Programmatic timeout occurred.");
     }
 
-    @Schedule(minute = "*/1", hour = "*", persistent = false)
+    @Schedule(second = "*/10", minute = "*", hour = "*", persistent = false)
     public void automaticTimeout() {
+        System.out.println("foobar");
         this.setLastAutomaticTimeout(new Date());
-        logger.info("Automatic timeout occurred");
+        logger.debug("Automatic timeout occurred");
+        logger.trace("trace Automatic timeout occurred");
     }
 
     /**

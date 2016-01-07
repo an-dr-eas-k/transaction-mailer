@@ -19,7 +19,7 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-package net.andreask.banking;
+package net.andreask.banking.business;
 
 import java.util.Iterator;
 import java.util.List;
@@ -68,7 +68,7 @@ public final class AnalyzeReportOfTransactions
 
         // HBCI4Java initialisieren
         HBCIUtils.init(HBCIUtils.loadPropertiesFile(new FileSystemClassLoader(),
-                "sparda.properties"),
+                "sparda.propertie"),
                        new MyHBCICallback());
 
         // Nutzer-Passport initialisieren
