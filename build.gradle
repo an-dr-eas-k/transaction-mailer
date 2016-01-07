@@ -12,7 +12,6 @@ repositories {
 // glassfishHome=< home of your glassfish folder e.g. glassfishHome=C:/Program Files/glassfish4 >
 
 
-
 dependencies {
     println "read dependencies ..."
     providedCompile group: 'javax', name: 'javaee-api', version: '7.0'
@@ -20,6 +19,9 @@ dependencies {
     compile files('lib/hbci4java-2.5.12.jar')
     compile 'org.apache.logging.log4j:log4j-1.2-api:2.5'
     testCompile 'org.mockito:mockito-all:2.0.2-beta'
+    testCompile 'org.jboss.arquillian.junit:arquillian-junit-container:1.1.10.Final'
+    testCompile 'org.jboss.arquillian.container:arquillian-weld-ee-embedded-1.1:1.0.0.CR9'
+    testCompile 'org.jboss.weld:weld-core:2.3.2.Final'
 //    compile project(':hbci4java')
 }
 
@@ -32,7 +34,7 @@ task getHBCI(group: 'build setup') {
 }
 
 
-task startDB(type:Exec, group:'build setup'){
+task startDB(type: Exec, group: 'build setup') {
     println "executing dbStart ..."
     workingDir "${glassfishHome}${File.separator}bin"
 
@@ -62,7 +64,7 @@ task startServer(type: Exec, group: 'build setup') {
     args "start-domain", "--debug"
 }
 
-dbStart.mustRunAfter serverStart
+startDB.mustRunAfter startServer
 
 task stopServer(type: Exec) {
     println "executing serverStop ..."
