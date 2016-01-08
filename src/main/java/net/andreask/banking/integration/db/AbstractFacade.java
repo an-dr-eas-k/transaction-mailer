@@ -12,12 +12,13 @@
 
 package net.andreask.banking.integration.db;
 
-import javax.persistence.EntityManager;
 import java.util.List;
+
+import javax.persistence.EntityManager;
 
 /**
  *
- * @author ian
+ * @author andreask
  */
 public abstract class AbstractFacade<T> {
     private Class<T> entityClass;
