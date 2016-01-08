@@ -13,7 +13,7 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
-import net.andreask.banking.business.timer.TimerSessionBean;
+import net.andreask.banking.service.TimerSessionBean;
 
 /**
  *

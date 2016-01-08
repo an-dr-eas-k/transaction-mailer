@@ -5,7 +5,7 @@
  * compliance with  the terms of the License at:
  * http://java.net/projects/javaeetutorial/pages/BerkeleyLicense
  */
-package net.andreask.banking.business.timer;
+package net.andreask.banking.service;
 
 import java.util.Date;
 

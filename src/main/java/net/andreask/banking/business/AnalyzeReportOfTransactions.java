@@ -62,13 +62,14 @@ public final class AnalyzeReportOfTransactions
     public static void main(String[] args)
         throws Exception
     {
+//        HBCIPassportPinTan passport = new HBCIPassportPinTan();
         // HBCI Objekte
         HBCIPassport passport   = null;
         HBCIHandler  hbciHandle = null;
 
         // HBCI4Java initialisieren
         HBCIUtils.init(HBCIUtils.loadPropertiesFile(new FileSystemClassLoader(),
-                "sparda.propertie"),
+                "sparda.properties"),
                        new MyHBCICallback());
 
         // Nutzer-Passport initialisieren
