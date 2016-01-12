@@ -48,9 +48,9 @@ public class AccountTransactionFacadeTest {
 
     @Test
     public void testCreate() throws Exception {
-
+        utx.begin();
         atf.create(new AccountTransactionDE().setText("foobar"));
-
+        utx.commit();
     }
 
     @Test

@@ -16,6 +16,7 @@ import javax.ejb.Startup;
 import javax.ejb.Timeout;
 import javax.ejb.Timer;
 import javax.ejb.TimerService;
+import javax.inject.Inject;
 
 import net.andreask.banking.business.AccountConnectionManager;
 import net.andreask.banking.business.AccountTransactionManager;
@@ -34,9 +35,9 @@ public class TimerSessionBean {
     @Resource
     TimerService timerService;
 
-    @Resource
+    @Inject
     AccountConnectionManager accountConnectionManager;
-    @Resource
+    @Inject
     AccountTransactionManager accountTransactionManager;
 
     private Date lastProgrammaticTimeout;

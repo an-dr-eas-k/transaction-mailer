@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 
 import net.andreask.banking.integration.db.model.AccountConnectionDE;
 
-@Entity
+
 public class AccountTransaction {
 
     private int id;

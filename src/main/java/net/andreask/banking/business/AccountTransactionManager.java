@@ -1,12 +1,17 @@
 package net.andreask.banking.business;
 
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 
 import net.andreask.banking.integration.db.AccountTransactionFacade;
 import net.andreask.banking.integration.hbci.HbciSession;
 import net.andreask.banking.model.AccountConnection;
 
-public final class AccountTransactionManager {
+import java.io.Serializable;
+
+@RequestScoped
+public class AccountTransactionManager implements Serializable {
 
     @Inject
     AccountTransactionFacade accountTransactionFacade;
