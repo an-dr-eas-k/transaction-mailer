@@ -6,13 +6,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
-public class AccountTransaction {
+public class AccountTransactionDE {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
+    @ManyToOne()
+    private AccountConnectionDE accountReference;
 
     /**
      * Datum der Wertstellung
@@ -111,7 +115,7 @@ public class AccountTransaction {
         return this.id;
     }
 
-    public AccountTransaction setId(int id) {
+    public AccountTransactionDE setId(int id) {
         this.id = id;
         return this;
     }
@@ -120,7 +124,7 @@ public class AccountTransaction {
         return this.valuta;
     }
 
-    public AccountTransaction setValuta(Date valuta) {
+    public AccountTransactionDE setValuta(Date valuta) {
         this.valuta = valuta;
         return this;
     }
@@ -129,7 +133,7 @@ public class AccountTransaction {
         return this.bdate;
     }
 
-    public AccountTransaction setBdate(Date bdate) {
+    public AccountTransactionDE setBdate(Date bdate) {
         this.bdate = bdate;
         return this;
     }
@@ -138,7 +142,7 @@ public class AccountTransaction {
         return this.value;
     }
 
-    public AccountTransaction setValue(long value) {
+    public AccountTransactionDE setValue(long value) {
         this.value = value;
         return this;
     }
@@ -147,7 +151,7 @@ public class AccountTransaction {
         return this.isStorno;
     }
 
-    public AccountTransaction setIsStorno(boolean isStorno) {
+    public AccountTransactionDE setIsStorno(boolean isStorno) {
         this.isStorno = isStorno;
         return this;
     }
@@ -156,7 +160,7 @@ public class AccountTransaction {
         return this.saldo;
     }
 
-    public AccountTransaction setSaldo(long saldo) {
+    public AccountTransactionDE setSaldo(long saldo) {
         this.saldo = saldo;
         return this;
     }
@@ -165,7 +169,7 @@ public class AccountTransaction {
         return this.customerref;
     }
 
-    public AccountTransaction setCustomerref(String customerref) {
+    public AccountTransactionDE setCustomerref(String customerref) {
         this.customerref = customerref;
         return this;
     }
@@ -174,7 +178,7 @@ public class AccountTransaction {
         return this.instref;
     }
 
-    public AccountTransaction setInstref(String instref) {
+    public AccountTransactionDE setInstref(String instref) {
         this.instref = instref;
         return this;
     }
@@ -183,7 +187,7 @@ public class AccountTransaction {
         return this.charge_value;
     }
 
-    public AccountTransaction setCharge_value(long charge_value) {
+    public AccountTransactionDE setCharge_value(long charge_value) {
         this.charge_value = charge_value;
         return this;
     }
@@ -192,7 +196,7 @@ public class AccountTransaction {
         return this.gvcode;
     }
 
-    public AccountTransaction setGvcode(String gvcode) {
+    public AccountTransactionDE setGvcode(String gvcode) {
         this.gvcode = gvcode;
         return this;
     }
@@ -201,7 +205,7 @@ public class AccountTransaction {
         return this.additional;
     }
 
-    public AccountTransaction setAdditional(String additional) {
+    public AccountTransactionDE setAdditional(String additional) {
         this.additional = additional;
         return this;
     }
@@ -210,7 +214,7 @@ public class AccountTransaction {
         return this.text;
     }
 
-    public AccountTransaction setText(String text) {
+    public AccountTransactionDE setText(String text) {
         this.text = text;
         return this;
     }
@@ -219,7 +223,7 @@ public class AccountTransaction {
         return this.primanota;
     }
 
-    public AccountTransaction setPrimanota(String primanota) {
+    public AccountTransactionDE setPrimanota(String primanota) {
         this.primanota = primanota;
         return this;
     }
@@ -228,7 +232,7 @@ public class AccountTransaction {
         return this.usage;
     }
 
-    public AccountTransaction setUsage(String usage) {
+    public AccountTransactionDE setUsage(String usage) {
         this.usage = usage;
         return this;
     }
@@ -237,7 +241,7 @@ public class AccountTransaction {
         return this.addkey;
     }
 
-    public AccountTransaction setAddkey(String addkey) {
+    public AccountTransactionDE setAddkey(String addkey) {
         this.addkey = addkey;
         return this;
     }
@@ -246,7 +250,7 @@ public class AccountTransaction {
         return this.isSepa;
     }
 
-    public AccountTransaction setIsSepa(boolean isSepa) {
+    public AccountTransactionDE setIsSepa(boolean isSepa) {
         this.isSepa = isSepa;
         return this;
     }

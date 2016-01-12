@@ -5,7 +5,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.UserTransaction;
 
-import net.andreask.banking.integration.db.model.AccountTransaction;
+import net.andreask.banking.integration.db.model.AccountTransactionDE;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
@@ -49,7 +49,7 @@ public class AccountTransactionFacadeTest {
     @Test
     public void testCreate() throws Exception {
 
-        atf.create(new AccountTransaction().setText("foobar"));
+        atf.create(new AccountTransactionDE().setText("foobar"));
 
     }
 
@@ -58,7 +58,7 @@ public class AccountTransactionFacadeTest {
         System.out.println(atf
                 .findAll()
                 .stream()
-                .map(AccountTransaction::getText)
+                .map(AccountTransactionDE::getText)
                 .reduce((a, b) -> a.concat("\n").concat(b)));
     }
 
@@ -73,7 +73,7 @@ public class AccountTransactionFacadeTest {
         utx.begin();
         em.joinTransaction();
         System.out.println("Dumping old records...");
-        em.createQuery("delete from AccountTransaction").executeUpdate();
+        em.createQuery("delete from AccountTransactionDE").executeUpdate();
         utx.commit();
     }
 
@@ -82,7 +82,7 @@ public class AccountTransactionFacadeTest {
         em.joinTransaction();
         System.out.println("Inserting records...");
         for (String title : TRANSACTION_TEXTS) {
-            AccountTransaction game = new AccountTransaction().setText(title);
+            AccountTransactionDE game = new AccountTransactionDE().setText(title);
             em.persist(game);
         }
         utx.commit();
