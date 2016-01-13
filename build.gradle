@@ -51,7 +51,19 @@ task startDB(type: Exec, group: 'build setup') {
 }
 
 
+task stopDB(type: Exec, ) {
+    println "executing dbStop ..."
+    workingDir "${glassfishHome}${File.separator}bin"
 
+    if (System.properties['os.name'].toLowerCase().contains('windows')) {
+        commandLine 'cmd', '/c', 'asadmin.bat'
+    } else {
+        commandLine "./asadmin"
+    }
+
+    args "stop-database"
+
+}
 
 task startServer(type: Exec, group: 'build setup') {
     println "executing serverStart ..."
@@ -66,7 +78,7 @@ task startServer(type: Exec, group: 'build setup') {
     args "start-domain", "--debug"
 }
 
-startDB.mustRunAfter startServer
+
 
 task stopServer(type: Exec) {
     println "executing serverStop ..."
@@ -92,3 +104,5 @@ task reDeploy(dependsOn: 'war', type: Exec) {
     println "${war.archivePath}"
     args "deploy", "--force=true", "${war.archivePath}"
 }
+startServer.mustRunAfter startDB
+stopDB.mustRunAfter stopServer

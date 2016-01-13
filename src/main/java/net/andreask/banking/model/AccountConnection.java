@@ -15,8 +15,10 @@ public class AccountConnection implements Serializable {
     private String cronScheduleExpression;
 
     public ScheduleExpression getScheduleExpression() {
-        String[] scheduleValues = this.cronScheduleExpression.split(" ");
-        assert scheduleValues.length == 3;
+        String[] scheduleValues = this.cronScheduleExpression.split(" +");
+        if (scheduleValues.length != 3){
+            throw new IllegalArgumentException("cron expression not valid: "+this.cronScheduleExpression);
+        }
 
         return new ScheduleExpression()
                 .dayOfWeek(scheduleValues[2])
@@ -87,4 +89,19 @@ public class AccountConnection implements Serializable {
         this.cronScheduleExpression = cronScheduleExpression;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "AccountConnection{" +
+                "id=" + id +
+                ", pin=" + pin +
+                ", url='" + url + '\'' +
+                ", accountNumber='" + accountNumber + '\'' +
+                ", bankCode='" + bankCode + '\'' +
+                ", hbciVersion='" + hbciVersion + '\'' +
+                ", cronScheduleExpression='" + cronScheduleExpression + '\'' +
+                '}';
+    }
+
+
 }

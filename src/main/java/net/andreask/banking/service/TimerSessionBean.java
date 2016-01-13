@@ -10,7 +10,7 @@ package net.andreask.banking.service;
 import java.util.Date;
 
 import javax.annotation.Resource;
-import javax.ejb.Init;
+import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.ejb.Timeout;
@@ -40,22 +40,21 @@ public class TimerSessionBean {
     @Inject
     AccountTransactionManager accountTransactionManager;
 
-    private Date lastProgrammaticTimeout;
-    private Date lastAutomaticTimeout;
+
 
     private static final Logger logger =
             LogManager.getLogger(TimerSessionBean.class);
 
-    @Init
+    @Schedule(second = "*/10", minute = "*", hour = "*", persistent = false)
     public void initTimer() {
-        logger.info("initTimer");
+        logger.info(String.format("initTimer,  %tT", new Date()));
         accountConnectionManager.initTimer(this.timerService);
 
     }
 
     @Timeout
     public void programmaticTimeout(Timer timer) {
-        logger.info("Programmatic timeout occurred.");
+        logger.info(String.format("Programmatic timeout occurred,  %tT", new Date()));
         accountTransactionManager.mirrorTransactions((AccountConnection) timer.getInfo());
     }
 

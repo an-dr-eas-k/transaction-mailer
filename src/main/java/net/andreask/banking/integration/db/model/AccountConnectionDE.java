@@ -16,7 +16,7 @@ public class AccountConnectionDE {
     private String accountNumber; //kontonummer
     private String bankCode; // blz
     private String hbciVersion;
-    private String cronScheduleExpression;
+    private String cronScheduleExpression; //format '<cron(minute)> <cron(hour)> <cron(dayOfWeek)>'
 
     public int getId() {
         return this.id;
