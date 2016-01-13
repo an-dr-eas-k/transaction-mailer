@@ -1,5 +1,8 @@
 package net.andreask.banking.model;
 
+import org.iban4j.CountryCode;
+import org.iban4j.Iban;
+
 import java.io.Serializable;
 
 import javax.ejb.ScheduleExpression;
@@ -13,17 +16,28 @@ public class AccountConnection implements Serializable {
     private String bankCode; // blz
     private String hbciVersion;
     private String cronScheduleExpression;
+    private String countryCode; // DE
 
     public ScheduleExpression getScheduleExpression() {
         String[] scheduleValues = this.cronScheduleExpression.split(" +");
-        if (scheduleValues.length != 3){
-            throw new IllegalArgumentException("cron expression not valid: "+this.cronScheduleExpression);
+        if (scheduleValues.length != 3) {
+            throw new IllegalArgumentException("cron expression not valid: " + this.cronScheduleExpression);
         }
 
         return new ScheduleExpression()
                 .dayOfWeek(scheduleValues[2])
                 .hour(scheduleValues[1])
                 .minute(scheduleValues[0]);
+
+    }
+
+    public String getGeneratedIban() {
+        return new Iban.Builder()
+                .bankCode(getBankCode())
+                .accountNumber(getAccountNumber())
+                .countryCode(CountryCode.getByCode(getCountryCode()))
+                .build()
+                .toString();
     }
 
 
@@ -104,4 +118,7 @@ public class AccountConnection implements Serializable {
     }
 
 
+    public String getCountryCode() {
+        return countryCode;
+    }
 }

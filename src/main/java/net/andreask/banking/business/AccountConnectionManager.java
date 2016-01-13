@@ -1,7 +1,11 @@
 package net.andreask.banking.business;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
+import javax.ejb.Timer;
 import javax.ejb.TimerConfig;
 import javax.ejb.TimerService;
 import javax.enterprise.context.RequestScoped;
@@ -22,33 +26,40 @@ public class AccountConnectionManager implements Serializable {
 
     public void initTimer(TimerService timerService) {
 
+
+        Map<String, Timer> timerAcMap = timerService
+                .getAllTimers()
+                .stream()
+                .filter(timer -> timer.getInfo() != null && timer.getInfo() instanceof AccountConnection)
+                .collect(Collectors.toMap(
+                        timer -> ((AccountConnection) timer.getInfo()).getGeneratedIban(),
+                        timer -> timer));
+
         accountConnectionFacade
                 .findAll()
                 .stream()
                 .peek(logger::debug)
                 .map(net.andreask.banking.integration.db.Mapper::map)
-                .filter(accountConnection ->
-                        !timerService
-                                .getAllTimers()
-                                .stream()
-                                .filter(timer -> timer.getInfo() != null)
-                                .map(timer -> (AccountConnection) timer.getInfo())
-                                .filter(timerConnection -> timerConnection.getBankCode().equals(accountConnection
-                                        .getBankCode()) && timerConnection.getAccountNumber().equals
-                                        (accountConnection.getAccountNumber()))
-                                .allMatch(timerConnection -> timerConnection.getCronScheduleExpression().equals
-                                        (accountConnection.getCronScheduleExpression())))
+                .collect(Collectors.toList())
+                .forEach(
+                        ac -> {
+                            Timer existingTimer = timerAcMap.get(ac.getGeneratedIban());
+                            if (existingTimer != null) {
+                                existingTimer.cancel();
+                                logger.info("updating schedule for %s: %s (new), %s (old)",
+                                        ac.getGeneratedIban(),
+                                        ac.getCronScheduleExpression(),
+                                        ((AccountConnection) existingTimer.getInfo()).getCronScheduleExpression());
+                            } else {
+                                logger.info("found new account %s, schedule: %s",
+                                        ac.getGeneratedIban(),
+                                        ac.getCronScheduleExpression());
 
-                .peek(a -> logger.debug(String.format("creating timer for %s", a.toString())))
-                .forEach(ac -> {
-                    try {
-                        timerService.createCalendarTimer(
-                                ac.getScheduleExpression(),
-                                new TimerConfig(ac, false));
-                    } catch (Exception ae) {
-                        logger.warn("cannot interprete schedule expression",
-                                ac.getCronScheduleExpression());
-                    }
-                });
+                            }
+                            timerService.createCalendarTimer(
+                                    ac.getScheduleExpression(),
+                                    new TimerConfig(ac, false));
+
+                        });
     }
 }
