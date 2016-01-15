@@ -2,8 +2,6 @@ package net.andreask.banking.model;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
-
 import net.andreask.banking.integration.db.model.AccountConnectionDE;
 
 
@@ -248,5 +246,28 @@ public class AccountTransaction {
     public AccountTransaction setIsSepa(boolean isSepa) {
         this.isSepa = isSepa;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "AccountTransaction{" +
+                "id=" + id +
+                ", accountReference=" + accountReference +
+                ", valuta=" + valuta +
+                ", bdate=" + bdate +
+                ", value=" + value +
+                ", isStorno=" + isStorno +
+                ", saldo=" + saldo +
+                ", customerref='" + customerref + '\'' +
+                ", instref='" + instref + '\'' +
+                ", charge_value=" + charge_value +
+                ", gvcode='" + gvcode + '\'' +
+                ", additional='" + additional + '\'' +
+                ", text='" + text + '\'' +
+                ", primanota='" + primanota + '\'' +
+                ", usage='" + usage + '\'' +
+                ", addkey='" + addkey + '\'' +
+                ", isSepa=" + isSepa +
+                '}';
     }
 }

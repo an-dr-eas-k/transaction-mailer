@@ -56,7 +56,7 @@ public class AccountTransactionFacadeTest {
     @Test
     public void checkDBContent() {
         System.out.println(atf
-                .findAll()
+                .findAllDE()
                 .stream()
                 .map(AccountTransactionDE::getText)
                 .reduce((a, b) -> a.concat("\n").concat(b)));

@@ -6,7 +6,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
 import net.andreask.banking.integration.db.AccountTransactionFacade;
-import net.andreask.banking.integration.hbci.HbciSession;
+import net.andreask.banking.integration.hbci.HbciFacade;
 import net.andreask.banking.model.AccountConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,15 +20,16 @@ public class AccountTransactionManager implements Serializable {
     AccountTransactionFacade accountTransactionFacade;
 
     public void mirrorTransactions(AccountConnection ac) {
-        new HbciSession(net.andreask.banking.integration.db.Mapper.map(ac))
+        new HbciFacade()
+                .setAccountConnection(ac)
+                .init()
                 .acquireTransactions()
                 .stream()
-                .peek(logger::debug)
                 .map(net.andreask.banking.integration.db.Mapper::map)
+                .peek(logger::debug)
                 .filter(e -> accountTransactionFacade.find(e) == null)
                 .forEach(accountTransactionFacade::create);
 
     }
-
 
 }

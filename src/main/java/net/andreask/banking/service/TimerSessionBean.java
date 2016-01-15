@@ -45,15 +45,15 @@ public class TimerSessionBean {
     private static final Logger logger =
             LogManager.getLogger(TimerSessionBean.class);
 
-    @Schedule(second = "*/10", minute = "*", hour = "*", persistent = false)
-    public void initTimer() {
+    @Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)
+    public void resyncConnections() {
         logger.info(String.format("initTimer,  %tT", new Date()));
-        accountConnectionManager.initTimer(this.timerService);
+        accountConnectionManager.initTimerService(this.timerService);
 
     }
 
     @Timeout
-    public void programmaticTimeout(Timer timer) {
+    public void triggeringTransactionMirror(Timer timer) {
         logger.info(String.format("Programmatic timeout occurred,  %tT", new Date()));
         accountTransactionManager.mirrorTransactions((AccountConnection) timer.getInfo());
     }

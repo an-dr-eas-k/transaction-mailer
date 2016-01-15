@@ -2,13 +2,15 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.andreask.banking.integration.hbci;
+package net.andreask.banking.integration.hbci.hbci4java;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import net.andreask.banking.integration.db.model.AccountConnectionDE;
+import net.andreask.banking.model.AccountConnection;
 import net.andreask.banking.model.AccountTransaction;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.kapott.hbci.GV.HBCIJob;
 import org.kapott.hbci.GV_Result.GVRKUms;
 import org.kapott.hbci.GV_Result.GVRSaldoReq;
@@ -16,9 +18,8 @@ import org.kapott.hbci.GV_Result.GVRSaldoReq.Info;
 import org.kapott.hbci.callback.HBCICallbackConsole;
 import org.kapott.hbci.manager.HBCIHandler;
 import org.kapott.hbci.manager.HBCIUtils;
-import org.kapott.hbci.passport.AbstractHBCIPassport;
 import org.kapott.hbci.passport.HBCIPassport;
-import org.kapott.hbci.status.HBCIExecStatus;
+import org.kapott.hbci.passport.HBCIPassportPinTan;
 import org.kapott.hbci.structures.Konto;
 
 /**
@@ -26,7 +27,9 @@ import org.kapott.hbci.structures.Konto;
  */
 public class HbciSession {
 
-    private final AccountConnectionDE accountConnection;
+    private final AccountConnection accountConnection;
+    private static Logger logger = LogManager.getLogger(HbciSession.class);
+    private HBCIHandler handler;
 
     private class Callback extends HBCICallbackConsole {
 
@@ -50,14 +53,14 @@ public class HbciSession {
                 break;
 
             case NEED_CUSTOMERID:
-                if (null != HbciSession.this.accountConnection.getAccountNumber()) {
-                    retData.append(HbciSession.this.accountConnection.getAccountNumber());
+                if (null != HbciSession.this.accountConnection.getAccountNumber10()) {
+                    retData.append(HbciSession.this.accountConnection.getAccountNumber10());
                 }
                 break;
 
             case NEED_USERID:
-                if (null != HbciSession.this.accountConnection.getAccountNumber()) {
-                    retData.append(HbciSession.this.accountConnection.getAccountNumber());
+                if (null != HbciSession.this.accountConnection.getAccountNumber10()) {
+                    retData.append(HbciSession.this.accountConnection.getAccountNumber10());
                 }
                 break;
 
@@ -71,7 +74,9 @@ public class HbciSession {
                 break;
 
             case NEED_PT_SECMECH:
-                retData.append("mobileTAN");
+
+                retData.setLength(0);
+                retData.append("997");
                 break;
 
             case NEED_COUNTRY:
@@ -87,25 +92,15 @@ public class HbciSession {
         }
     }
 
-    public HbciSession(AccountConnectionDE a) {
+    public HbciSession(AccountConnection a) {
         this.accountConnection = a;
         this.initialize();
     }
 
-    public void logIn() {
-        HBCIHandler handle = this.createHbciHandler();
-    }
-
     private HBCIHandler createHbciHandler() {
-        HBCIPassport passport = AbstractHBCIPassport.getInstance();
+        HBCIPassportPinTan passport = new HBCIPassportNonPersistentPinTan("");
 
-        HBCIHandler handle = new HBCIHandler(this.accountConnection.getHbciVersion(), passport);
-        return handle;
-    }
-
-    public void clearCachedDetails(HBCIPassport passport) {
-        passport.clearBPD();
-        passport.clearUPD();
+        return new HBCIHandler(this.accountConnection.getHbciVersion(), passport);
     }
 
     private void initialize() {
@@ -114,48 +109,47 @@ public class HbciSession {
         // Set basic parameters
         HBCIUtils.setParam("client.passport.hbciversion.default", accountConnection.getHbciVersion());
         HBCIUtils.setParam("client.connection.localPort", null);
-        HBCIUtils.setParam("log.loglevel.default", "3");
+        HBCIUtils.setParam("log.loglevel.default", "0");
         HBCIUtils.setParam("kernel.rewriter",
                 HBCIUtils.getParam("kernel.rewriter"));
 
         // Configure for PinTan
         HBCIUtils.setParam("client.passport.PinTan.checkcert", "1");
         HBCIUtils.setParam("client.passport.PinTan.certfile", null);
-        HBCIUtils.setParam("client.passport.PinTan.init", "1");
+        HBCIUtils.setParam("client.passport.PinTan.init", "0");
 
         // Set path & passport implementation for passport
-        HBCIUtils
-                .setParam("client.passport.default", "NonPersistentPinTan");
-        HBCIUtils.setParam("client.passport.PinTan.filename", null);
+        HBCIUtils.setParam("client.passport.default", "NonPersistentPinTan");
+        HBCIUtils.setParam("client.passport.PinTan.filename", "template");
+        this.handler = createHbciHandler();
     }
 
-    public Konto findAccount(HBCIHandler handle) {
-        Konto[] accounts = handle.getPassport().getAccounts();
+    public Konto findAccount() {
+        Konto[] accounts = handler.getPassport().getAccounts();
 
         for (Konto account : accounts) {
             if (this.accountConnection.getBankCode().equals(account.blz)
-                    && this.accountConnection.getAccountNumber().equals(account.number))
+                    && this.accountConnection.getAccountNumberStripped().equals(account.number))
                 return account;
         }
 
         throw new IllegalStateException(String.format(
                 "Unable to find requested account %s, %s",
-                this.accountConnection.getAccountNumber(),
+                this.accountConnection.getAccountNumber10(),
                 this.accountConnection.getBankCode()));
     }
 
     public long acquireBalance() {
-        HBCIHandler handle = this.createHbciHandler();
 
-        Konto k = this.findAccount(handle);
-        System.out.println("Have account: " + k);
+        Konto k = this.findAccount();
+        logger.info("Have account: " + k);
 
-        HBCIJob job = handle.newJob("SaldoReq");
+        HBCIJob job = handler.newJob("SaldoReq");
         job.setParam("my", k);
 
         job.addToQueue();
 
-        HBCIExecStatus ret = handle.execute();
+        handler.execute();
 
         GVRSaldoReq result = (GVRSaldoReq) job.getJobResult();
 
@@ -175,17 +169,16 @@ public class HbciSession {
     }
 
     public List<AccountTransaction> acquireTransactions() {
-        HBCIHandler handle = this.createHbciHandler();
 
-        Konto k = this.findAccount(handle);
-        System.out.println("Using account " + k);
+        Konto k = this.findAccount();
+        logger.info("Using account " + k);
 
-        HBCIJob job = handle.newJob("KUmsAll");
+        HBCIJob job = handler.newJob("KUmsAll");
         job.setParam("my", k);
 
         job.addToQueue();
 
-        HBCIExecStatus ret = handle.execute();
+        handler.execute();
 
         GVRKUms jobResult = (GVRKUms) job.getJobResult();
         if (!jobResult.isOK()) {

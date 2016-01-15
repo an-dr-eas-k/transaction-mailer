@@ -50,7 +50,7 @@ public class Mapper {
     public static AccountConnectionDE map(AccountConnection ac) {
         return new AccountConnectionDE()
                 .setId(ac.getId())
-                .setAccountNumber(ac.getAccountNumber())
+                .setAccountNumber(ac.getAccountNumber10())
                 .setBankCode(ac.getBankCode())
                 .setHbciVersion(ac.getHbciVersion())
                 .setPin(ac.getPin())
@@ -70,4 +70,18 @@ public class Mapper {
                 .setCronScheduleExpression(databaseEntry.getCronScheduleExpression());
 
     }
-}
+
+    //    private static String cipher(String input) {
+    //        Cipher cipher = null;
+    //        try {
+    //            cipher = Cipher.getInstance("PBEWithMD5AndDES");
+    //        } catch (Exception e) {
+    //            throw new RuntimeException(e);
+    //            cipher.init(Cipher.DECRYPT_MODE, passportKey, paramspec);
+    //            cipher.
+    //                    o = null;
+    //            try {
+    //                o = new ObjectInputStream(new CipherInputStream(new FileInputStream(fname), cipher));
+    //
+    //            }}
+        }

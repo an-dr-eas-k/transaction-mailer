@@ -1,9 +1,11 @@
 package net.andreask.banking.business;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.ejb.Timer;
 import javax.ejb.TimerConfig;
@@ -24,42 +26,67 @@ public class AccountConnectionManager implements Serializable {
     @Inject
     AccountConnectionFacade accountConnectionFacade;
 
-    public void initTimer(TimerService timerService) {
+    public void initTimerService(TimerService timerService) {
 
+        Map<String, Timer> timerAcMap = createSearchStringTimerMap(timerService);
+        List<String> validAccounts = processAccountConnections(timerService, timerAcMap);
+        cancelRemovedTimers(timerService, validAccounts);
 
-        Map<String, Timer> timerAcMap = timerService
+    }
+
+    private Stream<Timer> createLocalActiveTimerStream(TimerService timerService) {
+        return timerService
                 .getAllTimers()
                 .stream()
-                .filter(timer -> timer.getInfo() != null && timer.getInfo() instanceof AccountConnection)
+                .filter(timer -> timer.getInfo() != null && timer.getInfo() instanceof AccountConnection);
+    }
+
+    private Map<String, Timer> createSearchStringTimerMap(TimerService timerService) {
+        return createLocalActiveTimerStream(timerService)
                 .collect(Collectors.toMap(
                         timer -> ((AccountConnection) timer.getInfo()).getGeneratedIban(),
                         timer -> timer));
+    }
 
+    private List<String> processAccountConnections(TimerService timerService, Map<String, Timer> timerAcMap) {
+        List<String> validAccounts = new ArrayList<>();
         accountConnectionFacade
                 .findAll()
                 .stream()
-                .peek(logger::debug)
-                .map(net.andreask.banking.integration.db.Mapper::map)
-                .collect(Collectors.toList())
+//                .peek(ac -> logger.debug("found accound in database {}", ac))
                 .forEach(
                         ac -> {
                             Timer existingTimer = timerAcMap.get(ac.getGeneratedIban());
-                            if (existingTimer != null) {
-                                existingTimer.cancel();
-                                logger.info("updating schedule for %s: %s (new), %s (old)",
-                                        ac.getGeneratedIban(),
-                                        ac.getCronScheduleExpression(),
-                                        ((AccountConnection) existingTimer.getInfo()).getCronScheduleExpression());
-                            } else {
-                                logger.info("found new account %s, schedule: %s",
+                            boolean createSchedule = false;
+                            if (existingTimer == null) {
+                                createSchedule = true;
+                                logger.info("found new account {}, schedule: {}",
                                         ac.getGeneratedIban(),
                                         ac.getCronScheduleExpression());
 
+                            } else if (!((AccountConnection) existingTimer.getInfo()).getCronScheduleExpression()
+                                    .equals(ac.getCronScheduleExpression())) {
+                                createSchedule = true;
+                                logger.info("updating schedule for {}: {} (new), {} (old)",
+                                        ac.getGeneratedIban(),
+                                        ac.getCronScheduleExpression(),
+                                        ((AccountConnection) existingTimer.getInfo()).getCronScheduleExpression());
+                                existingTimer.cancel();
                             }
-                            timerService.createCalendarTimer(
-                                    ac.getScheduleExpression(),
-                                    new TimerConfig(ac, false));
-
+                            if (createSchedule) {
+                                timerService.createCalendarTimer(
+                                        ac.getScheduleExpression(),
+                                        new TimerConfig(ac, false));
+                            }
+                            validAccounts.add(ac.getGeneratedIban());
                         });
+        return validAccounts;
+    }
+
+    private void cancelRemovedTimers(TimerService timerService, List<String> validAccounts) {
+        createLocalActiveTimerStream(timerService)
+                .filter(timer -> !validAccounts.contains(((AccountConnection) timer.getInfo()).getGeneratedIban()))
+                .peek(timer -> logger.debug("canceling timer for {}", timer.getInfo()))
+                .forEach(Timer::cancel);
     }
 }

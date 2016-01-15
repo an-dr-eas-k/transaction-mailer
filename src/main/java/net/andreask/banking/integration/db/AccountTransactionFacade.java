@@ -13,6 +13,7 @@
 package net.andreask.banking.integration.db;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
@@ -20,6 +21,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.PersistenceContext;
 
 import net.andreask.banking.integration.db.model.AccountTransactionDE;
+import net.andreask.banking.model.AccountTransaction;
 
 /**
  * @author andreask
@@ -42,12 +44,16 @@ public class AccountTransactionFacade extends AbstractFacade<AccountTransactionD
         super(AccountTransactionDE.class);
     }
 
-    public List<AccountTransactionDE> find(AccountTransactionDE template) {
+    public List<AccountTransaction> find(AccountTransactionDE template) {
         //noinspection unchecked
-        return getEntityManager().createNamedQuery("findFromTemplate")
+        return getEntityManager()
+                .createNamedQuery("findFromTemplate", AccountTransactionDE.class)
                 .setParameter("usage", template.getUsage())
                 .setParameter("value", template.getValue())
-                .getResultList();
+                .getResultList()
+                .stream()
+                .map(Mapper::map)
+                .collect(Collectors.toList());
 
     }
 

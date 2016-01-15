@@ -12,18 +12,22 @@
 
 package net.andreask.banking.integration.db;
 
-import javax.inject.Singleton;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.ejb.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import net.andreask.banking.integration.db.model.AccountConnectionDE;
+import net.andreask.banking.model.AccountConnection;
 
 /**
- *
  * @author andreask
  */
 @Singleton
 public class AccountConnectionFacade extends AbstractFacade<AccountConnectionDE> {
+
     @PersistenceContext(unitName = "hv-pu")
     private EntityManager em;
 
@@ -36,5 +40,14 @@ public class AccountConnectionFacade extends AbstractFacade<AccountConnectionDE>
         super(AccountConnectionDE.class);
     }
 
+    public List<AccountConnection> findAll() {
+
+        return super
+                .findAllDE()
+                .stream()
+                .peek(getEntityManager()::refresh)
+                .map(Mapper::map)
+                .collect(Collectors.toList());
+    }
 }
 

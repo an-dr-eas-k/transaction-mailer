@@ -1,11 +1,11 @@
 package net.andreask.banking.model;
 
-import org.iban4j.CountryCode;
-import org.iban4j.Iban;
-
 import java.io.Serializable;
 
 import javax.ejb.ScheduleExpression;
+
+import org.iban4j.CountryCode;
+import org.iban4j.Iban;
 
 public class AccountConnection implements Serializable {
     private int id;
@@ -16,7 +16,8 @@ public class AccountConnection implements Serializable {
     private String bankCode; // blz
     private String hbciVersion;
     private String cronScheduleExpression;
-    private String countryCode; // DE
+
+    private String countryCode = "DE"; // DE
 
     public ScheduleExpression getScheduleExpression() {
         String[] scheduleValues = this.cronScheduleExpression.split(" +");
@@ -34,12 +35,11 @@ public class AccountConnection implements Serializable {
     public String getGeneratedIban() {
         return new Iban.Builder()
                 .bankCode(getBankCode())
-                .accountNumber(getAccountNumber())
+                .accountNumber(getAccountNumber10())
                 .countryCode(CountryCode.getByCode(getCountryCode()))
                 .build()
                 .toString();
     }
-
 
     public int getId() {
         return this.id;
@@ -68,12 +68,16 @@ public class AccountConnection implements Serializable {
         return this;
     }
 
-    public String getAccountNumber() {
+    public String getAccountNumber10() {
         return this.accountNumber;
     }
 
+    public String getAccountNumberStripped() {
+        return this.accountNumber.replaceAll("^0+", "");
+    }
+
     public AccountConnection setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
+        this.accountNumber = String.format("%10s", accountNumber).replace(' ', '0');;
         return this;
     }
 
@@ -104,6 +108,15 @@ public class AccountConnection implements Serializable {
         return this;
     }
 
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public AccountConnection setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "AccountConnection{" +
@@ -114,11 +127,7 @@ public class AccountConnection implements Serializable {
                 ", bankCode='" + bankCode + '\'' +
                 ", hbciVersion='" + hbciVersion + '\'' +
                 ", cronScheduleExpression='" + cronScheduleExpression + '\'' +
+                ", countryCode='" + countryCode + '\'' +
                 '}';
-    }
-
-
-    public String getCountryCode() {
-        return countryCode;
     }
 }

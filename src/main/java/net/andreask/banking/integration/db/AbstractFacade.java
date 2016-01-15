@@ -45,10 +45,11 @@ public abstract class AbstractFacade<T> {
         return getEntityManager().find(entityClass, id);
     }
 
-    public List<T> findAll() {
+    protected List<T> findAllDE() {
         javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
-        return getEntityManager().createQuery(cq).getResultList();
+        List<T> result = getEntityManager().createQuery(cq).getResultList();
+        return result;
     }
 
     public List<T> findRange(int[] range) {
@@ -57,6 +58,7 @@ public abstract class AbstractFacade<T> {
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         q.setMaxResults(range[1] - range[0]);
         q.setFirstResult(range[0]);
+        getEntityManager().clear();
         return q.getResultList();
     }
 
