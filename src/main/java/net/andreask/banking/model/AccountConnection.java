@@ -12,14 +12,14 @@ public class AccountConnection implements Serializable {
 
     private int pin;
     private String url;
-    private String foo;
+
     private String accountNumber; //kontonummer
     private String bankCode; // blz
     private String hbciVersion;
     private String cronScheduleExpression;
 
     private String countryCode = "DE"; // DE
-    private String customerId;
+    private String customerId; // login username
 
     public ScheduleExpression getScheduleExpression() {
         String[] scheduleValues = this.cronScheduleExpression.split(" +");
