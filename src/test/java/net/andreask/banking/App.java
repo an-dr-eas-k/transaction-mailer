@@ -1,28 +1,52 @@
-package net.andreask.banking.business;
+package net.andreask.banking;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Properties;
 
 import net.andreask.banking.integration.hbci.HbciFacade;
 import net.andreask.banking.model.AccountConnection;
+
+import javax.inject.Inject;
+import javax.ws.rs.Produces;
 
 /**
  * Hello world!
  */
 public class App {
+
+    @Inject
+    private HbciFacade hbciFacade = new HbciFacadeTestAlternative();
+
+    @Produces
+    public static Properties provideProperties() {
+        try {
+            Properties properties = new Properties();
+            properties.load(PrepareHBCIMock.class.getClassLoader().getResourceAsStream("hv.properties"));
+            return properties;
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
     public static void main(String[] args) throws IOException {
         System.out.println("Starting ...");
+        new App().run();
+    }
+
+    public void run() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.print("PIN: ");
 
-        new HbciFacade()
+        hbciFacade
                 .setAccountConnection(
                         new AccountConnection()
-                                .setAccountNumber("103964620")
                                 .setBankCode("70090500")
-                                .setHbciVersion("300")
+                                .setCustomerId("3964620")
+                                .setAccountNumber("103964620")
                                 .setPin(Integer.parseInt(br.readLine()))
+                                .setHbciVersion("300")
                                 .setUrl("fints.bankingonline.de/fints/FinTs30PinTanHttpGate")
                                 .setCountryCode("DE"))
                 .init()

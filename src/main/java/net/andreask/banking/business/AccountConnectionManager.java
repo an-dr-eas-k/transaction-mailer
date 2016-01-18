@@ -28,7 +28,7 @@ public class AccountConnectionManager implements Serializable {
 
     public void initTimerService(TimerService timerService) {
 
-        Map<String, Timer> timerAcMap = createSearchStringTimerMap(timerService);
+        Map<String, Timer> timerAcMap = createSearchTimerMap(timerService);
         List<String> validAccounts = processAccountConnections(timerService, timerAcMap);
         cancelRemovedTimers(timerService, validAccounts);
 
@@ -41,7 +41,7 @@ public class AccountConnectionManager implements Serializable {
                 .filter(timer -> timer.getInfo() != null && timer.getInfo() instanceof AccountConnection);
     }
 
-    private Map<String, Timer> createSearchStringTimerMap(TimerService timerService) {
+    private Map<String, Timer> createSearchTimerMap(TimerService timerService) {
         return createLocalActiveTimerStream(timerService)
                 .collect(Collectors.toMap(
                         timer -> ((AccountConnection) timer.getInfo()).getGeneratedIban(),

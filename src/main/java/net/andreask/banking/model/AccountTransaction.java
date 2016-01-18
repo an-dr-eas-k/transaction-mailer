@@ -5,6 +5,7 @@ import java.util.Date;
 import net.andreask.banking.integration.db.model.AccountConnectionDE;
 
 
+
 public class AccountTransaction {
 
     private int id;
@@ -103,6 +104,7 @@ public class AccountTransaction {
      * Gibt an, ob ein Umsatz ein SEPA-Umsatz ist
      **/
     public boolean isSepa;
+    private Konto other;
 
     public int getId() {
         return this.id;
@@ -269,5 +271,140 @@ public class AccountTransaction {
                 ", addkey='" + addkey + '\'' +
                 ", isSepa=" + isSepa +
                 '}';
+    }
+
+    public AccountTransaction setOther(Konto other) {
+        this.other = other;
+        return this;
+    }
+
+    public Konto getOther() {
+        return other;
+    }
+
+    /**
+     * Created by andreask on 1/18/16.
+     */
+    public static class Konto {
+        private String country;
+        private String blz;
+        private String number;
+        private String subnumber;
+        private String acctype;
+        private String type;
+        private String curr;
+        private String customerid;
+        private String name;
+        private String name2;
+        private String bic;
+        private String iban;
+
+        public String getCountry() {
+            return this.country;
+        }
+
+        public Konto setCountry(String country) {
+            this.country = country;
+            return this;
+        }
+
+        public String getBlz() {
+            return this.blz;
+        }
+
+        public Konto setBlz(String blz) {
+            this.blz = blz;
+            return this;
+        }
+
+        public String getNumber() {
+            return this.number;
+        }
+
+        public Konto setNumber(String number) {
+            this.number = number;
+            return this;
+        }
+
+        public String getSubnumber() {
+            return this.subnumber;
+        }
+
+        public Konto setSubnumber(String subnumber) {
+            this.subnumber = subnumber;
+            return this;
+        }
+
+        public String getAcctype() {
+            return this.acctype;
+        }
+
+        public Konto setAcctype(String acctype) {
+            this.acctype = acctype;
+            return this;
+        }
+
+        public String getType() {
+            return this.type;
+        }
+
+        public Konto setType(String type) {
+            this.type = type;
+            return this;
+        }
+
+        public String getCurr() {
+            return this.curr;
+        }
+
+        public Konto setCurr(String curr) {
+            this.curr = curr;
+            return this;
+        }
+
+        public String getCustomerid() {
+            return this.customerid;
+        }
+
+        public Konto setCustomerid(String customerid) {
+            this.customerid = customerid;
+            return this;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public Konto setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public String getName2() {
+            return this.name2;
+        }
+
+        public Konto setName2(String name2) {
+            this.name2 = name2;
+            return this;
+        }
+
+        public String getBic() {
+            return this.bic;
+        }
+
+        public Konto setBic(String bic) {
+            this.bic = bic;
+            return this;
+        }
+
+        public String getIban() {
+            return this.iban;
+        }
+
+        public Konto setIban(String iban) {
+            this.iban = iban;
+            return this;
+        }
     }
 }

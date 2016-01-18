@@ -37,54 +37,50 @@ public class HbciSession {
 
         @Override
         public synchronized void status(HBCIPassport passport, int statusTag,
-                Object[] o) {
+                                        Object[] o) {
             // Intentionally empty
         }
 
         @Override
         public void callback(HBCIPassport passport, int reason, String msg,
-                int datatype, StringBuffer retData) {
+                             int datatype, StringBuffer retData) {
             HBCIUtils.log("[LOG] " + msg + " / Reason: " + reason
                     + " / datatype: " + datatype, HBCIUtils.LOG_DEBUG);
 
             switch (reason) {
-            case NEED_BLZ:
-                retData.append(HbciSession.this.accountConnection.getBankCode());
-                break;
+                case NEED_BLZ:
+                    retData.append(HbciSession.this.accountConnection.getBankCode());
+                    break;
 
-            case NEED_CUSTOMERID:
-                if (null != HbciSession.this.accountConnection.getAccountNumber10()) {
-                    retData.append(HbciSession.this.accountConnection.getAccountNumber10());
-                }
-                break;
+                case NEED_CUSTOMERID:
+                    retData.append(HbciSession.this.accountConnection.getCustomerId());
+                    break;
 
-            case NEED_USERID:
-                if (null != HbciSession.this.accountConnection.getAccountNumber10()) {
-                    retData.append(HbciSession.this.accountConnection.getAccountNumber10());
-                }
-                break;
+                case NEED_USERID:
+                    retData.append(HbciSession.this.accountConnection.getCustomerId());
+                    break;
 
-            case NEED_PT_PIN:
-                retData.append(HbciSession.this.accountConnection.getPin());
-                break;
+                case NEED_PT_PIN:
+                    retData.append(HbciSession.this.accountConnection.getPin());
+                    break;
 
-            case NEED_PASSPHRASE_SAVE:
-            case NEED_PASSPHRASE_LOAD:
-                retData.append(PASSPHRASE);
-                break;
+                case NEED_PASSPHRASE_SAVE:
+                case NEED_PASSPHRASE_LOAD:
+                    retData.append(PASSPHRASE);
+                    break;
 
-            case NEED_PT_SECMECH:
+                case NEED_PT_SECMECH:
 
-                retData.setLength(0);
-                retData.append("997");
-                break;
+                    retData.setLength(0);
+                    retData.append("997");
+                    break;
 
-            case NEED_COUNTRY:
-            case NEED_HOST:
-            case NEED_CONNECTION:
-            case CLOSE_CONNECTION:
-            default:
-                // Intentionally empty!
+                case NEED_COUNTRY:
+                case NEED_HOST:
+                case NEED_CONNECTION:
+                case CLOSE_CONNECTION:
+                default:
+                    // Intentionally empty!
             }
 
             HBCIUtils.log("Returning " + retData.toString(),
@@ -94,7 +90,7 @@ public class HbciSession {
 
     public HbciSession(AccountConnection a) {
         this.accountConnection = a;
-        this.initialize();
+        this.initParams();
     }
 
     private HBCIHandler createHbciHandler() {
@@ -103,7 +99,7 @@ public class HbciSession {
         return new HBCIHandler(this.accountConnection.getHbciVersion(), passport);
     }
 
-    private void initialize() {
+    private void initParams() {
         HBCIUtils.init(null, new Callback());
 
         // Set basic parameters
@@ -121,6 +117,9 @@ public class HbciSession {
         // Set path & passport implementation for passport
         HBCIUtils.setParam("client.passport.default", "NonPersistentPinTan");
         HBCIUtils.setParam("client.passport.PinTan.filename", "template");
+    }
+
+    public void initSession() {
         this.handler = createHbciHandler();
     }
 

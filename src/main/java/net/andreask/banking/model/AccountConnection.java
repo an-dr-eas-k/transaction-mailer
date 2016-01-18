@@ -12,12 +12,14 @@ public class AccountConnection implements Serializable {
 
     private int pin;
     private String url;
+    private String foo;
     private String accountNumber; //kontonummer
     private String bankCode; // blz
     private String hbciVersion;
     private String cronScheduleExpression;
 
     private String countryCode = "DE"; // DE
+    private String customerId;
 
     public ScheduleExpression getScheduleExpression() {
         String[] scheduleValues = this.cronScheduleExpression.split(" +");
@@ -129,5 +131,14 @@ public class AccountConnection implements Serializable {
                 ", cronScheduleExpression='" + cronScheduleExpression + '\'' +
                 ", countryCode='" + countryCode + '\'' +
                 '}';
+    }
+
+    public AccountConnection setCustomerId(String customerId) {
+        this.customerId = customerId;
+        return this;
+    }
+
+    public String getCustomerId() {
+        return customerId;
     }
 }

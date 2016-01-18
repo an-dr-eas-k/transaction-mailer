@@ -17,10 +17,13 @@ public class AccountTransactionManager implements Serializable {
     Logger logger = LogManager.getLogger(AccountTransactionManager.class);
 
     @Inject
-    AccountTransactionFacade accountTransactionFacade;
+    private AccountTransactionFacade accountTransactionFacade;
+
+    @Inject
+    private HbciFacade hbciFacade;
 
     public void mirrorTransactions(AccountConnection ac) {
-        new HbciFacade()
+        hbciFacade
                 .setAccountConnection(ac)
                 .init()
                 .acquireTransactions()
