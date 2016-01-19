@@ -11,7 +11,7 @@ public class AccountConnectionDE {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    private int pin;
+    private String encryptedPin;
     private String url;
     private String accountNumber; //kontonummer
     private String bankCode; // blz
@@ -28,14 +28,7 @@ public class AccountConnectionDE {
         return this;
     }
 
-    public int getPin() {
-        return this.pin;
-    }
 
-    public AccountConnectionDE setPin(int pin) {
-        this.pin = pin;
-        return this;
-    }
 
     public String getUrl() {
         return this.url;
@@ -88,6 +81,15 @@ public class AccountConnectionDE {
 
     public AccountConnectionDE setCustomerId(String customerId) {
         this.customerId = customerId;
+        return this;
+    }
+
+    public String getEncryptedPin() {
+        return this.encryptedPin;
+    }
+
+    public AccountConnectionDE setEncryptedPin(String encryptedPin) {
+        this.encryptedPin = encryptedPin;
         return this;
     }
 }

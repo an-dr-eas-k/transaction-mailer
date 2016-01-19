@@ -3,7 +3,9 @@ package net.andreask.banking.model;
 import java.io.Serializable;
 
 import javax.ejb.ScheduleExpression;
+import javax.inject.Inject;
 
+import net.andreask.banking.business.Encryptor;
 import org.iban4j.CountryCode;
 import org.iban4j.Iban;
 
@@ -20,6 +22,9 @@ public class AccountConnection implements Serializable {
 
     private String countryCode = "DE"; // DE
     private String customerId; // login username
+
+    @Inject
+    private Encryptor encryptor;
 
     public ScheduleExpression getScheduleExpression() {
         String[] scheduleValues = this.cronScheduleExpression.split(" +");
@@ -56,8 +61,17 @@ public class AccountConnection implements Serializable {
         return this.pin;
     }
 
+    public String getEncryptedPin() {
+        return encryptor.encrypt(Integer.toString(this.pin));
+    }
+
     public AccountConnection setPin(int pin) {
         this.pin = pin;
+        return this;
+    }
+
+    public AccountConnection setEncryptedPin(String pin) {
+        this.pin = Integer.parseInt(encryptor.decrypt(pin));
         return this;
     }
 
@@ -79,7 +93,8 @@ public class AccountConnection implements Serializable {
     }
 
     public AccountConnection setAccountNumber(String accountNumber) {
-        this.accountNumber = String.format("%10s", accountNumber).replace(' ', '0');;
+        this.accountNumber = String.format("%10s", accountNumber).replace(' ', '0');
+        ;
         return this;
     }
 
