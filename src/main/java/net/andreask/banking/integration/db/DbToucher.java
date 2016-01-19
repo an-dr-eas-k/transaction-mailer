@@ -8,14 +8,16 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Init;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
  * Created by andreask on 1/18/16.
  */
-@Startup
+
 @Singleton
 public class DbToucher {
 
