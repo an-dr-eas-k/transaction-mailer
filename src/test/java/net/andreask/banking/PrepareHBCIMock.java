@@ -1,31 +1,28 @@
 package net.andreask.banking;
 
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.StringWriter;
+import java.util.List;
+import java.util.Properties;
+
+import javax.inject.Inject;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
 import com.sun.org.apache.xerces.internal.dom.DocumentImpl;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomWriter;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
-import net.andreask.banking.integration.hbci.HbciFacade;
 import net.andreask.banking.integration.hbci.hbci4java.HbciFacadeImpl;
 import net.andreask.banking.model.AccountConnection;
 import net.andreask.banking.model.AccountTransaction;
-import org.dom4j.dom.DOMDocument;
 import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-
-import javax.inject.Inject;
-import javax.ws.rs.Produces;
-import javax.ws.rs.ext.Provider;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import java.io.*;
-import java.util.List;
-import java.util.Properties;
 
 /**
  * Hello world!

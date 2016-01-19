@@ -5,11 +5,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
-import net.andreask.banking.integration.hbci.HbciFacade;
-import net.andreask.banking.model.AccountConnection;
-
 import javax.inject.Inject;
 import javax.ws.rs.Produces;
+
+import net.andreask.banking.integration.hbci.HbciFacade;
+import net.andreask.banking.model.AccountConnection;
 
 /**
  * Hello world!
@@ -33,6 +33,7 @@ public class App {
     public static void main(String[] args) throws IOException {
         System.out.println("Starting ...");
         new App().run();
+//        Persistence.generateSchema("hv-pu", null);
     }
 
     public void run() throws IOException {
