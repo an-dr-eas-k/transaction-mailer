@@ -17,6 +17,7 @@ public class AccountConnectionDE {
     private String bankCode; // blz
     private String hbciVersion;
     private String cronScheduleExpression; //format '<cron(minute)> <cron(hour)> <cron(dayOfWeek)>'
+    private String customerId; // username beim bank login
 
     public int getId() {
         return this.id;
@@ -78,6 +79,15 @@ public class AccountConnectionDE {
 
     public AccountConnectionDE setCronScheduleExpression(String scheduleExpression) {
         this.cronScheduleExpression = scheduleExpression;
+        return this;
+    }
+
+    public String getCustomerId() {
+        return this.customerId;
+    }
+
+    public AccountConnectionDE setCustomerId(String customerId) {
+        this.customerId = customerId;
         return this;
     }
 }
