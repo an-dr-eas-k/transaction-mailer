@@ -3,11 +3,11 @@ package net.andreask.banking.model;
 import java.io.Serializable;
 
 import javax.ejb.ScheduleExpression;
-import javax.inject.Inject;
 
 import net.andreask.banking.business.Encryptor;
 import org.iban4j.CountryCode;
 import org.iban4j.Iban;
+
 
 public class AccountConnection implements Serializable {
     private int id;
@@ -23,7 +23,6 @@ public class AccountConnection implements Serializable {
     private String countryCode = "DE"; // DE
     private String customerId; // login username
 
-    @Inject
     private Encryptor encryptor;
 
     public ScheduleExpression getScheduleExpression() {
@@ -155,5 +154,9 @@ public class AccountConnection implements Serializable {
 
     public String getCustomerId() {
         return customerId;
+    }
+
+    public void setEncryptor(Encryptor encryptor) {
+        this.encryptor = encryptor;
     }
 }

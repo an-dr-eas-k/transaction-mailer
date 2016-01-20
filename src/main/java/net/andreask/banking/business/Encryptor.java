@@ -1,5 +1,6 @@
 package net.andreask.banking.business;
 
+import java.io.Serializable;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -12,7 +13,8 @@ import javax.inject.Named;
 import javax.xml.bind.DatatypeConverter;
 
 @RequestScoped
-public class Encryptor {
+@Named
+public class Encryptor implements Serializable{
 
     @Inject
     @Named("key")
@@ -21,6 +23,9 @@ public class Encryptor {
     @Inject
     @Named("initVecotr")
     String initVector;
+
+    public Encryptor() {
+    }
 
     public String encrypt(String value) {
         return encrypt(value, key, initVector);

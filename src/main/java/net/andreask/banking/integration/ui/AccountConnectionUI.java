@@ -8,15 +8,14 @@
 package net.andreask.banking.integration.ui;
 
 import java.io.Serializable;
+import java.util.List;
 
-import javax.annotation.Resource;
-import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import net.andreask.banking.business.AccountConnectionManager;
-import net.andreask.banking.service.TimerSessionBean;
+import net.andreask.banking.model.AccountConnection;
 
 /**
  *
@@ -34,6 +33,10 @@ public class AccountConnectionUI implements Serializable {
     /** Creates a new instance of AccountConnectionUI */
     public AccountConnectionUI() {
 
+    }
+
+    public List<AccountConnection> getAllAccountConnections(){
+        return accountConnectionManager.queryAccountConnections();
     }
 
 

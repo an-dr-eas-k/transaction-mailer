@@ -1,6 +1,10 @@
 package net.andreask.banking.business;
 
-import net.andreask.banking.integration.db.AccountTransactionFacade;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
+import javax.inject.Inject;
+
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -9,10 +13,6 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Assert;
 import org.junit.Test;
 
-import javax.inject.Inject;
-
-import static org.junit.Assert.*;
-
 /**
  * Created by andreask on 1/19/16.
  */
@@ -20,7 +20,6 @@ public class EncryptorTest {
 
     String key = "Bar12345Bar12345"; // 128 bit key
     String initVector = "RandomInitVector"; // 16 bytes IV
-
 
     @Deployment
     public static Archive<?> createDeployment() {
@@ -64,12 +63,23 @@ public class EncryptorTest {
     @Test
     public void both2() throws Exception {
         String start = "Hello World";
-        Assert.assertNotEquals(start, Encryptor.decrypt(key, initVector, Encryptor.encrypt(key, initVector.replace('i', 'j'), start)));
+        Assert.assertNotEquals(start,
+                Encryptor.decrypt(key, initVector, Encryptor.encrypt(key, initVector.replace('i', 'j'), start)));
     }
 
     @Test
     public void both3() throws Exception {
         String start = "Hello World";
-        Assert.assertNotEquals(start, Encryptor.decrypt(key, initVector, Encryptor.encrypt(key.replace('a', 'b'), initVector, start)));
+        Assert.assertNotEquals(start,
+                Encryptor.decrypt(key, initVector, Encryptor.encrypt(key.replace('a', 'b'), initVector, start)));
+    }
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        System.out.print("Enter source String: ");
+        String toEncrypt = br.readLine();
+        System.out.printf("encryption.\nsource: '%s'\ntarget: '%s'",
+                toEncrypt,
+                Encryptor.encrypt(toEncrypt, "Bar12345Bar12345", "RandomInitVector"));
     }
 }

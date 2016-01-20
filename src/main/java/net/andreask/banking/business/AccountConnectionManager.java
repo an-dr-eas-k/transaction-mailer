@@ -53,7 +53,7 @@ public class AccountConnectionManager implements Serializable {
         accountConnectionFacade
                 .findAll()
                 .stream()
-//                .peek(ac -> logger.debug("found accound in database {}", ac))
+                //                .peek(ac -> logger.debug("found accound in database {}", ac))
                 .forEach(
                         ac -> {
                             Timer existingTimer = timerAcMap.get(ac.getGeneratedIban());
@@ -89,4 +89,9 @@ public class AccountConnectionManager implements Serializable {
                 .peek(timer -> logger.debug("canceling timer for {}", timer.getInfo()))
                 .forEach(Timer::cancel);
     }
+
+    public List<AccountConnection> queryAccountConnections() {
+        return this.accountConnectionFacade.findAll();
+    }
+
 }
