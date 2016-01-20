@@ -46,7 +46,7 @@ public class App {
                                 .setBankCode("70090500")
                                 .setCustomerId("3964620")
                                 .setAccountNumber("103964620")
-                                .setPin(Integer.parseInt(br.readLine()))
+                                .setEncryptedPin(Integer.parseInt(br.readLine()))
                                 .setHbciVersion("300")
                                 .setUrl("fints.bankingonline.de/fints/FinTs30PinTanHttpGate")
                                 .setCountryCode("DE"))

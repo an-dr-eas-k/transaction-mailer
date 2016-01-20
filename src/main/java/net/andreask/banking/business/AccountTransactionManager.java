@@ -28,10 +28,9 @@ public class AccountTransactionManager implements Serializable {
                 .init()
                 .acquireTransactions()
                 .stream()
-                .map(net.andreask.banking.integration.db.Mapper::map)
                 .peek(logger::debug)
                 .filter(e -> accountTransactionFacade.find(e) == null)
-                .forEach(accountTransactionFacade::create);
+                .forEach(accountTransactionFacade::save);
 
     }
 

@@ -44,7 +44,7 @@ public class AccountTransactionFacade extends AbstractFacade<AccountTransactionD
         super(AccountTransactionDE.class);
     }
 
-    public List<AccountTransaction> find(AccountTransactionDE template) {
+    public List<AccountTransaction> find(AccountTransaction template) {
         //noinspection unchecked
         return getEntityManager()
                 .createNamedQuery("findFromTemplate", AccountTransactionDE.class)
@@ -52,9 +52,14 @@ public class AccountTransactionFacade extends AbstractFacade<AccountTransactionD
                 .setParameter("value", template.getValue())
                 .getResultList()
                 .stream()
+                .peek(getEntityManager()::refresh)
                 .map(Mapper::map)
                 .collect(Collectors.toList());
 
+    }
+
+    public void save(AccountTransaction ac) {
+        super.create(Mapper.map(ac));
     }
 
 }

@@ -5,9 +5,6 @@ import net.andreask.banking.integration.db.model.AccountTransactionDE;
 import net.andreask.banking.model.AccountConnection;
 import net.andreask.banking.model.AccountTransaction;
 
-import javax.crypto.Cipher;
-import java.util.Base64;
-
 public class Mapper {
 
     public static AccountTransaction map(AccountTransactionDE databaseEntry) {

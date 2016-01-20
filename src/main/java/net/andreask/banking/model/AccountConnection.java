@@ -1,18 +1,16 @@
 package net.andreask.banking.model;
 
-import java.io.Serializable;
-
-import javax.ejb.ScheduleExpression;
-
-import net.andreask.banking.business.Encryptor;
 import org.iban4j.CountryCode;
 import org.iban4j.Iban;
+
+import javax.ejb.ScheduleExpression;
+import java.io.Serializable;
 
 
 public class AccountConnection implements Serializable {
     private int id;
 
-    private int pin;
+    private String encryptedPin;
     private String url;
 
     private String accountNumber; //kontonummer
@@ -23,7 +21,6 @@ public class AccountConnection implements Serializable {
     private String countryCode = "DE"; // DE
     private String customerId; // login username
 
-    private Encryptor encryptor;
 
     public ScheduleExpression getScheduleExpression() {
         String[] scheduleValues = this.cronScheduleExpression.split(" +");
@@ -56,23 +53,16 @@ public class AccountConnection implements Serializable {
         return this;
     }
 
-    public int getPin() {
-        return this.pin;
-    }
 
     public String getEncryptedPin() {
-        return encryptor.encrypt(Integer.toString(this.pin));
-    }
-
-    public AccountConnection setPin(int pin) {
-        this.pin = pin;
-        return this;
+        return this.encryptedPin;
     }
 
     public AccountConnection setEncryptedPin(String pin) {
-        this.pin = Integer.parseInt(encryptor.decrypt(pin));
+        this.encryptedPin = pin;
         return this;
     }
+
 
     public String getUrl() {
         return this.url;
@@ -93,7 +83,6 @@ public class AccountConnection implements Serializable {
 
     public AccountConnection setAccountNumber(String accountNumber) {
         this.accountNumber = String.format("%10s", accountNumber).replace(' ', '0');
-        ;
         return this;
     }
 
@@ -137,7 +126,6 @@ public class AccountConnection implements Serializable {
     public String toString() {
         return "AccountConnection{" +
                 "id=" + id +
-                ", pin=" + pin +
                 ", url='" + url + '\'' +
                 ", accountNumber='" + accountNumber + '\'' +
                 ", bankCode='" + bankCode + '\'' +
@@ -156,7 +144,5 @@ public class AccountConnection implements Serializable {
         return customerId;
     }
 
-    public void setEncryptor(Encryptor encryptor) {
-        this.encryptor = encryptor;
-    }
+
 }

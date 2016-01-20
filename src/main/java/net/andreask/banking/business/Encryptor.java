@@ -12,8 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.xml.bind.DatatypeConverter;
 
-@RequestScoped
-@Named
+
 public class Encryptor implements Serializable{
 
     @Inject

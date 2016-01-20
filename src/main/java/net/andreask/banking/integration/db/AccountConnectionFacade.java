@@ -12,17 +12,14 @@
 
 package net.andreask.banking.integration.db;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.ejb.Singleton;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import net.andreask.banking.business.Encryptor;
 import net.andreask.banking.integration.db.model.AccountConnectionDE;
 import net.andreask.banking.model.AccountConnection;
+
+import javax.ejb.Singleton;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author andreask
@@ -33,8 +30,6 @@ public class AccountConnectionFacade extends AbstractFacade<AccountConnectionDE>
     @PersistenceContext(unitName = "hv-pu")
     private EntityManager em;
 
-    @Inject
-    Encryptor encryptor;
 
     @Override
     protected EntityManager getEntityManager() {
