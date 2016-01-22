@@ -1,27 +1,24 @@
 package net.andreask.banking.integration.hbci.hbci4java;
 
-import net.andreask.banking.integration.hbci.HbciFacade;
-import net.andreask.banking.model.AccountConnection;
-import net.andreask.banking.model.AccountTransaction;
+import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
-import java.util.List;
+
+import net.andreask.banking.integration.hbci.HbciAccess;
+import net.andreask.banking.integration.hbci.HbciFacade;
+import net.andreask.banking.model.AccountTransaction;
 
 @Named
 @RequestScoped
 public class HbciFacadeImpl implements HbciFacade {
 
-    private AccountConnection accountConnection;
+    private HbciAccess accountConnection;
 
     private HbciSession hbciSession;
 
-    public AccountConnection getAccountConnection() {
-        return accountConnection;
-    }
-
     @Override
-    public HbciFacade setAccountConnection(AccountConnection accountConnection) {
+    public HbciFacade setAccountConnection(HbciAccess accountConnection) {
         this.accountConnection = accountConnection;
         return this;
     }

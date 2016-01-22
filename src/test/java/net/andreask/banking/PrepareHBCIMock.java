@@ -19,8 +19,8 @@ import com.sun.org.apache.xerces.internal.dom.DocumentImpl;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomWriter;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
+import net.andreask.banking.integration.hbci.HbciAccessImpl;
 import net.andreask.banking.integration.hbci.hbci4java.HbciFacadeImpl;
-import net.andreask.banking.model.AccountConnection;
 import net.andreask.banking.model.AccountTransaction;
 import org.w3c.dom.Document;
 
@@ -32,8 +32,6 @@ public class PrepareHBCIMock {
     @Inject
     private static Properties testProperties = App.provideProperties();
 
-
-
     public static void main(String[] args) throws IOException {
         System.out.println("Starting ...");
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -41,11 +39,11 @@ public class PrepareHBCIMock {
 
         List<AccountTransaction> result = new HbciFacadeImpl()
                 .setAccountConnection(
-                        new AccountConnection()
+                        new HbciAccessImpl()
                                 .setBankCode("70090500")
                                 .setCustomerId("3964620")
                                 .setAccountNumber("103964620")
-                                .setEncryptedPin(Integer.parseInt(br.readLine()))
+                                .setEncryptedPin(br.readLine())
                                 .setHbciVersion("300")
                                 .setUrl("fints.bankingonline.de/fints/FinTs30PinTanHttpGate")
                                 .setCountryCode("DE"))
@@ -75,7 +73,5 @@ public class PrepareHBCIMock {
         }
 
     }
-
-
 
 }

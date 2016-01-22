@@ -1,18 +1,10 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
-<ui:composition template="/template.xhtml">
-  <ui:define name="title">
-    Account List
-  </ui:define>
-
-  <ui:define name="body">
-    <h2>DataTable Example</h2>
+  <ui:define name="accountList">
+    <h2>currently available accounts</h2>
     <h:form>
       <h:dataTable value="#{accountConnectionUI.allAccountConnections}" var="ac"
                    styleClass="employeeTable"
@@ -28,7 +20,7 @@
         </h:column>
         <h:column>
           <f:facet name="header">accountNumber</f:facet>
-          #{ac.accountNumber}
+          #{ac.accountNumber10}
         </h:column>
         <h:column>
           <f:facet name="header">cronScheduleExpression</f:facet>
@@ -38,6 +30,5 @@
     </h:form>
   </ui:define>
 </ui:composition>
-</html>
 
 

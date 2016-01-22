@@ -4,6 +4,8 @@ version '0.0.1-SNAPSHOT'
 apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'idea'
+apply plugin: 'eclipse-wtp'
+
 
 repositories {
     mavenCentral()
@@ -12,20 +14,24 @@ repositories {
 // glassfishHome=< home of your glassfish folder e.g. glassfishHome=C:/Program Files/glassfish4 >
 
 
+    
 dependencies {
     println "read dependencies ..."
+    
     providedCompile group: 'javax', name: 'javaee-api', version: '7.0'
-    testCompile group: 'junit', name: 'junit', version: '4.11'
-    compile files('lib/hbci4java-2.5.12.jar')
-    compile 'org.apache.logging.log4j:log4j-1.2-api:2.5'
-    compile 'org.iban4j:iban4j:3.2.0'
-    compile 'com.thoughtworks.xstream:xstream-distribution:1.4.8'
-    testCompile 'org.mockito:mockito-all:2.0.2-beta'
-    testCompile 'org.jboss.arquillian:arquillian-bom:1.1.10.Final'
-    testCompile 'org.jboss.arquillian.junit:arquillian-junit-container:1.1.10.Final'
-    testCompile 'org.jboss.arquillian.container:arquillian-glassfish-embedded-3.1:1.0.0.CR4'
-    testCompile 'org.glassfish.main.extras:glassfish-embedded-web:4.1.1'
-    testCompile 'org.jboss.weld:weld-core:2.3.2.Final'
+    
+    compile files('lib/hbci4java-2.5.12.jar'),
+	    'org.apache.logging.log4j:log4j-1.2-api:2.5',
+	    'org.iban4j:iban4j:3.2.0',
+	    'com.thoughtworks.xstream:xstream-distribution:1.4.8'
+    
+//    testCompile group: 'junit', name: 'junit', version: '4.11',
+//	    'org.mockito:mockito-all:2.0.2-beta',
+//	    'org.jboss.arquillian:arquillian-bom:1.1.10.Final',
+//	    'org.jboss.arquillian.junit:arquillian-junit-container:1.1.10.Final',
+//	    'org.jboss.arquillian.container:arquillian-glassfish-embedded-3.1:1.0.0.CR4',
+//	    'org.glassfish.main.extras:glassfish-embedded-web:4.1.1',
+//	    'org.jboss.weld:weld-core:2.3.2.Final'
 //    compile project(':hbci4java')
 }
 

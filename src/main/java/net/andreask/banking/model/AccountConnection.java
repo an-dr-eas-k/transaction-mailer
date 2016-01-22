@@ -1,13 +1,18 @@
 package net.andreask.banking.model;
 
+import java.io.Serializable;
+
+import javax.ejb.ScheduleExpression;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+
 import org.iban4j.CountryCode;
 import org.iban4j.Iban;
 
-import javax.ejb.ScheduleExpression;
-import java.io.Serializable;
-
-
-public class AccountConnection implements Serializable {
+@ManagedBean
+@RequestScoped
+public class AccountConnection <T extends AccountConnection> implements Serializable{
     private int id;
 
     private String encryptedPin;
@@ -48,9 +53,9 @@ public class AccountConnection implements Serializable {
         return this.id;
     }
 
-    public AccountConnection setId(int id) {
+    public T setId(int id) {
         this.id = id;
-        return this;
+        return (T)this;
     }
 
 
@@ -58,9 +63,9 @@ public class AccountConnection implements Serializable {
         return this.encryptedPin;
     }
 
-    public AccountConnection setEncryptedPin(String pin) {
+    public T setEncryptedPin(String pin) {
         this.encryptedPin = pin;
-        return this;
+        return (T)this;
     }
 
 
@@ -68,9 +73,9 @@ public class AccountConnection implements Serializable {
         return this.url;
     }
 
-    public AccountConnection setUrl(String url) {
+    public T setUrl(String url) {
         this.url = url;
-        return this;
+        return (T)this;
     }
 
     public String getAccountNumber10() {
@@ -81,45 +86,45 @@ public class AccountConnection implements Serializable {
         return this.accountNumber.replaceAll("^0+", "");
     }
 
-    public AccountConnection setAccountNumber(String accountNumber) {
+    public T setAccountNumber(String accountNumber) {
         this.accountNumber = String.format("%10s", accountNumber).replace(' ', '0');
-        return this;
+        return (T)this;
     }
 
     public String getBankCode() {
         return this.bankCode;
     }
 
-    public AccountConnection setBankCode(String bankCode) {
+    public T setBankCode(String bankCode) {
         this.bankCode = bankCode;
-        return this;
+        return (T)this;
     }
 
     public String getHbciVersion() {
         return this.hbciVersion;
     }
 
-    public AccountConnection setHbciVersion(String hbciVersion) {
+    public T setHbciVersion(String hbciVersion) {
         this.hbciVersion = hbciVersion;
-        return this;
+        return (T)this;
     }
 
     public String getCronScheduleExpression() {
         return this.cronScheduleExpression;
     }
 
-    public AccountConnection setCronScheduleExpression(String cronScheduleExpression) {
+    public T setCronScheduleExpression(String cronScheduleExpression) {
         this.cronScheduleExpression = cronScheduleExpression;
-        return this;
+        return (T)this;
     }
 
     public String getCountryCode() {
         return countryCode;
     }
 
-    public AccountConnection setCountryCode(String countryCode) {
+    public T setCountryCode(String countryCode) {
         this.countryCode = countryCode;
-        return this;
+        return (T)this;
     }
 
     @Override
@@ -135,9 +140,9 @@ public class AccountConnection implements Serializable {
                 '}';
     }
 
-    public AccountConnection setCustomerId(String customerId) {
+    public T setCustomerId(String customerId) {
         this.customerId = customerId;
-        return this;
+        return (T)this;
     }
 
     public String getCustomerId() {

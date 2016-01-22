@@ -8,8 +8,8 @@ import java.util.Properties;
 import javax.inject.Inject;
 import javax.ws.rs.Produces;
 
+import net.andreask.banking.integration.hbci.HbciAccessImpl;
 import net.andreask.banking.integration.hbci.HbciFacade;
-import net.andreask.banking.model.AccountConnection;
 
 /**
  * Hello world!
@@ -33,7 +33,7 @@ public class App {
     public static void main(String[] args) throws IOException {
         System.out.println("Starting ...");
         new App().run();
-//        Persistence.generateSchema("hv-pu", null);
+        //        Persistence.generateSchema("hv-pu", null);
     }
 
     public void run() throws IOException {
@@ -42,11 +42,11 @@ public class App {
 
         hbciFacade
                 .setAccountConnection(
-                        new AccountConnection()
+                        new HbciAccessImpl()
                                 .setBankCode("70090500")
                                 .setCustomerId("3964620")
                                 .setAccountNumber("103964620")
-                                .setEncryptedPin(Integer.parseInt(br.readLine()))
+                                .setEncryptedPin(br.readLine())
                                 .setHbciVersion("300")
                                 .setUrl("fints.bankingonline.de/fints/FinTs30PinTanHttpGate")
                                 .setCountryCode("DE"))

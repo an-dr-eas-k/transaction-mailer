@@ -13,10 +13,11 @@ import javax.ejb.TimerService;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
-import net.andreask.banking.integration.db.AccountConnectionFacade;
-import net.andreask.banking.model.AccountConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import net.andreask.banking.integration.db.AccountConnectionFacade;
+import net.andreask.banking.model.AccountConnection;
 
 @RequestScoped
 public class AccountConnectionManager implements Serializable {
@@ -94,4 +95,7 @@ public class AccountConnectionManager implements Serializable {
         return this.accountConnectionFacade.findAll();
     }
 
+    public void save(AccountConnection ac) {
+        this.accountConnectionFacade.save(ac);
+    }
 }

@@ -12,14 +12,15 @@
 
 package net.andreask.banking.integration.db;
 
-import net.andreask.banking.integration.db.model.AccountConnectionDE;
-import net.andreask.banking.model.AccountConnection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ejb.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
-import java.util.stream.Collectors;
+
+import net.andreask.banking.integration.db.model.AccountConnectionDE;
+import net.andreask.banking.model.AccountConnection;
 
 /**
  * @author andreask
@@ -48,6 +49,10 @@ public class AccountConnectionFacade extends AbstractFacade<AccountConnectionDE>
                 .peek(getEntityManager()::refresh)
                 .map(Mapper::map)
                 .collect(Collectors.toList());
+    }
+
+    public void save(AccountConnection ac) {
+        super.create(Mapper.map(ac));
     }
 }
 

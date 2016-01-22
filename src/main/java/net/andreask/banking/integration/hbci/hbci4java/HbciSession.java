@@ -7,7 +7,7 @@ package net.andreask.banking.integration.hbci.hbci4java;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import net.andreask.banking.model.AccountConnection;
+import net.andreask.banking.integration.hbci.HbciAccess;
 import net.andreask.banking.model.AccountTransaction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,7 +27,7 @@ import org.kapott.hbci.structures.Konto;
  */
 public class HbciSession {
 
-    private final AccountConnection accountConnection;
+    private final HbciAccess accountConnection;
     private static Logger logger = LogManager.getLogger(HbciSession.class);
     private HBCIHandler handler;
 
@@ -88,7 +88,7 @@ public class HbciSession {
         }
     }
 
-    public HbciSession(AccountConnection a) {
+    public HbciSession(HbciAccess a) {
         this.accountConnection = a;
         this.initParams();
     }
@@ -134,7 +134,7 @@ public class HbciSession {
 
         throw new IllegalStateException(String.format(
                 "Unable to find requested account %s, %s",
-                this.accountConnection.getAccountNumber10(),
+                this.accountConnection.getAccountNumberStripped(),
                 this.accountConnection.getBankCode()));
     }
 

@@ -11,8 +11,8 @@ import javax.inject.Named;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
+import net.andreask.banking.integration.hbci.HbciAccess;
 import net.andreask.banking.integration.hbci.HbciFacade;
-import net.andreask.banking.model.AccountConnection;
 import net.andreask.banking.model.AccountTransaction;
 import org.apache.logging.log4j.LogManager;
 
@@ -23,11 +23,8 @@ import org.apache.logging.log4j.LogManager;
 public class HbciFacadeTestAlternative implements HbciFacade {
 
 
-    public AccountConnection getAccountConnection() {
-        return null;
-    }
 
-    public HbciFacadeTestAlternative setAccountConnection(AccountConnection accountConnection) {
+    public HbciFacadeTestAlternative setAccountConnection(HbciAccess accountConnection) {
 
         return this;
     }

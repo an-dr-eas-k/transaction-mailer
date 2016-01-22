@@ -28,7 +28,7 @@ public abstract class AbstractFacade<T> {
 
     protected abstract EntityManager getEntityManager();
 
-    public boolean create(T entity) {
+    protected boolean create(T entity) {
         getEntityManager().persist(entity);
         return true;
     }

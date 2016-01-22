@@ -1,15 +1,14 @@
 package net.andreask.banking.integration.hbci;
 
-import net.andreask.banking.model.AccountConnection;
-import net.andreask.banking.model.AccountTransaction;
-
 import java.util.List;
+
+import net.andreask.banking.model.AccountTransaction;
 
 /**
  * Created by andreask on 1/18/16.
  */
 public interface HbciFacade {
-    HbciFacade setAccountConnection(AccountConnection accountConnection);
+    HbciFacade setAccountConnection(HbciAccess accountConnection);
 
     HbciFacade init();
 
