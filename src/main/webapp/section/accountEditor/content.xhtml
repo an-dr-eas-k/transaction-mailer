@@ -1,0 +1,37 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:util="http://java.sun.com/jsf/composite/components/util">
+
+
+
+	<div class="accountEditorForm">
+		<div class="accountEditorFormHeading">#{msgs.findAPlace}</div>
+
+		<h:form>
+			<h:panelGrid columns="2">
+				<h:graphicImage value="#{resource['images:wave.med.gif']}" />
+
+			
+#{msgs.bankCode} <h:inputText value="#{accountConnection.bankCode}" />
+#{msgs.customerId} <h:inputText value="#{accountConnection.customerId}" />
+#{msgs.accountNumber} <h:inputText
+					value="#{accountConnection.accountNumberStripped}" />
+#{msgs.cronScheduleExpression} <h:inputText
+					value="#{accountConnection.cronScheduleExpression}" />
+#{msgs.hbciVersion} <h:inputText value="#{accountConnection.hbciVersion}" />
+
+				<h:commandButton id="submit" value="#{msgs.goButtonText}"
+					action="#{accountConnectionUI.save}"
+					style="font-family:Palatino;font-style:italic" />
+				<h:message showSummary="true" showDetail="false"
+					style="color: red;
+                           font-family: 'New Century Schoolbook', serif;
+                           font-style: oblique;
+                           text-decoration: overline"
+					id="errors1" for="userNo" />
+			</h:panelGrid>
+		</h:form>
+	</div>
+
+</ui:composition>

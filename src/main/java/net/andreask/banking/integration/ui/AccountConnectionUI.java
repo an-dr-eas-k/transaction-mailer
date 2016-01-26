@@ -10,7 +10,7 @@ package net.andreask.banking.integration.ui;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.enterprise.context.SessionScoped;
+import javax.faces.bean.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -21,25 +21,29 @@ import net.andreask.banking.model.AccountConnection;
  * @author ian
  */
 @Named
-@SessionScoped
+@RequestScoped
 public class AccountConnectionUI implements Serializable {
 
-    @Inject
-    private AccountConnectionManager accountConnectionManager;
+	@Inject
+	private AccountConnectionManager accountConnectionManager;
 
-    /**
-     * Creates a new instance of AccountConnectionUI
-     */
-    public AccountConnectionUI() {
+	@Inject
+	private AccountConnection accountConnection;
 
-    }
+	/**
+	 * Creates a new instance of AccountConnectionUI
+	 */
+	public AccountConnectionUI() {
 
-    public List<AccountConnection> getAllAccountConnections() {
-        return accountConnectionManager.queryAccountConnections();
-    }
+	}
 
-    public void save(AccountConnection ac) {
-        this.accountConnectionManager.save(ac);
-    }
+	public List<AccountConnection> getAllAccountConnections() {
+		return accountConnectionManager.queryAccountConnections();
+	}
+
+	public String save() {
+		this.accountConnectionManager.save(accountConnection);
+		return null;
+	}
 
 }

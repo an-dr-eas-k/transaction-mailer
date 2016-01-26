@@ -1,18 +1,13 @@
 package net.andreask.banking.integration.db;
 
-import net.andreask.banking.integration.db.model.AccountConnectionDE;
-import net.andreask.banking.integration.db.model.AccountTransactionDE;
+import javax.annotation.PostConstruct;
+import javax.ejb.Singleton;
+import javax.inject.Inject;
+
 import org.apache.logging.log4j.LogManager;
 
-import javax.annotation.PostConstruct;
-import javax.ejb.Init;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import net.andreask.banking.integration.db.model.AccountConnectionDE;
+import net.andreask.banking.integration.db.model.AccountTransactionDE;
 
 /**
  * Created by andreask on 1/18/16.
@@ -21,17 +16,17 @@ import javax.persistence.PersistenceContext;
 @Singleton
 public class DbToucher {
 
-    @Inject
-    private AccountConnectionFacade accountConnectionFacade;
+	@Inject
+	private AccountConnectionFacade accountConnectionFacade;
 
-    @Inject
-    private AccountTransactionFacade accountTransactionFacade;
+	@Inject
+	private AccountTransactionFacade accountTransactionFacade;
 
-    @PostConstruct
-    public void init() {
-        LogManager.getLogger(DbToucher.class).info("init");
-        accountConnectionFacade.create(new AccountConnectionDE());
-        accountTransactionFacade.create(new AccountTransactionDE());
-    }
+	@PostConstruct
+	public void init() {
+		LogManager.getLogger(DbToucher.class).info("init");
+		accountConnectionFacade.create(new AccountConnectionDE());
+		accountTransactionFacade.create(new AccountTransactionDE());
+	}
 
 }
