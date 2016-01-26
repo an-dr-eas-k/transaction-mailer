@@ -6,6 +6,10 @@ apply plugin: 'war'
 apply plugin: 'idea'
 apply plugin: 'eclipse-wtp'
 
+import org.gradle.plugins.ide.eclipse.model.SourceFolder
+  eclipse.classpath.file.whenMerged { cp ->
+    cp.entries.findAll { it instanceof SourceFolder && it.path.startsWith("src/test/") }*.output = "bin-test"
+}
 
 repositories {
     mavenCentral()
@@ -32,6 +36,8 @@ dependencies {
 //	    'org.jboss.arquillian.container:arquillian-glassfish-embedded-3.1:1.0.0.CR4',
 //	    'org.glassfish.main.extras:glassfish-embedded-web:4.1.1',
 //	    'org.jboss.weld:weld-core:2.3.2.Final'
+	    
+	      
 //    compile project(':hbci4java')
 }
 
