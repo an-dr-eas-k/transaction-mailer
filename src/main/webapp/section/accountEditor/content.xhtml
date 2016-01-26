@@ -9,8 +9,8 @@
 		<div class="accountEditorFormHeading">#{msgs.findAPlace}</div>
 
 		<h:form>
+			<h:graphicImage value="#{resource['images:wave.med.gif']}" />
 			<h:panelGrid columns="2">
-				<h:graphicImage value="#{resource['images:wave.med.gif']}" />
 
 			
 #{msgs.bankCode} <h:inputText value="#{accountConnection.bankCode}" />
@@ -24,6 +24,7 @@
 				<h:commandButton id="submit" value="#{msgs.goButtonText}"
 					action="#{accountConnectionUI.save}"
 					style="font-family:Palatino;font-style:italic" />
+					
 				<h:message showSummary="true" showDetail="false"
 					style="color: red;
                            font-family: 'New Century Schoolbook', serif;
