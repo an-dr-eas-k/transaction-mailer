@@ -47,12 +47,12 @@ public class AccountConnectionFacade extends AbstractFacade<AccountConnectionDE>
                 .findAllDE()
                 .stream()
                 .peek(getEntityManager()::refresh)
-                .map(Mapper::map)
+                .map(MapperDE::map)
                 .collect(Collectors.toList());
     }
 
     public void save(AccountConnection ac) {
-        super.create(Mapper.map(ac));
+        super.create(MapperDE.map(ac));
     }
 }
 

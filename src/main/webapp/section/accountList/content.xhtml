@@ -1,27 +1,28 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 
-	<h2>currently available accounts</h2>
+	<h2>#{msgs.accountListTitle}</h2>
 	<h:form>
-		<h:dataTable value="#{accountConnectionUI.allAccountConnections}" var="ac"
-			styleClass="employeeTable" headerClass="employeeTableHeader"
+		<h:dataTable value="#{accountConnectionUI.allAccountConnections}" var="ac" styleClass="employeeTable" headerClass="employeeTableHeader"
 			rowClasses="employeeTableOddRow,employeeTableEvenRow">
 			<h:column>
-				<f:facet name="header">BankCode</f:facet>
+				<f:facet name="header">#{msgs.bankCode}</f:facet>
           #{ac.bankCode}
         </h:column>
 			<h:column>
-				<f:facet name="header">Customer Id</f:facet>
+				<f:facet name="header">#{msgs.customerId}</f:facet>
           #{ac.customerId}
         </h:column>
 			<h:column>
-				<f:facet name="header">accountNumber</f:facet>
-          #{ac.accountNumber10}
+				<f:facet name="header">#{msgs.accountNumber}</f:facet>
+          #{ac.accountNumber}
         </h:column>
 			<h:column>
-				<f:facet name="header">cronScheduleExpression</f:facet>
+				<f:facet name="header">#{msgs.email}</f:facet>
+          #{ac.email}
+        </h:column>
+			<h:column>
+				<f:facet name="header">#{msgs.cronScheduleExpression}</f:facet>
           #{ac.cronScheduleExpression}
         </h:column>
 		</h:dataTable>

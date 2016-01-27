@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
-import javax.persistence.NamedQuery;
 import javax.persistence.PersistenceContext;
 
 import net.andreask.banking.integration.db.model.AccountTransactionDE;
@@ -26,41 +25,36 @@ import net.andreask.banking.model.AccountTransaction;
 /**
  * @author andreask
  */
-@NamedQuery(
-        name = "findFromTemplate",
-        query = "select * from AccountTransactionDE ac where ac.usage = :usage and ac.value = :value"
-)
 @Singleton
 public class AccountTransactionFacade extends AbstractFacade<AccountTransactionDE> {
-    @PersistenceContext(unitName = "hv-pu")
-    private EntityManager em;
+  @PersistenceContext(unitName = "hv-pu")
+  private EntityManager em;
 
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
+  @Override
+  protected EntityManager getEntityManager() {
+    return em;
+  }
 
-    public AccountTransactionFacade() {
-        super(AccountTransactionDE.class);
-    }
+  public AccountTransactionFacade() {
+    super(AccountTransactionDE.class);
+  }
 
-    public List<AccountTransaction> find(AccountTransaction template) {
-        //noinspection unchecked
-        return getEntityManager()
-                .createNamedQuery("findFromTemplate", AccountTransactionDE.class)
-                .setParameter("usage", template.getUsage())
-                .setParameter("value", template.getValue())
-                .getResultList()
-                .stream()
-                .peek(getEntityManager()::refresh)
-                .map(Mapper::map)
-                .collect(Collectors.toList());
+  public List<AccountTransaction> find(AccountTransaction template) {
+    // noinspection unchecked
+    return getEntityManager()
+        .createNamedQuery("findFromTemplate", AccountTransactionDE.class)
+        .setParameter("usage", template.getUsage())
+        .setParameter("value", template.getValue())
+        .getResultList()
+        .stream()
+        .peek(getEntityManager()::refresh)
+        .map(MapperDE::map)
+        .collect(Collectors.toList());
 
-    }
+  }
 
-    public void save(AccountTransaction ac) {
-        super.create(Mapper.map(ac));
-    }
+  public void save(AccountTransaction ac) {
+    super.create(MapperDE.map(ac));
+  }
 
 }
-
