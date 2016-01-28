@@ -12,7 +12,7 @@ import javax.persistence.NamedQuery;
 @Entity
 @NamedQuery(
     name = "findFromTemplate",
-    query = "SELECT * FROM AccountTransactionDE at WHERE at.usage = :usage AND at.value = :value")
+    query = "SELECT at FROM AccountTransactionDE at WHERE at.usage = :usage AND at.value = :value")
 public class AccountTransactionDE {
 
   @Id
