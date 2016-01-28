@@ -36,8 +36,9 @@ public class AccountTransactionManager implements Serializable {
         .init()
         .acquireTransactions()
         .stream()
+        .filter(e -> accountTransactionFacade.find(e).isEmpty())
         .peek(logger::debug)
-        .filter(e -> accountTransactionFacade.find(e) == null)
+        .peek(at -> at.setAccountConnection(ac))
         .peek(accountTransactionFacade::save)
         .collect(Collectors.toList());
     notifyUser(ac.getEmail(), toNotify);

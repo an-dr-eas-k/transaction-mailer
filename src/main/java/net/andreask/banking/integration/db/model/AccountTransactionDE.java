@@ -123,6 +123,8 @@ public class AccountTransactionDE {
    **/
   public boolean isSepa;
 
+  public String other;
+
   public int getId() {
     return this.id;
   }
@@ -156,15 +158,6 @@ public class AccountTransactionDE {
 
   public AccountTransactionDE setValue(long value) {
     this.value = value;
-    return this;
-  }
-
-  public boolean getIsStorno() {
-    return this.isStorno;
-  }
-
-  public AccountTransactionDE setIsStorno(boolean isStorno) {
-    this.isStorno = isStorno;
     return this;
   }
 
@@ -258,12 +251,40 @@ public class AccountTransactionDE {
     return this;
   }
 
-  public boolean getIsSepa() {
-    return this.isSepa;
+  public AccountConnectionDE getAccountReference() {
+    return accountReference;
   }
 
-  public AccountTransactionDE setIsSepa(boolean isSepa) {
+  public AccountTransactionDE setAccountReference(AccountConnectionDE accountReference) {
+    this.accountReference = accountReference;
+    return this;
+  }
+
+  public boolean isStorno() {
+    return isStorno;
+  }
+
+  public AccountTransactionDE setStorno(boolean isStorno) {
+    this.isStorno = isStorno;
+    return this;
+  }
+
+  public boolean isSepa() {
+    return isSepa;
+  }
+
+  public AccountTransactionDE setSepa(boolean isSepa) {
     this.isSepa = isSepa;
     return this;
   }
+
+  public String getOther() {
+    return other;
+  }
+
+  public AccountTransactionDE setOther(String other) {
+    this.other = other;
+    return this;
+  }
+
 }

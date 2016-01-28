@@ -27,7 +27,7 @@ public class HbciMock implements HbciFacade {
 
   public HbciMock() {
 
-    logger.warn("using debug mock");
+    logger.warn("using development mock");
   }
 
   @Override

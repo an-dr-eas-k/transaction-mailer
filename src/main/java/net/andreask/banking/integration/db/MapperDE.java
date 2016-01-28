@@ -1,9 +1,11 @@
 package net.andreask.banking.integration.db;
 
+import net.andreask.banking.business.XMapper;
 import net.andreask.banking.integration.db.model.AccountConnectionDE;
 import net.andreask.banking.integration.db.model.AccountTransactionDE;
 import net.andreask.banking.model.AccountConnection;
 import net.andreask.banking.model.AccountTransaction;
+import net.andreask.banking.model.AccountTransaction.Konto;
 
 public class MapperDE {
 
@@ -17,14 +19,17 @@ public class MapperDE {
         .setGvcode(databaseEntry.gvcode)
         .setId(databaseEntry.getId())
         .setInstref(databaseEntry.instref)
-        .setIsSepa(databaseEntry.getIsSepa())
-        .setIsStorno(databaseEntry.getIsStorno())
+        .setIsSepa(databaseEntry.isSepa())
+        .setIsStorno(databaseEntry.isStorno())
         .setPrimanota(databaseEntry.primanota)
         .setSaldo(databaseEntry.saldo)
         .setText(databaseEntry.text)
         .setUsage(databaseEntry.usage)
         .setValue(databaseEntry.getValue())
-        .setValuta(databaseEntry.valuta);
+        .setValuta(databaseEntry.valuta)
+        .setOther(XMapper.fromXml(databaseEntry.getOther(), Konto.class))
+        .setAccountConnection(map(databaseEntry.getAccountReference()));
+
   }
 
   public static AccountTransactionDE map(AccountTransaction businessEntry) {
@@ -37,17 +42,23 @@ public class MapperDE {
         .setGvcode(businessEntry.getGvcode())
         .setId(businessEntry.getId())
         .setInstref(businessEntry.getInstref())
-        .setIsSepa(businessEntry.getIsSepa())
-        .setIsStorno(businessEntry.getIsStorno())
+        .setSepa(businessEntry.getIsSepa())
+        .setStorno(businessEntry.getIsStorno())
         .setPrimanota(businessEntry.getPrimanota())
         .setSaldo(businessEntry.getSaldo())
         .setText(businessEntry.getText())
         .setUsage(businessEntry.getUsage())
         .setValue(businessEntry.getValue())
-        .setValuta(businessEntry.getValuta());
+        .setValuta(businessEntry.getValuta())
+        .setOther(XMapper.toXml(businessEntry.getOther()))
+        .setAccountReference(map(businessEntry.getAccountConnection()));
+
   }
 
   public static AccountConnectionDE map(AccountConnection ac) {
+    if (ac == null) {
+      return null;
+    }
     return new AccountConnectionDE()
         .setId(ac.getId())
         .setAccountNumber(ac.getAccountNumber10())
@@ -62,6 +73,9 @@ public class MapperDE {
   }
 
   public static AccountConnection map(AccountConnectionDE databaseEntry) {
+    if (databaseEntry == null) {
+      return null;
+    }
     return new AccountConnection()
         .setId(databaseEntry.getId())
         .setAccountNumberStripped(databaseEntry.getAccountNumber())
