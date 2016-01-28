@@ -1,15 +1,17 @@
 package net.andreask.banking.integration.hbci.testmock;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
-import java.util.Properties;
+
+import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
+import net.andreask.banking.business.Configuration;
 import net.andreask.banking.integration.Development;
 import net.andreask.banking.integration.hbci.HbciAccess;
 import net.andreask.banking.integration.hbci.HbciFacade;
@@ -17,20 +19,15 @@ import net.andreask.banking.model.AccountTransaction;
 
 @Development
 public class HbciMock implements HbciFacade {
-  private Properties testProperties;
+
+  @Inject
+  private Configuration configuration;
+
+  private Logger logger = LogManager.getLogger(this.getClass());
 
   public HbciMock() {
-    this.testProperties = provideProperties();
-  }
 
-  public Properties provideProperties() {
-    try {
-      Properties properties = new Properties();
-      properties.load(this.getClass().getClassLoader().getResourceAsStream("hv.properties"));
-      return properties;
-    } catch (IOException e) {
-      return null;
-    }
+    logger.warn("using debug mock");
   }
 
   @Override
@@ -48,7 +45,7 @@ public class HbciMock implements HbciFacade {
   public List<AccountTransaction> acquireTransactions() {
     LogManager.getLogger(this.getClass()).info("acquireTransactions Alternative");
     XStream xStream = new XStream(new StaxDriver());
-    return (List<AccountTransaction>) xStream.fromXML(new File(testProperties.getProperty("hbcimock.data.file")));
+    return (List<AccountTransaction>) xStream.fromXML(new File(configuration.getProperty("hbcimock.data.file")));
   }
 
   @Override
