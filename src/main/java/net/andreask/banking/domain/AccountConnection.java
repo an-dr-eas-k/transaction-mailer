@@ -1,13 +1,30 @@
-package net.andreask.banking.model;
+package net.andreask.banking.domain;
 
 import java.io.Serializable;
 
 import javax.ejb.ScheduleExpression;
+import javax.inject.Inject;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 
 import org.iban4j.CountryCode;
 import org.iban4j.Iban;
 
+import net.andreask.banking.business.Encryptor;
+
+@Entity
+
 public class AccountConnection implements Serializable {
+
+  @Inject
+  @Transient
+  private Encryptor encryptor;
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
 
   private String encryptedPin;
@@ -38,33 +55,6 @@ public class AccountConnection implements Serializable {
         .countryCode(CountryCode.getByCode(getCountryCode())).build().toString();
   }
 
-  public int getId() {
-    return this.id;
-  }
-
-  public AccountConnection setId(int id) {
-    this.id = id;
-    return this;
-  }
-
-  public String getEncryptedPin() {
-    return this.encryptedPin;
-  }
-
-  public AccountConnection setEncryptedPin(String pin) {
-    this.encryptedPin = pin;
-    return this;
-  }
-
-  public String getUrl() {
-    return this.url;
-  }
-
-  public AccountConnection setUrl(String url) {
-    this.url = url;
-    return this;
-  }
-
   public String getAccountNumber10() {
     return this.accountNumber;
   }
@@ -77,79 +67,107 @@ public class AccountConnection implements Serializable {
     }
   }
 
-  public AccountConnection setAccountNumberStripped(String accountNumber) {
+  public void setAccountNumberStripped(String accountNumber) {
     this.accountNumber = String.format("%10s", accountNumber).replace(' ', '0');
-    return this;
   }
 
-  public AccountConnection setAccountNumber10(String accountNumber) {
+  public void setAccountNumber10(String accountNumber) {
     if (accountNumber.length() != 10) {
       throw new IllegalArgumentException(accountNumber);
     }
     this.accountNumber = accountNumber;
-    return this;
+  }
+
+  public String getPin() {
+    return encryptor.decrypt(this.getEncryptedPin());
+  }
+
+  public void setPin(String pin) {
+    this.setEncryptedPin(encryptor.encrypt(pin));
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public String getEncryptedPin() {
+    return encryptedPin;
+  }
+
+  public void setEncryptedPin(String encryptedPin) {
+    this.encryptedPin = encryptedPin;
+  }
+
+  public String getUrl() {
+    return url;
+  }
+
+  public void setUrl(String url) {
+    this.url = url;
+  }
+
+  public String getAccountNumber() {
+    return accountNumber;
   }
 
   public String getBankCode() {
-    return this.bankCode;
+    return bankCode;
   }
 
-  public AccountConnection setBankCode(String bankCode) {
+  public void setBankCode(String bankCode) {
     this.bankCode = bankCode;
-    return this;
   }
 
   public String getHbciVersion() {
-    return this.hbciVersion;
+    return hbciVersion;
   }
 
-  public AccountConnection setHbciVersion(String hbciVersion) {
+  public void setHbciVersion(String hbciVersion) {
     this.hbciVersion = hbciVersion;
-    return this;
   }
 
   public String getCronScheduleExpression() {
-    return this.cronScheduleExpression;
+    return cronScheduleExpression;
   }
 
-  public AccountConnection setCronScheduleExpression(String cronScheduleExpression) {
+  public void setCronScheduleExpression(String cronScheduleExpression) {
     this.cronScheduleExpression = cronScheduleExpression;
-    return this;
   }
 
   public String getCountryCode() {
     return countryCode;
   }
 
-  public AccountConnection setCountryCode(String countryCode) {
+  public void setCountryCode(String countryCode) {
     this.countryCode = countryCode;
-    return this;
-  }
-
-  @Override
-  public String toString() {
-    return "AccountConnection{" + "id=" + id + ", url='" + url + '\'' + ", accountNumber='" + accountNumber + '\''
-        + ", bankCode='" + bankCode + '\'' + ", hbciVersion='" + hbciVersion + '\''
-        + ", cronScheduleExpression='" + cronScheduleExpression + '\'' + ", countryCode='" + countryCode + '\''
-        + '}';
-  }
-
-  public AccountConnection setCustomerId(String customerId) {
-    this.customerId = customerId;
-    return this;
   }
 
   public String getCustomerId() {
     return customerId;
   }
 
+  public void setCustomerId(String customerId) {
+    this.customerId = customerId;
+  }
+
   public String getEmail() {
     return email;
   }
 
-  public AccountConnection setEmail(String email) {
+  public void setEmail(String email) {
     this.email = email;
-    return this;
+  }
+
+  @Override
+  public String toString() {
+    return "AccountConnection [encryptor=" + encryptor + ", id=" + id + ", encryptedPin=" + encryptedPin + ", url="
+        + url + ", accountNumber=" + accountNumber + ", bankCode=" + bankCode + ", hbciVersion=" + hbciVersion
+        + ", cronScheduleExpression=" + cronScheduleExpression + ", countryCode=" + countryCode + ", customerId="
+        + customerId + ", email=" + email + "]";
   }
 
 }

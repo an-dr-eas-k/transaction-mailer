@@ -5,7 +5,7 @@ import javax.ejb.ScheduleExpression;
 
 import net.andreask.banking.business.Configuration;
 import net.andreask.banking.business.Encryptor;
-import net.andreask.banking.model.AccountConnection;
+import net.andreask.banking.domain.AccountConnection;
 
 public class HbciAccessImpl implements HbciAccess {
 

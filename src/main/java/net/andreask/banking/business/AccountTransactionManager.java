@@ -10,11 +10,11 @@ import javax.inject.Inject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import net.andreask.banking.domain.AccountConnection;
+import net.andreask.banking.domain.AccountTransaction;
 import net.andreask.banking.integration.db.AccountTransactionFacade;
 import net.andreask.banking.integration.hbci.HbciAccess;
 import net.andreask.banking.integration.hbci.HbciFacade;
-import net.andreask.banking.model.AccountConnection;
-import net.andreask.banking.model.AccountTransaction;
 
 @RequestScoped
 public class AccountTransactionManager implements Serializable {

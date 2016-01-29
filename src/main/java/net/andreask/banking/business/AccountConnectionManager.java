@@ -12,14 +12,16 @@ import javax.ejb.TimerConfig;
 import javax.ejb.TimerService;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import net.andreask.banking.domain.AccountConnection;
 import net.andreask.banking.integration.db.AccountConnectionFacade;
-import net.andreask.banking.model.AccountConnection;
 
 @RequestScoped
+@Named
 public class AccountConnectionManager implements Serializable {
 
   Logger logger = LogManager.getLogger(AccountTransactionManager.class);
@@ -57,29 +59,34 @@ public class AccountConnectionManager implements Serializable {
         // .peek(ac -> logger.debug("found accound in database {}", ac))
         .forEach(
             ac -> {
-              Timer existingTimer = timerAcMap.get(ac.getGeneratedIban());
-              boolean createSchedule = false;
-              if (existingTimer == null) {
-                createSchedule = true;
-                logger.info("found new account {}, schedule: {}",
-                    ac.getGeneratedIban(),
-                    ac.getCronScheduleExpression());
+              try {
+                Timer existingTimer = timerAcMap.get(ac.getGeneratedIban());
+                boolean createSchedule = false;
+                if (existingTimer == null) {
+                  createSchedule = true;
+                  logger.info("found new account {}, schedule: {}",
+                      ac.getGeneratedIban(),
+                      ac.getCronScheduleExpression());
 
-              } else if (!((AccountConnection) existingTimer.getInfo()).getCronScheduleExpression()
-                  .equals(ac.getCronScheduleExpression())) {
-                createSchedule = true;
-                logger.info("updating schedule for {}: {} (new), {} (old)",
-                    ac.getGeneratedIban(),
-                    ac.getCronScheduleExpression(),
-                    ((AccountConnection) existingTimer.getInfo()).getCronScheduleExpression());
-                existingTimer.cancel();
+                } else if (!((AccountConnection) existingTimer.getInfo()).getCronScheduleExpression()
+                    .equals(ac.getCronScheduleExpression())) {
+                  createSchedule = true;
+                  logger.info("updating schedule for {}: {} (new), {} (old)",
+                      ac.getGeneratedIban(),
+                      ac.getCronScheduleExpression(),
+                      ((AccountConnection) existingTimer.getInfo()).getCronScheduleExpression());
+                  existingTimer.cancel();
+                }
+                if (createSchedule) {
+                  timerService.createCalendarTimer(
+                      ac.getScheduleExpression(),
+                      new TimerConfig(ac, false));
+                }
+                validAccounts.add(ac.getGeneratedIban());
+              } catch (Exception e) {
+                logger.warn("illegal accountConnection: {}, reason{}", ac, e.getMessage());
+                this.accountConnectionFacade.remove(ac);
               }
-              if (createSchedule) {
-                timerService.createCalendarTimer(
-                    ac.getScheduleExpression(),
-                    new TimerConfig(ac, false));
-              }
-              validAccounts.add(ac.getGeneratedIban());
             });
     return validAccounts;
   }
@@ -91,11 +98,11 @@ public class AccountConnectionManager implements Serializable {
         .forEach(Timer::cancel);
   }
 
-  public List<AccountConnection> queryAccountConnections() {
+  public List<AccountConnection> getAllAccountConnections() {
     return this.accountConnectionFacade.findAll();
   }
 
-  public void save(AccountConnection ac) {
-    this.accountConnectionFacade.save(ac);
+  public void save(AccountConnection accountConnection) {
+    this.accountConnectionFacade.save(accountConnection);
   }
 }

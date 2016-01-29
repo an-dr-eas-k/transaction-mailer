@@ -7,8 +7,9 @@ package net.andreask.banking.integration.hbci.hbci4java;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import net.andreask.banking.domain.AccountTransaction;
 import net.andreask.banking.integration.hbci.HbciAccess;
-import net.andreask.banking.model.AccountTransaction;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.kapott.hbci.GV.HBCIJob;

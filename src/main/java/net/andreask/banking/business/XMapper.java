@@ -8,9 +8,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.dom4j.dom.DOMDocument;
 import org.w3c.dom.Document;
 
-import com.sun.org.apache.xerces.internal.dom.DocumentImpl;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomWriter;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
@@ -28,7 +28,7 @@ public class XMapper {
       return null;
     }
     if (formated) {
-      Document doc = new DocumentImpl();
+      Document doc = new DOMDocument();
       xStream.marshal(o, new DomWriter(doc));
       return format(doc);
     } else {

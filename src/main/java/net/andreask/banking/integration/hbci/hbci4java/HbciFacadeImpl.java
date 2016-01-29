@@ -4,9 +4,9 @@ import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 
+import net.andreask.banking.domain.AccountTransaction;
 import net.andreask.banking.integration.hbci.HbciAccess;
 import net.andreask.banking.integration.hbci.HbciFacade;
-import net.andreask.banking.model.AccountTransaction;
 
 @RequestScoped
 public class HbciFacadeImpl implements HbciFacade {

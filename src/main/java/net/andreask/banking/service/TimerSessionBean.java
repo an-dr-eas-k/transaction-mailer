@@ -20,7 +20,8 @@ import javax.inject.Inject;
 
 import net.andreask.banking.business.AccountConnectionManager;
 import net.andreask.banking.business.AccountTransactionManager;
-import net.andreask.banking.model.AccountConnection;
+import net.andreask.banking.domain.AccountConnection;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

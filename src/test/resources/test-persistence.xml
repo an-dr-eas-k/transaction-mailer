@@ -6,8 +6,8 @@
         http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 	<persistence-unit name="hv-pu">
 		<jta-data-source>jdbc/arquillian</jta-data-source>
-		<class>net.andreask.banking.integration.db.model.AccountTransactionDE</class>
-		<class>net.andreask.banking.integration.db.model.AccountConnectionDE</class>
+		<class>net.andreask.banking.domain.AccountTransaction</class>
+		<class>net.andreask.banking.domain.AccountConnection</class>
 		<properties>
 			<property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
 			<property name="eclipselink.logging.level.sql" value="FINE" />

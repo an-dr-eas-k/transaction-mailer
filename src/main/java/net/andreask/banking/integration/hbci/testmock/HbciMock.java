@@ -12,10 +12,10 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
 import net.andreask.banking.business.Configuration;
+import net.andreask.banking.domain.AccountTransaction;
 import net.andreask.banking.integration.Development;
 import net.andreask.banking.integration.hbci.HbciAccess;
 import net.andreask.banking.integration.hbci.HbciFacade;
-import net.andreask.banking.model.AccountTransaction;
 
 @Development
 public class HbciMock implements HbciFacade {

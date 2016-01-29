@@ -1,8 +1,9 @@
 package net.andreask.banking.integration.hbci.hbci4java;
 
-import net.andreask.banking.model.AccountTransaction;
 import org.kapott.hbci.GV_Result.GVRKUms;
 import org.kapott.hbci.structures.Konto;
+
+import net.andreask.banking.domain.AccountTransaction;
 
 public class Mapper {
     private Mapper() {

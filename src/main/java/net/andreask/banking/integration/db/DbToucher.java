@@ -6,27 +6,32 @@ import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 
-import net.andreask.banking.integration.db.model.AccountConnectionDE;
-import net.andreask.banking.integration.db.model.AccountTransactionDE;
+import net.andreask.banking.business.AccountConnectionManager;
+import net.andreask.banking.domain.AccountConnection;
 
 /**
  * Created by andreask on 1/18/16.
  */
 
+// @Startup
 @Singleton
 public class DbToucher {
 
-	@Inject
-	private AccountConnectionFacade accountConnectionFacade;
+  @Inject
+  private AccountConnectionManager accountConnectionManager;
 
-	@Inject
-	private AccountTransactionFacade accountTransactionFacade;
+  @Inject
+  private AccountTransactionFacade accountTransactionFacade;
 
-	@PostConstruct
-	public void init() {
-		LogManager.getLogger(DbToucher.class).info("init");
-		accountConnectionFacade.create(new AccountConnectionDE());
-		accountTransactionFacade.create(new AccountTransactionDE());
-	}
+  @Inject
+  private AccountConnection ac;
+
+  @PostConstruct
+  public void init() {
+    LogManager.getLogger(DbToucher.class).info("init");
+    accountConnectionManager.save(ac);
+
+    // accountTransactionFacade.create(new AccountTransaction());
+  }
 
 }

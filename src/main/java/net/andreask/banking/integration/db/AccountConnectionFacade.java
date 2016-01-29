@@ -19,40 +19,35 @@ import javax.ejb.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import net.andreask.banking.integration.db.model.AccountConnectionDE;
-import net.andreask.banking.model.AccountConnection;
+import net.andreask.banking.domain.AccountConnection;
 
 /**
  * @author andreask
  */
 @Singleton
-public class AccountConnectionFacade extends AbstractFacade<AccountConnectionDE> {
+public class AccountConnectionFacade extends AbstractFacade<AccountConnection> {
 
-    @PersistenceContext(unitName = "hv-pu")
-    private EntityManager em;
+  @PersistenceContext(unitName = "hv-pu")
+  private EntityManager em;
 
+  @Override
+  protected EntityManager getEntityManager() {
+    return em;
+  }
 
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
+  public AccountConnectionFacade() {
+    super(AccountConnection.class);
+  }
 
-    public AccountConnectionFacade() {
-        super(AccountConnectionDE.class);
-    }
+  public List<AccountConnection> findAll() {
 
-    public List<AccountConnection> findAll() {
+    return super.findAllDE()
+        .stream()
+        .peek(getEntityManager()::refresh)
+        .collect(Collectors.toList());
+  }
 
-        return super
-                .findAllDE()
-                .stream()
-                .peek(getEntityManager()::refresh)
-                .map(MapperDE::map)
-                .collect(Collectors.toList());
-    }
-
-    public void save(AccountConnection ac) {
-        super.create(MapperDE.map(ac));
-    }
+  public void save(AccountConnection ac) {
+    super.create(ac);
+  }
 }
-

@@ -1,14 +1,28 @@
-package net.andreask.banking.model;
+package net.andreask.banking.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.enterprise.inject.Model;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 
 @Model
-public class AccountTransaction {
+@Entity
+@NamedQuery(
+    name = "findFromTemplate",
+    query = "SELECT at FROM AccountTransaction at WHERE at.usage = :usage AND at.value = :value")
+public class AccountTransaction implements Serializable {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
 
+  @ManyToOne()
   private AccountConnection accountConnection;
 
   /**
@@ -285,7 +299,7 @@ public class AccountTransaction {
   /**
    * Created by andreask on 1/18/16.
    */
-  public static class Konto {
+  public static class Konto implements Serializable {
     private String country;
     private String blz;
     private String number;

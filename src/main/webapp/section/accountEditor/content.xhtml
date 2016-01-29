@@ -10,13 +10,13 @@
 			<h:graphicImage value="#{resource['images:wave.med.gif']}" />
 			<h:panelGrid columns="2">
 
-#{msgs.bankCode} <h:inputText value="#{accountConnectionUIM.bankCode}" />
-#{msgs.customerId} <h:inputText value="#{accountConnectionUIM.customerId}" />
-#{msgs.accountNumber} <h:inputText value="#{accountConnectionUIM.accountNumber}" />
-#{msgs.email} <h:inputText value="#{accountConnectionUIM.email}" />
-#{msgs.pin} <h:inputSecret value="#{accountConnectionUIM.pin}" />
-#{msgs.cronScheduleExpression} <h:inputText value="#{accountConnectionUIM.cronScheduleExpression}" /> 
-#{msgs.hbciVersion} <h:inputText value="#{accountConnectionUIM.hbciVersion}" />
+#{msgs.bankCode} <h:inputText value="#{accountConnectionUI.accountConnection.bankCode}" />
+#{msgs.customerId} <h:inputText value="#{accountConnectionUI.accountConnection.customerId}" />
+#{msgs.accountNumber} <h:inputText value="#{accountConnectionUI.accountConnection.accountNumberStripped}" />
+#{msgs.email} <h:inputText value="#{accountConnectionUI.accountConnection.email}" />
+#{msgs.pin} <h:inputSecret value="#{accountConnectionUI.accountConnection.pin}" />
+#{msgs.cronScheduleExpression} <h:inputText value="#{accountConnectionUI.accountConnection.cronScheduleExpression}" /> 
+#{msgs.hbciVersion} <h:inputText value="#{accountConnectionUI.accountConnection.hbciVersion}" />
 
 				<h:commandButton id="submit" value="#{msgs.goButtonText}" action="#{accountConnectionUI.save}" style="font-family:Palatino;font-style:italic" />
 

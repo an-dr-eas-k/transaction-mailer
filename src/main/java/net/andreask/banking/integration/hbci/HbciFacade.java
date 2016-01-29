@@ -2,7 +2,7 @@ package net.andreask.banking.integration.hbci;
 
 import java.util.List;
 
-import net.andreask.banking.model.AccountTransaction;
+import net.andreask.banking.domain.AccountTransaction;
 
 /**
  * Created by andreask on 1/18/16.
