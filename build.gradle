@@ -14,8 +14,8 @@ import org.gradle.plugins.ide.eclipse.model.SourceFolder
 repositories {
     mavenCentral()
 }
-// initialize property ${glassfishHome} in ~/.gradle/gradle.properties and set
-// glassfishHome=< home of your glassfish folder e.g. glassfishHome=C:/Program Files/glassfish4 >
+// initialize property ${glassfish_home} in ~/.gradle/gradle.properties and set
+// glassfish_home=< home of your glassfish folder e.g. glassfish_home=C:/Program Files/glassfish4 >
 
 
     
@@ -52,7 +52,7 @@ task getHBCI(group: 'build setup') {
 
 task startDB(type: Exec, group: 'build setup') {
     println "executing dbStart ..."
-    workingDir "${glassfishHome}${File.separator}bin"
+    workingDir "${glassfish_home}${File.separator}bin"
 
     if (System.properties['os.name'].toLowerCase().contains('windows')) {
         commandLine 'cmd', '/c', 'asadmin.bat'
@@ -67,7 +67,7 @@ task startDB(type: Exec, group: 'build setup') {
 
 task stopDB(type: Exec, ) {
     println "executing dbStop ..."
-    workingDir "${glassfishHome}${File.separator}bin"
+    workingDir "${glassfish_home}${File.separator}bin"
 
     if (System.properties['os.name'].toLowerCase().contains('windows')) {
         commandLine 'cmd', '/c', 'asadmin.bat'
@@ -81,7 +81,7 @@ task stopDB(type: Exec, ) {
 
 task startServer(type: Exec, group: 'build setup') {
     println "executing serverStart ..."
-    workingDir "${glassfishHome}${File.separator}bin"
+    workingDir "${glassfish_home}${File.separator}bin"
 
     if (System.properties['os.name'].toLowerCase().contains('windows')) {
         commandLine 'cmd', '/c', 'asadmin.bat'
@@ -94,7 +94,7 @@ task startServer(type: Exec, group: 'build setup') {
 
 task restartApp(type: Exec) {
     println "executing appReStart ..."
-    workingDir "${glassfishHome}${File.separator}bin"
+    workingDir "${glassfish_home}${File.separator}bin"
 
     if (System.properties['os.name'].toLowerCase().contains('windows')) {
         commandLine 'cmd', '/c', 'asadmin.bat'
@@ -108,7 +108,7 @@ task restartApp(type: Exec) {
 
 task stopServer(type: Exec) {
     println "executing serverStop ..."
-    workingDir "${glassfishHome}${File.separator}bin"
+    workingDir "${glassfish_home}${File.separator}bin"
 
     if (System.properties['os.name'].toLowerCase().contains('windows')) {
         commandLine 'cmd', '/c', 'asadmin.bat'
@@ -120,7 +120,7 @@ task stopServer(type: Exec) {
 }
 task reDeploy(dependsOn: 'war', type: Exec) {
     println "executing reDeploy ..."
-    workingDir "${glassfishHome}${File.separator}bin"
+    workingDir "${glassfish_home}${File.separator}bin"
 
     if (System.properties['os.name'].toLowerCase().contains('windows')) {
         commandLine 'cmd', '/c', 'asadmin.bat'
