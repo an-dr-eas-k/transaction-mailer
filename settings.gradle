@@ -1,4 +1,4 @@
-rootProject.name = 'banking-server'
+rootProject.name = 'transaction-mailer'
 //include ':hbci4java'
 //project(":hbci4java").projectDir = new File(settingsDir, '../hbci4java')
 //include ':thirdparty/cryptalgs4java'
