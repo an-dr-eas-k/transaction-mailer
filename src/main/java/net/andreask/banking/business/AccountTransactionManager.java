@@ -15,6 +15,8 @@ import net.andreask.banking.domain.AccountTransaction;
 import net.andreask.banking.integration.db.AccountTransactionFacade;
 import net.andreask.banking.integration.hbci.HbciAccess;
 import net.andreask.banking.integration.hbci.HbciFacade;
+import net.andreask.banking.integration.mail.EMailContent;
+import net.andreask.banking.integration.mail.Mailer;
 
 @RequestScoped
 public class AccountTransactionManager implements Serializable {
@@ -29,6 +31,9 @@ public class AccountTransactionManager implements Serializable {
 
   @Inject
   private Encryptor encryptor;
+
+  @Inject
+  private Mailer mailer;
 
   public void mirrorTransactions(AccountConnection ac) {
     List<AccountTransaction> toNotify = hbciFacade
@@ -46,11 +51,28 @@ public class AccountTransactionManager implements Serializable {
   }
 
   private void notifyUser(String email, List<AccountTransaction> toNotify) {
-    logger.info("mailing {}, {}", email, toNotify
-        .stream()
-        .map(ac -> ac.getOther().getName())
-        .collect(
-            Collectors.joining(",")));
+    mailer.sendMail(new EMailContent() {
+
+      @Override
+      public String getSubject() {
+        return String.format("Anzahl der Transaktionen %d", toNotify.size());
+      }
+
+      @Override
+      public String getRecipient() {
+        return email;
+      }
+
+      @Override
+      public String getMessageBody() {
+        return String.format("<html><body>%s</body></html>", toNotify
+            .stream()
+            .map(ac -> ac.getOther().getName())
+            .collect(
+                Collectors.joining("<br />")));
+      }
+    });
+
   }
 
   public HbciAccess toHbciAccess(AccountConnection ac) {
