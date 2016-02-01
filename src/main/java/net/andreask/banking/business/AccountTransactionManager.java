@@ -51,6 +51,10 @@ public class AccountTransactionManager implements Serializable {
   }
 
   private void notifyUser(String email, List<AccountTransaction> toNotify) {
+    if (toNotify == null || toNotify.isEmpty()) {
+      logger.debug("not sending email");
+      return;
+    }
     mailer.sendMail(new EMailContent() {
 
       @Override

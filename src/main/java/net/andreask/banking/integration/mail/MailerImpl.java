@@ -1,17 +1,15 @@
 package net.andreask.banking.integration.mail;
 
+import java.util.Date;
+
 import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
-import javax.mail.BodyPart;
 import javax.mail.Message;
-import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
-import javax.mail.internet.MimeMultipart;
 
 @RequestScoped
 public class MailerImpl implements Mailer {
@@ -29,17 +27,12 @@ public class MailerImpl implements Mailer {
       msg.setSubject(mailContent.getSubject());
       msg.setRecipient(RecipientType.TO,
           new InternetAddress(mailContent.getRecipient()));
+      msg.setFrom();
+      msg.setSentDate(new Date());
 
       // Body text.
-      BodyPart messageBodyPart = new MimeBodyPart();
-      messageBodyPart.setText(mailContent.getMessageBody());
 
-      // Multipart message.
-      Multipart multipart = new MimeMultipart();
-      multipart.addBodyPart(messageBodyPart);
-
-      // Add multipart message to email.
-      msg.setContent(multipart);
+      msg.setContent(mailContent.getMessageBody(), "text/html; charset=utf-8");
 
       // Send email.
       Transport.send(msg);
