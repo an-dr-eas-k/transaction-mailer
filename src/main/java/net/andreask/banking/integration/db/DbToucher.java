@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 
 import net.andreask.banking.business.AccountConnectionManager;
 import net.andreask.banking.domain.AccountConnection;
+import net.andreask.banking.domain.AccountTransaction;
 
 /**
  * Created by andreask on 1/18/16.
@@ -31,7 +32,7 @@ public class DbToucher {
     LogManager.getLogger(DbToucher.class).info("init");
     accountConnectionManager.save(ac);
 
-    // accountTransactionFacade.create(new AccountTransaction());
+    accountTransactionFacade.create(new AccountTransaction());
   }
 
 }

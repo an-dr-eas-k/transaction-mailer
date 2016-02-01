@@ -27,7 +27,7 @@ cd "${glassfish_home}"/bin
 create-javamail-resource \
 --mailhost smtp.netclusive.de \
 --mailuser nch812p1 \
---fromaddress andreask@zimmer3.de \
+--fromaddress ll@zimmer3.de \
 --property mail.smtp.auth=true:mail.smtp.password=${passwd} \
 ${jndi_name}
 

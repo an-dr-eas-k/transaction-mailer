@@ -1,6 +1,7 @@
 package net.andreask.banking.business;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,7 +60,12 @@ public class AccountTransactionManager implements Serializable {
 
       @Override
       public String getSubject() {
-        return String.format("Anzahl der Transaktionen %d", toNotify.size());
+        return String.format("delta %.2f (%d)",
+            toNotify
+                .stream()
+                .mapToDouble(ac -> ((double) ac.getValue() / 100d))
+                .sum(),
+            toNotify.size());
       }
 
       @Override
@@ -69,14 +75,28 @@ public class AccountTransactionManager implements Serializable {
 
       @Override
       public String getMessageBody() {
-        return String.format("<html><body>%s</body></html>", toNotify
-            .stream()
-            .map(ac -> ac.getOther().getName())
-            .collect(
-                Collectors.joining("<br />")));
+        return String.format(""
+            + "<html><body><table>"
+            + "<tr><td>Other</td><td>Reason</td><td>amount</td><td>time</td></tr>"
+            + "%s"
+            + "</table></body></html>", toNotify
+                .stream()
+                .map(AccountTransactionManager.this::toContent)
+                .collect(
+                    Collectors.joining("")));
       }
     });
+  }
 
+  private String toContent(AccountTransaction at) {
+    StringBuilder sb = new StringBuilder();
+
+    sb.append(String.format("<tr><td>%s</td><td>%s</td><td>%.2fEuro</td><td>%s</td></tr>",
+        at.getOther().getName(),
+        at.getUsage(),
+        ((double) at.getValue() / 100d),
+        new SimpleDateFormat("hh:mm").format(at.getValuta())));
+    return sb.toString();
   }
 
   public HbciAccess toHbciAccess(AccountConnection ac) {

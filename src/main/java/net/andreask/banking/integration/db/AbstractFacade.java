@@ -20,54 +20,57 @@ import javax.persistence.EntityManager;
  * @author andreask
  */
 public abstract class AbstractFacade<T> {
-    private Class<T> entityClass;
+  private Class<T> entityClass;
 
-    public AbstractFacade(Class<T> entityClass) {
-        this.entityClass = entityClass;
-    }
+  public AbstractFacade(Class<T> entityClass) {
+    this.entityClass = entityClass;
+  }
 
-    protected abstract EntityManager getEntityManager();
+  protected abstract EntityManager getEntityManager();
 
-    protected boolean create(T entity) {
-        getEntityManager().persist(entity);
-        return true;
-    }
+  protected boolean create(T entity) {
+    getEntityManager().persist(entity);
+    return true;
+  }
 
-    public void edit(T entity) {
-        getEntityManager().merge(entity);
-    }
+  public void edit(T entity) {
+    getEntityManager().merge(entity);
+  }
 
-    public void remove(T entity) {
-        getEntityManager().remove(getEntityManager().merge(entity));
-    }
+  public void remove(T entity) {
+    getEntityManager().remove(getEntityManager().merge(entity));
+  }
 
-    public T find(long id) {
-        return getEntityManager().find(entityClass, id);
-    }
+  public T find(long id) {
+    return getEntityManager().find(entityClass, id);
+  }
 
-    protected List<T> findAllDE() {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
-        cq.select(cq.from(entityClass));
-        List<T> result = getEntityManager().createQuery(cq).getResultList();
-        return result;
-    }
+  @SuppressWarnings({ "rawtypes", "unchecked" })
+  protected List<T> findAllDE() {
+    javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
+    cq.select(cq.from(entityClass));
+    List<T> result = getEntityManager().createQuery(cq).getResultList();
+    return result;
+  }
 
-    public List<T> findRange(int[] range) {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
-        cq.select(cq.from(entityClass));
-        javax.persistence.Query q = getEntityManager().createQuery(cq);
-        q.setMaxResults(range[1] - range[0]);
-        q.setFirstResult(range[0]);
-        getEntityManager().clear();
-        return q.getResultList();
-    }
+  @SuppressWarnings({ "rawtypes", "unchecked" })
+  public List<T> findRange(int[] range) {
+    javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
+    cq.select(cq.from(entityClass));
+    javax.persistence.Query q = getEntityManager().createQuery(cq);
+    q.setMaxResults(range[1] - range[0]);
+    q.setFirstResult(range[0]);
+    getEntityManager().clear();
+    return q.getResultList();
+  }
 
-    public int count() {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
-        javax.persistence.criteria.Root<T> rt = cq.from(entityClass);
-        cq.select(getEntityManager().getCriteriaBuilder().count(rt));
-        javax.persistence.Query q = getEntityManager().createQuery(cq);
-        return ((Long) q.getSingleResult()).intValue();
-    }
+  @SuppressWarnings({ "rawtypes", "unchecked" })
+  public int count() {
+    javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
+    javax.persistence.criteria.Root<T> rt = cq.from(entityClass);
+    cq.select(getEntityManager().getCriteriaBuilder().count(rt));
+    javax.persistence.Query q = getEntityManager().createQuery(cq);
+    return ((Long) q.getSingleResult()).intValue();
+  }
 
 }
