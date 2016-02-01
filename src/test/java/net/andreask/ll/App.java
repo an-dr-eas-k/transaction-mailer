@@ -1,10 +1,10 @@
-package net.andreask.banking;
+package net.andreask.ll;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import net.andreask.banking.integration.hbci.HbciAccessImpl;
+import net.andreask.ll.integration.hbci.HbciAccessImpl;
 import net.andreask.ll.integration.hbci.HbciFacade;
 import net.andreask.ll.integration.hbci.hbci4java.HbciFacadeImpl;
 

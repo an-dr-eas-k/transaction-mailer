@@ -1,4 +1,4 @@
-package net.andreask.banking.integration.db;
+package net.andreask.ll.integration.db;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;

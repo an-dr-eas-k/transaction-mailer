@@ -1,5 +1,5 @@
 
-package net.andreask.banking.integration.hbci;
+package net.andreask.ll.integration.hbci;
 
 import javax.ejb.ScheduleExpression;
 
