@@ -1,0 +1,10 @@
+/build/
+/bin/
+/derby.log
+/hbci-mock-data.xml
+/lib/
+/.classpath
+/.gradle/
+/.project
+/.settings/
+/bin-test/
