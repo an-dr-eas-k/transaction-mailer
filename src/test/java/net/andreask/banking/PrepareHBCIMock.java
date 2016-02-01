@@ -6,11 +6,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
-import net.andreask.banking.business.Configuration;
-import net.andreask.banking.business.XMapper;
-import net.andreask.banking.domain.AccountTransaction;
 import net.andreask.banking.integration.hbci.HbciAccessImpl;
-import net.andreask.banking.integration.hbci.hbci4java.HbciFacadeImpl;
+import net.andreask.ll.business.Configuration;
+import net.andreask.ll.business.XMapper;
+import net.andreask.ll.domain.AccountTransaction;
+import net.andreask.ll.integration.hbci.hbci4java.HbciFacadeImpl;
 
 /**
  * Hello world!

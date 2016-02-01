@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import net.andreask.banking.integration.hbci.HbciAccessImpl;
-import net.andreask.banking.integration.hbci.HbciFacade;
-import net.andreask.banking.integration.hbci.hbci4java.HbciFacadeImpl;
+import net.andreask.ll.integration.hbci.HbciFacade;
+import net.andreask.ll.integration.hbci.hbci4java.HbciFacadeImpl;
 
 /**
  * Hello world!

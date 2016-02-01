@@ -3,9 +3,10 @@ package net.andreask.banking.integration.hbci;
 
 import javax.ejb.ScheduleExpression;
 
-import net.andreask.banking.business.Configuration;
-import net.andreask.banking.business.Encryptor;
-import net.andreask.banking.domain.AccountConnection;
+import net.andreask.ll.business.Configuration;
+import net.andreask.ll.business.Encryptor;
+import net.andreask.ll.domain.AccountConnection;
+import net.andreask.ll.integration.hbci.HbciAccess;
 
 public class HbciAccessImpl implements HbciAccess {
 

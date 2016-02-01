@@ -10,6 +10,9 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import net.andreask.ll.business.Configuration;
+import net.andreask.ll.business.Encryptor;
+
 /**
  * Created by andreask on 1/19/16.
  */
