@@ -102,7 +102,7 @@ task restartApp(type: Exec) {
         commandLine "./asadmin"
     }
 
-    args "enable", "banking-server-0.0.1-SNAPSHOT"
+    args "enable", "transaction-mailer-0.0.1-SNAPSHOT"
 }
 
 

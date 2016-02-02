@@ -5,8 +5,8 @@ cd "${glassfish_home}"/bin
 
 ./asadmin \
 create-jdbc-connection-pool \
---datasourceclassname org.apache.derby.jdbc.ClientDataSource \
---restype javax.sql.DataSource \
+--datasourceclassname org.apache.derby.jdbc.EmbeddedXADataSource \
+--restype javax.sql.XADataSource \
 --property User=APP:Password=APP:DatabaseName=hv:ServerName=localhost:PortNumber=1527:connectionAttributes=\;create\\=true \
 hv-pool
 

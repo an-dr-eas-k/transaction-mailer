@@ -5,7 +5,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.UserTransaction;
 
-import net.andreask.banking.integration.db.model.AccountTransactionDE;
+
 import net.andreask.transactionmailer.integration.db.AccountTransactionFacade;
 
 import org.jboss.arquillian.container.test.api.Deployment;

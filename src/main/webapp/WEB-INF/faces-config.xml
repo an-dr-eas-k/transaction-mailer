@@ -5,7 +5,7 @@
 	version="2.2">
   <application>
     <resource-bundle>
-      <base-name>net.andreask.banking.integration.ui.messages</base-name>
+      <base-name>net.andreask.transactionmailer.integration.ui.messages</base-name>
       <var>msgs</var>
     </resource-bundle>
   </application>   
