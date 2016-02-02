@@ -26,7 +26,7 @@ public class Mapper {
                 .setSaldo(
                         umsLine.saldo != null && umsLine.saldo.value != null ? umsLine.saldo.value.getLongValue() : -1)
                 .setText(umsLine.text)
-                .setUsage(umsLine.usage != null ? umsLine.usage.stream().reduce(String::concat).get() : "")
+                .setUsage(umsLine.usage != null && !umsLine.usage.isEmpty() ? umsLine.usage.stream().reduce(String::concat).get() : "")
                 .setValue(umsLine.value.getLongValue())
                 .setValuta(umsLine.valuta);
     }
