@@ -41,6 +41,8 @@ dependencies {
 //    compile project(':hbci4java')
 }
 
+war { from('src/main/java/net/andreask/transactionmailer/integration/ui/messages.properties') { include 'messages.properties' into('WEB-INF/classes/net/andreask/transactionmailer/integration/ui/') } }
+
 task getHBCI(group: 'build setup') {
     println "executing getHBCI ..."
     def sirDir = new File(project.projectDir, "/lib")
