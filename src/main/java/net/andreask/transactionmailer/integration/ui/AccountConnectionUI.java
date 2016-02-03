@@ -9,6 +9,7 @@ package net.andreask.transactionmailer.integration.ui;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.inject.Inject;
@@ -29,7 +30,22 @@ public class AccountConnectionUI {
   @Inject
   private AccountConnection accountConnection;
 
+  @PostConstruct
+  public void init() {
+    String deleteId = ((javax.servlet.http.HttpServletRequest) javax.faces.context.FacesContext.getCurrentInstance()
+        .getExternalContext().getRequest()).getParameter("deleteId");
+    if (deleteId != null) {
+      this.accountConnectionManager.delete(Integer.parseInt(deleteId));
+    }
+
+  }
+
   public AccountConnection getAccountConnection() {
+    String editId = ((javax.servlet.http.HttpServletRequest) javax.faces.context.FacesContext.getCurrentInstance()
+        .getExternalContext().getRequest()).getParameter("editId");
+    if (editId != null) {
+      return this.accountConnectionManager.queryFromId(Integer.parseInt(editId));
+    }
     return this.accountConnection;
   }
 
@@ -40,6 +56,11 @@ public class AccountConnectionUI {
 
   public String save() {
     this.accountConnectionManager.save(accountConnection);
+    return null;
+  }
+
+  public String editAction(AccountConnection ac) {
+    ac.setEditable(true);
     return null;
   }
 

@@ -105,4 +105,12 @@ public class AccountConnectionManager implements Serializable {
   public void save(AccountConnection accountConnection) {
     this.accountConnectionFacade.save(accountConnection);
   }
+
+  public AccountConnection queryFromId(Integer editId) {
+    return this.accountConnectionFacade.find(editId);
+  }
+
+  public void delete(int primaryKey) {
+    this.accountConnectionFacade.remove(queryFromId(primaryKey));
+  }
 }

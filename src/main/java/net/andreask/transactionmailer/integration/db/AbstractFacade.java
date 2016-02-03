@@ -16,6 +16,8 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import org.apache.logging.log4j.LogManager;
+
 /**
  * @author andreask
  */
@@ -29,7 +31,12 @@ public abstract class AbstractFacade<T> {
   protected abstract EntityManager getEntityManager();
 
   protected boolean create(T entity) {
-    getEntityManager().persist(entity);
+    try {
+      getEntityManager().merge(entity);
+    } catch (IllegalArgumentException e) {
+      LogManager.getLogger(this.getClass()).info("saving, not merging {}", entity);
+      getEntityManager().persist(entity);
+    }
     return true;
   }
 
@@ -41,7 +48,7 @@ public abstract class AbstractFacade<T> {
     getEntityManager().remove(getEntityManager().merge(entity));
   }
 
-  public T find(long id) {
+  public T find(int id) {
     return getEntityManager().find(entityClass, id);
   }
 

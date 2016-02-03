@@ -40,6 +40,9 @@ public class AccountConnection implements Serializable {
 
   private String email;
 
+  @Transient
+  private boolean editable;
+
   public ScheduleExpression getScheduleExpression() {
     String[] scheduleValues = this.cronScheduleExpression.split(" +");
     if (scheduleValues.length != 3) {
@@ -79,7 +82,10 @@ public class AccountConnection implements Serializable {
   }
 
   public String getPin() {
-    return encryptor.decrypt(this.getEncryptedPin());
+    if (encryptor != null) {
+      return encryptor.decrypt(this.getEncryptedPin());
+    }
+    return null;
   }
 
   public void setPin(String pin) {
@@ -160,6 +166,14 @@ public class AccountConnection implements Serializable {
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  public boolean isEditable() {
+    return editable;
+  }
+
+  public void setEditable(boolean editable) {
+    this.editable = editable;
   }
 
   @Override

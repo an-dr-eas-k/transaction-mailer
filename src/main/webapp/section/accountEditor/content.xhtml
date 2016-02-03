@@ -7,9 +7,9 @@
 		<div class="accountEditorFormHeading">#{msgs.enterAnAccount}</div>
 
 		<h:form>
+			<h:inputHidden value="#{accountConnectionUI.accountConnection.id}" />
 			<h:graphicImage value="#{resource['images:wave.med.gif']}" />
 			<h:panelGrid columns="2">
-
 #{msgs.bankCode} <h:inputText value="#{accountConnectionUI.accountConnection.bankCode}" />
 #{msgs.customerId} <h:inputText value="#{accountConnectionUI.accountConnection.customerId}" />
 #{msgs.accountNumber} <h:inputText value="#{accountConnectionUI.accountConnection.accountNumberStripped}" />

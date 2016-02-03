@@ -14,7 +14,7 @@
           #{ac.customerId}
         </h:column>
 			<h:column>
-				<f:facet name="header">#{msgs.accountNumber}</f:facet>
+				<f:facet name="header">#{msgs.accountNumber}</f:facet> 
           #{ac.accountNumber}
         </h:column>
 			<h:column>
@@ -25,6 +25,20 @@
 				<f:facet name="header">#{msgs.cronScheduleExpression}</f:facet>
           #{ac.cronScheduleExpression}
         </h:column>
+			<h:column>
+				<f:facet name="header">encryptedPin</f:facet>
+          #{ac.encryptedPin}
+        </h:column>
+			<h:column>
+				<h:link value="edit" outcome="/view/accountEditor">
+					<f:param name="editId" value="#{ac.id}" />
+				</h:link>
+			</h:column>
+			<h:column>
+				<h:link value="delete" outcome="/view/accountList">
+					<f:param name="deleteId" value="#{ac.id}" />
+				</h:link>
+			</h:column>
 		</h:dataTable>
 	</h:form>
 
