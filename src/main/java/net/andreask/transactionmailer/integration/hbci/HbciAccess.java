@@ -2,17 +2,13 @@ package net.andreask.transactionmailer.integration.hbci;
 
 public interface HbciAccess {
 
-    String getUrl();
+  String getBankCode();
 
-    String getBankCode();
+  String getHbciVersion();
 
-    String getHbciVersion();
+  String getCustomerId();
 
-    String getCountryCode();
+  String getAccountNumberStripped();
 
-    String getCustomerId();
-
-    String getAccountNumberStripped();
-
-    String getPin();
+  String getPin();
 }

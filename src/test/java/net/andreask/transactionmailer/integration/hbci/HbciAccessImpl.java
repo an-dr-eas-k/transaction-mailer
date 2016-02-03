@@ -6,7 +6,6 @@ import javax.ejb.ScheduleExpression;
 import net.andreask.transactionmailer.business.Configuration;
 import net.andreask.transactionmailer.business.Encryptor;
 import net.andreask.transactionmailer.domain.AccountConnection;
-import net.andreask.transactionmailer.integration.hbci.HbciAccess;
 
 public class HbciAccessImpl implements HbciAccess {
 
@@ -49,15 +48,6 @@ public class HbciAccessImpl implements HbciAccess {
     return ac.hashCode();
   }
 
-  public String getUrl() {
-    return ac.getUrl();
-  }
-
-  public HbciAccessImpl setUrl(String url) {
-    ac.setUrl(url);
-    return this;
-  }
-
   public String getAccountNumber10() {
     return ac.getAccountNumber10();
   }
@@ -95,15 +85,6 @@ public class HbciAccessImpl implements HbciAccess {
 
   public HbciAccessImpl setCronScheduleExpression(String cronScheduleExpression) {
     ac.setCronScheduleExpression(cronScheduleExpression);
-    return this;
-  }
-
-  public String getCountryCode() {
-    return ac.getCountryCode();
-  }
-
-  public HbciAccessImpl setCountryCode(String countryCode) {
-    ac.setCountryCode(countryCode);
     return this;
   }
 

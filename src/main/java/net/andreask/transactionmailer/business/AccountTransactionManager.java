@@ -42,6 +42,7 @@ public class AccountTransactionManager implements Serializable {
         .init()
         .acquireTransactions()
         .stream()
+        .peek(logger::debug)
         .filter(e -> accountTransactionFacade.find(e).isEmpty())
         .peek(logger::debug)
         .peek(at -> at.setAccountConnection(ac))
@@ -52,7 +53,7 @@ public class AccountTransactionManager implements Serializable {
   }
 
   private void notifyUser(String email, List<AccountTransaction> toNotify) {
-    if (toNotify == null || toNotify.isEmpty()) {
+    if (toNotify == null || toNotify.isEmpty() || email == null || email.isEmpty()) {
       logger.debug("not sending email");
       return;
     }
@@ -101,10 +102,6 @@ public class AccountTransactionManager implements Serializable {
 
   public HbciAccess toHbciAccess(AccountConnection ac) {
     return new HbciAccess() {
-      @Override
-      public String getUrl() {
-        return ac.getUrl();
-      }
 
       @Override
       public String getBankCode() {
@@ -114,11 +111,6 @@ public class AccountTransactionManager implements Serializable {
       @Override
       public String getHbciVersion() {
         return ac.getHbciVersion();
-      }
-
-      @Override
-      public String getCountryCode() {
-        return ac.getCountryCode();
       }
 
       @Override
@@ -134,6 +126,13 @@ public class AccountTransactionManager implements Serializable {
       @Override
       public String getPin() {
         return encryptor.decrypt(ac.getEncryptedPin());
+      }
+
+      @Override
+      public String toString() {
+        return "HbciAccessImpl [getAccountNumberStripped()=" + getAccountNumberStripped()
+            + ", getBankCode()=" + getBankCode() + ", getHbciVersion()=" + getHbciVersion() + ", getCustomerId()="
+            + getCustomerId() + "]";
       }
     };
   }

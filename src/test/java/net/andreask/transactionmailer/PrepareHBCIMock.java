@@ -30,9 +30,7 @@ public class PrepareHBCIMock {
                 .setCustomerId("3964620")
                 .setAccountNumber("103964620")
                 .setPin(br.readLine())
-                .setHbciVersion("300")
-                .setUrl("fints.bankingonline.de/fints/FinTs30PinTanHttpGate")
-                .setCountryCode("DE"))
+                .setHbciVersion("300"))
         .init()
         .acquireTransactions();
 

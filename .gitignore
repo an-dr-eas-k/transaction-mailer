@@ -8,3 +8,5 @@
 /.project
 /.settings/
 /bin-test/
+server.log
+.gitignore

@@ -59,9 +59,4 @@ public class AccountConnectionUI {
     return null;
   }
 
-  public String editAction(AccountConnection ac) {
-    ac.setEditable(true);
-    return null;
-  }
-
 }

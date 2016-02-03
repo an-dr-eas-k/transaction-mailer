@@ -1,13 +1,17 @@
 package net.andreask.transactionmailer.domain;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.ejb.ScheduleExpression;
 import javax.inject.Inject;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import org.iban4j.CountryCode;
@@ -28,20 +32,18 @@ public class AccountConnection implements Serializable {
   private int id;
 
   private String encryptedPin;
-  private String url;
 
   private String accountNumber; // kontonummer
   private String bankCode; // blz
   private String hbciVersion;
   private String cronScheduleExpression;
 
-  private String countryCode = "DE"; // DE
   private String customerId; // login username
 
   private String email;
 
-  @Transient
-  private boolean editable;
+  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  protected Set<AccountTransaction> transactions;
 
   public ScheduleExpression getScheduleExpression() {
     String[] scheduleValues = this.cronScheduleExpression.split(" +");
@@ -55,7 +57,7 @@ public class AccountConnection implements Serializable {
 
   public String getGeneratedIban() {
     return new Iban.Builder().bankCode(getBankCode()).accountNumber(getAccountNumber10())
-        .countryCode(CountryCode.getByCode(getCountryCode())).build().toString();
+        .countryCode(CountryCode.getByCode("DE")).build().toString();
   }
 
   public String getAccountNumber10() {
@@ -108,14 +110,6 @@ public class AccountConnection implements Serializable {
     this.encryptedPin = encryptedPin;
   }
 
-  public String getUrl() {
-    return url;
-  }
-
-  public void setUrl(String url) {
-    this.url = url;
-  }
-
   public String getAccountNumber() {
     return accountNumber;
   }
@@ -144,14 +138,6 @@ public class AccountConnection implements Serializable {
     this.cronScheduleExpression = cronScheduleExpression;
   }
 
-  public String getCountryCode() {
-    return countryCode;
-  }
-
-  public void setCountryCode(String countryCode) {
-    this.countryCode = countryCode;
-  }
-
   public String getCustomerId() {
     return customerId;
   }
@@ -168,20 +154,12 @@ public class AccountConnection implements Serializable {
     this.email = email;
   }
 
-  public boolean isEditable() {
-    return editable;
+  public Set<AccountTransaction> getTransactions() {
+    return transactions;
   }
 
-  public void setEditable(boolean editable) {
-    this.editable = editable;
-  }
-
-  @Override
-  public String toString() {
-    return "AccountConnection [encryptor=" + encryptor + ", id=" + id + ", encryptedPin=" + encryptedPin + ", url="
-        + url + ", accountNumber=" + accountNumber + ", bankCode=" + bankCode + ", hbciVersion=" + hbciVersion
-        + ", cronScheduleExpression=" + cronScheduleExpression + ", countryCode=" + countryCode + ", customerId="
-        + customerId + ", email=" + email + "]";
+  public void setTransactions(Set<AccountTransaction> transactions) {
+    this.transactions = transactions;
   }
 
 }

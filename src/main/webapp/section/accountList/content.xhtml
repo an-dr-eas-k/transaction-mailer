@@ -26,8 +26,12 @@
           #{ac.cronScheduleExpression}
         </h:column>
 			<h:column>
-				<f:facet name="header">encryptedPin</f:facet>
+				<f:facet name="header">#{msgs.encryptedPin}</f:facet>
           #{ac.encryptedPin}
+        </h:column>
+			<h:column>
+				<f:facet name="header">#{msgs.transactionCount}</f:facet>
+          #{ac.transactions.size()}
         </h:column>
 			<h:column>
 				<h:link value="edit" outcome="/view/accountEditor">
