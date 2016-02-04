@@ -9,8 +9,14 @@
 		<h:form>
 			<h:inputHidden value="#{accountConnectionUI.accountConnection.id}" />
 			<h:graphicImage value="#{resource['images:wave.med.gif']}" />
-			<h:panelGrid columns="2">
-#{msgs.bankCode} <h:inputText value="#{accountConnectionUI.accountConnection.bankCode}" />
+			<h:panelGrid columns="3">
+
+				#{msgs.bankCode} 
+				<h:inputText value="bankCode" value="#{accountConnectionUI.accountConnection.bankCode}">
+					<f:validateLength minimum="8" maximum="8" for="bankCode" />
+				</h:inputText>
+				<h:message showSummary="true" showDetail="true" id="bankCode" for="" style="red" />
+
 #{msgs.customerId} <h:inputText value="#{accountConnectionUI.accountConnection.customerId}" />
 #{msgs.accountNumber} <h:inputText value="#{accountConnectionUI.accountConnection.accountNumberStripped}" />
 #{msgs.email} <h:inputText value="#{accountConnectionUI.accountConnection.email}" />
@@ -20,12 +26,7 @@
 
 				<h:commandButton id="submit" value="#{msgs.goButtonText}" action="#{accountConnectionUI.save}" style="font-family:Palatino;font-style:italic" />
 
-				<h:message showSummary="true" showDetail="false"
-					style="color: red;
-                           font-family: 'New Century Schoolbook', serif;
-                           font-style: oblique;
-                           text-decoration: overline"
-					id="errors1" for="userNo" />
+
 			</h:panelGrid>
 		</h:form>
 	</div>

@@ -33,30 +33,35 @@ import net.andreask.transactionmailer.domain.AccountConnection;
 @Startup
 public class TimerSessionBean {
 
-    @Resource
-    TimerService timerService;
+  @Resource
+  TimerService timerService;
 
-    @Inject
-    AccountConnectionManager accountConnectionManager;
-    @Inject
-    AccountTransactionManager accountTransactionManager;
+  @Inject
+  AccountConnectionManager accountConnectionManager;
+  @Inject
+  AccountTransactionManager accountTransactionManager;
 
+  private static final Logger logger = LogManager.getLogger(TimerSessionBean.class);
 
-
-    private static final Logger logger =
-            LogManager.getLogger(TimerSessionBean.class);
-
-    @Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)
-    public void resyncConnections() {
-        logger.info(String.format("initTimer,  %tT", new Date()));
-        accountConnectionManager.initTimerService(this.timerService);
-
+  @Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)
+  public void resyncConnections() {
+    logger.info(String.format("initTimer,  %tT", new Date()));
+    try {
+      accountConnectionManager.initTimerService(this.timerService);
+    } catch (Throwable t) {
+      logger.error("error in resyncConnections", t);
     }
 
-    @Timeout
-    public void triggeringTransactionMirror(Timer timer) {
-        logger.info(String.format("Programmatic timeout occurred,  %tT", new Date()));
-        accountTransactionManager.mirrorTransactions((AccountConnection) timer.getInfo());
+  }
+
+  @Timeout
+  public void triggeringTransactionMirror(Timer timer) {
+    logger.info(String.format("Programmatic timeout occurred,  %tT", new Date()));
+    try {
+      accountTransactionManager.mirrorTransactions((AccountConnection) timer.getInfo());
+    } catch (Throwable t) {
+      logger.error("error in triggeringTransactionMirror", t);
     }
+  }
 
 }
