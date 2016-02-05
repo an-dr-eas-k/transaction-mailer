@@ -12,17 +12,46 @@
 			<h:panelGrid columns="3">
 
 				#{msgs.bankCode} 
-				<h:inputText value="bankCode" value="#{accountConnectionUI.accountConnection.bankCode}">
-					<f:validateLength minimum="8" maximum="8" for="bankCode" />
+				<h:inputText id="bankCode" value="#{accountConnectionUI.accountConnection.bankCode}">
+					<f:validateRegex pattern="^\d{8}$" />
 				</h:inputText>
-				<h:message showSummary="true" showDetail="true" id="bankCode" for="" style="red" />
+				<h:message showSummary="true" showDetail="true" for="bankCode" style="red" />
 
-#{msgs.customerId} <h:inputText value="#{accountConnectionUI.accountConnection.customerId}" />
-#{msgs.accountNumber} <h:inputText value="#{accountConnectionUI.accountConnection.accountNumberStripped}" />
-#{msgs.email} <h:inputText value="#{accountConnectionUI.accountConnection.email}" />
-#{msgs.pin} <h:inputSecret value="#{accountConnectionUI.accountConnection.pin}" />
-#{msgs.cronScheduleExpression} <h:inputText value="#{accountConnectionUI.accountConnection.cronScheduleExpression}" /> 
-#{msgs.hbciVersion} <h:inputText value="#{accountConnectionUI.accountConnection.hbciVersion}" />
+				#{msgs.customerId} 
+				<h:inputText id="customerId" value="#{accountConnectionUI.accountConnection.customerId}">
+					<f:validateRegex pattern="^\d{1,10}$" />
+				</h:inputText>
+				<h:message showSummary="true" showDetail="true" for="customerId" style="red" />
+				
+				#{msgs.accountNumber} 
+				<h:inputText id="accountNumberStripped" value="#{accountConnectionUI.accountConnection.accountNumberStripped}">
+					<f:validateRegex pattern="^\d{1,10}$" />
+				</h:inputText>
+				<h:message showSummary="true" showDetail="true" for="accountNumberStripped" style="red" />
+				
+				#{msgs.email} 
+				<h:inputText id="email" value="#{accountConnectionUI.accountConnection.email}">
+					<f:validateRegex pattern="(^$)|(^.+@.+\..+$)" />
+				</h:inputText>
+				<h:message showSummary="true" showDetail="true" for="email" style="red" />
+				
+				#{msgs.pin} 
+				<h:inputSecret id="pin" value="#{accountConnectionUI.accountConnection.pin}">
+					<f:validateRegex pattern="^\d+$" />
+				</h:inputSecret>
+				<h:message showSummary="true" showDetail="true" for="pin" style="red" />
+				
+				#{msgs.cronScheduleExpression} 
+				<h:inputText id="cronScheduleExpression" value="#{accountConnectionUI.accountConnection.cronScheduleExpression}">
+					<f:validateRegex pattern="^.+ .+ .+$" for="cronScheduleExpression" />
+				</h:inputText>
+				<h:message showSummary="true" showDetail="true" for="cronScheduleExpression" style="red" />
+				 
+				#{msgs.hbciVersion} 
+				<h:inputText id="hbciVersion" value="#{accountConnectionUI.accountConnection.hbciVersion}">
+					<f:validateRegex pattern="^\d+$" />
+				</h:inputText>
+				<h:message showSummary="true" showDetail="true" for="hbciVersion" style="red" />
 
 				<h:commandButton id="submit" value="#{msgs.goButtonText}" action="#{accountConnectionUI.save}" style="font-family:Palatino;font-style:italic" />
 
