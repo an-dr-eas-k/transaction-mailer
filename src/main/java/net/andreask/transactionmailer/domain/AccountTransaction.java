@@ -25,8 +25,7 @@ public class AccountTransaction implements Serializable {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
 
-  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  @JoinColumn(name = "ACCOUNTCONNECTION_ID", nullable = false)
+  @ManyToOne(fetch = FetchType.LAZY)
   private AccountConnection accountConnection;
 
   /**

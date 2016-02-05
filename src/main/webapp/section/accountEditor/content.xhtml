@@ -36,7 +36,7 @@
 				<h:message showSummary="true" showDetail="true" for="email" style="red" />
 				
 				#{msgs.pin} 
-				<h:inputSecret id="pin" value="#{accountConnectionUI.accountConnection.pin}">
+				<h:inputSecret id="pin" value="#{accountConnectionUI.accountConnection.pin}" redisplay="true" >
 					<f:validateRegex pattern="^\d+$" />
 				</h:inputSecret>
 				<h:message showSummary="true" showDetail="true" for="pin" style="red" />
