@@ -4,11 +4,13 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.enterprise.inject.Model;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 
@@ -23,7 +25,8 @@ public class AccountTransaction implements Serializable {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JoinColumn(name = "ACCOUNTCONNECTION_ID", nullable = false)
   private AccountConnection accountConnection;
 
   /**
@@ -289,12 +292,11 @@ public class AccountTransaction implements Serializable {
 
   @Override
   public String toString() {
-    return "AccountTransaction [id=" + id + ", accountReference=" + accountConnection + ", valuta=" + valuta
-        + ", bdate="
-        + bdate + ", value=" + value + ", isStorno=" + isStorno + ", saldo=" + saldo + ", customerref=" + customerref
-        + ", instref=" + instref + ", charge_value=" + charge_value + ", gvcode=" + gvcode + ", additional="
-        + additional + ", text=" + text + ", primanota=" + primanota + ", usage=" + usage + ", addkey=" + addkey
-        + ", isSepa=" + isSepa + ", other=" + other + "]";
+    return "AccountTransaction [id=" + id + ", accountConnection=" + accountConnection + ", valuta=" + valuta
+        + ", bdate=" + bdate + ", value=" + value + ", isStorno=" + isStorno + ", saldo=" + saldo + ", customerref="
+        + customerref + ", instref=" + instref + ", charge_value=" + charge_value + ", gvcode=" + gvcode
+        + ", additional=" + additional + ", text=" + text + ", primanota=" + primanota + ", usage=" + usage
+        + ", addkey=" + addkey + ", isSepa=" + isSepa + ", other=" + other + "]";
   }
 
   /**
