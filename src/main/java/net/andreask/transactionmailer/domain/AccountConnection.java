@@ -42,7 +42,7 @@ public class AccountConnection implements Serializable {
 
   private String email;
 
-  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "accountConnection")
   protected Set<AccountTransaction> transactions;
 
   public ScheduleExpression getScheduleExpression() {
