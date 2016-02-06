@@ -82,6 +82,7 @@ public class AccountTransactionManager implements Serializable {
             + "%s"
             + "</table></body></html>", toNotify
                 .stream()
+                .sorted((a, b) -> -1 * a.getValuta().compareTo(b.getValuta()))
                 .map(AccountTransactionManager.this::toContent)
                 .collect(
                     Collectors.joining("")));
@@ -96,7 +97,7 @@ public class AccountTransactionManager implements Serializable {
         at.getOther().getName(),
         at.getUsage(),
         ((double) at.getValue() / 100d),
-        new SimpleDateFormat("hh:mm").format(at.getValuta())));
+        new SimpleDateFormat("yyyy-MM-dd_hh:mm").format(at.getValuta())));
     return sb.toString();
   }
 
