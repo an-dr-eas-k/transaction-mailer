@@ -47,12 +47,12 @@ public class AccountTransactionManager implements Serializable {
         .peek(at -> at.setAccountConnection(ac))
         .peek(accountTransactionFacade::save)
         .collect(Collectors.toList());
-    notifyUser(ac.getEmail(), toNotify);
+    notifyUser(ac, toNotify);
 
   }
 
-  private void notifyUser(String email, List<AccountTransaction> toNotify) {
-    if (toNotify == null || toNotify.isEmpty() || email == null || email.isEmpty()) {
+  private void notifyUser(AccountConnection ac, List<AccountTransaction> toNotify) {
+    if (toNotify == null || toNotify.isEmpty() || ac.getEmail() == null || ac.getEmail().isEmpty()) {
       logger.debug("not sending email");
       return;
     }
@@ -60,7 +60,8 @@ public class AccountTransactionManager implements Serializable {
 
       @Override
       public String getSubject() {
-        return String.format("delta %.2f (%d)",
+        return String.format("%s: delta %.2f (%d)",
+        	ac.getAccountNumberStripped(),
             toNotify
                 .stream()
                 .mapToDouble(ac -> ((double) ac.getValue() / 100d))
@@ -70,7 +71,7 @@ public class AccountTransactionManager implements Serializable {
 
       @Override
       public String getRecipient() {
-        return email;
+        return ac.getEmail();
       }
 
       @Override
