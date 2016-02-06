@@ -61,7 +61,7 @@ public class AccountTransactionManager implements Serializable {
       @Override
       public String getSubject() {
         return String.format("%s: delta %.2f (%d)",
-        	ac.getAccountNumberStripped(),
+        	ac.getGeneratedIban(),
             toNotify
                 .stream()
                 .mapToDouble(ac -> ((double) ac.getValue() / 100d))
