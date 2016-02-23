@@ -4,13 +4,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.enterprise.inject.Model;
-import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 
@@ -112,6 +111,7 @@ public class AccountTransaction implements Serializable {
    * <code>gvcode!=999</code>! (siehe auch <code>additional</code> und
    * <code>gvcode</code>)
    */
+  @Column(length = 1000)
   private String usage;
 
   /**
