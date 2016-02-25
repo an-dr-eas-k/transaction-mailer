@@ -17,7 +17,7 @@ import javax.persistence.NamedQuery;
 @Entity
 @NamedQuery(
     name = "findFromTemplate",
-    query = "SELECT at FROM AccountTransaction at WHERE at.usage = :usage AND at.value = :value")
+    query = "SELECT at FROM AccountTransaction at WHERE at.usage = :usage AND at.value = :value AND at.valuta = :valuta")
 public class AccountTransaction implements Serializable {
 
   @Id

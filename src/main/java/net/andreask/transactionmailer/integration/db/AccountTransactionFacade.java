@@ -44,6 +44,7 @@ public class AccountTransactionFacade extends AbstractFacade<AccountTransaction>
         .createNamedQuery("findFromTemplate", AccountTransaction.class)
         .setParameter("usage", template.getUsage())
         .setParameter("value", template.getValue())
+        .setParameter("valuta", template.getValuta())
         .getResultList()
         .stream()
         .peek(getEntityManager()::refresh)
