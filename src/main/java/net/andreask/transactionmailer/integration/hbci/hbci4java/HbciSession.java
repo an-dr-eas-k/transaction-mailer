@@ -132,6 +132,11 @@ public class HbciSession {
         return account;
     }
 
+    if (accounts.length == 1){
+    	logger.info("account {} not found, taking the one which was found");
+    	return accounts[0];
+    }
+    
     throw new IllegalStateException(String.format(
         "Unable to find requested account %s, %s",
         this.accountConnection.getAccountNumberStripped(),
