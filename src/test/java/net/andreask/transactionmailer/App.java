@@ -23,14 +23,19 @@ public class App {
 
   public void run() throws IOException {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    System.out.print("PIN: ");
+    System.out.print("encrypted PIN: ");
 
     hbciFacade
         .setAccountConnection(
             new HbciAccessImpl()
-                .setBankCode("70090500")
-                .setCustomerId("3964620")
-                .setAccountNumber("103964620")
+//            .setBankCode("70090500")
+//            .setCustomerId("3964620")
+//            .setAccountNumber("3964620")
+//            .setEncryptedPin(br.readLine())
+//            .setHbciVersion("300"))
+                .setBankCode("70010080")
+                .setCustomerId("4245801")
+                .setAccountNumber("4245801")
                 .setEncryptedPin(br.readLine())
                 .setHbciVersion("300"))
         .init()
