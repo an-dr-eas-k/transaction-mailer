@@ -37,16 +37,21 @@ public class AccountTransactionManager implements Serializable {
   private Mailer mailer;
 
   public void mirrorTransactions(AccountConnection ac) {
-    List<AccountTransaction> toNotify = hbciFacade
-        .setAccountConnection(toHbciAccess(ac))
-        .init()
-        .acquireTransactions()
-        .stream()
-        .filter(e -> accountTransactionFacade.find(e).isEmpty())
-        .peek(logger::debug)
-        .peek(at -> at.setAccountConnection(ac))
-        .peek(accountTransactionFacade::save)
-        .collect(Collectors.toList());
+    List<AccountTransaction> toNotify = null;
+    try {
+      toNotify = hbciFacade
+          .setAccountConnection(toHbciAccess(ac))
+          .init()
+          .acquireTransactions()
+          .stream()
+          .filter(e -> accountTransactionFacade.find(e).isEmpty())
+          .peek(logger::debug)
+          .peek(at -> at.setAccountConnection(ac))
+          .peek(accountTransactionFacade::save)
+          .collect(Collectors.toList());
+    } finally {
+      hbciFacade.close();
+    }
     notifyUser(ac, toNotify);
 
   }
@@ -61,7 +66,7 @@ public class AccountTransactionManager implements Serializable {
       @Override
       public String getSubject() {
         return String.format("%s: delta %.2f (%d)",
-        	ac.getGeneratedIban(),
+            ac.getGeneratedIban(),
             toNotify
                 .stream()
                 .mapToDouble(ac -> ((double) ac.getValue() / 100d))

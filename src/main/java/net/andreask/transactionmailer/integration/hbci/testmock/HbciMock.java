@@ -20,37 +20,42 @@ import net.andreask.transactionmailer.integration.hbci.HbciFacade;
 @Development
 public class HbciMock implements HbciFacade {
 
-  @Inject
-  private Configuration configuration;
+	@Inject
+	private Configuration configuration;
 
-  private Logger logger = LogManager.getLogger(this.getClass());
+	private Logger logger = LogManager.getLogger(this.getClass());
 
-  public HbciMock() {
+	public HbciMock() {
 
-    logger.warn("using development mock");
-  }
+		logger.warn("using development mock");
+	}
 
-  @Override
-  public HbciFacade setAccountConnection(HbciAccess accountConnection) {
-    return this;
-  }
+	@Override
+	public HbciFacade setAccountConnection(HbciAccess accountConnection) {
+		return this;
+	}
 
-  @Override
-  public HbciFacade init() {
-    return this;
-  }
+	@Override
+	public HbciFacade init() {
+		return this;
+	}
 
-  @SuppressWarnings("unchecked")
-  @Override
-  public List<AccountTransaction> acquireTransactions() {
-    LogManager.getLogger(this.getClass()).info("acquireTransactions Alternative");
-    XStream xStream = new XStream(new StaxDriver());
-    return (List<AccountTransaction>) xStream.fromXML(new File(configuration.getProperty("hbcimock.data.file")));
-  }
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<AccountTransaction> acquireTransactions() {
+		LogManager.getLogger(this.getClass()).info("acquireTransactions Alternative");
+		XStream xStream = new XStream(new StaxDriver());
+		return (List<AccountTransaction>) xStream.fromXML(new File(configuration.getProperty("hbcimock.data.file")));
+	}
 
-  @Override
-  public long acquireBalance() {
-    return 987l;
-  }
+	@Override
+	public long acquireBalance() {
+		return 987l;
+	}
+
+	@Override
+	public void close() {
+
+	}
 
 }

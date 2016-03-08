@@ -37,16 +37,13 @@ public class HbciSession {
     private static final String PASSPHRASE = "238dsflqJSSD:__sda3";
 
     @Override
-    public synchronized void status(HBCIPassport passport, int statusTag,
-        Object[] o) {
+    public synchronized void status(HBCIPassport passport, int statusTag, Object[] o) {
       // Intentionally empty
     }
 
     @Override
-    public void callback(HBCIPassport passport, int reason, String msg,
-        int datatype, StringBuffer retData) {
-      HBCIUtils.log("[LOG] " + msg + " / Reason: " + reason
-          + " / datatype: " + datatype, HBCIUtils.LOG_DEBUG);
+    public void callback(HBCIPassport passport, int reason, String msg, int datatype, StringBuffer retData) {
+      HBCIUtils.log("[LOG] " + msg + " / Reason: " + reason + " / datatype: " + datatype, HBCIUtils.LOG_DEBUG);
 
       switch (reason) {
       case NEED_BLZ:
@@ -84,8 +81,7 @@ public class HbciSession {
         // Intentionally empty!
       }
 
-      HBCIUtils.log("Returning " + retData.toString(),
-          HBCIUtils.LOG_DEBUG);
+      HBCIUtils.log("Returning " + retData.toString(), HBCIUtils.LOG_DEBUG);
     }
   }
 
@@ -132,15 +128,13 @@ public class HbciSession {
         return account;
     }
 
-    if (accounts.length == 1){
-    	logger.info("account {} not found, taking the one which was found");
-    	return accounts[0];
+    if (accounts.length == 1) {
+      logger.info("account {} not found, taking the one which was found");
+      return accounts[0];
     }
-    
-    throw new IllegalStateException(String.format(
-        "Unable to find requested account %s, %s",
-        this.accountConnection.getAccountNumberStripped(),
-        this.accountConnection.getBankCode()));
+
+    throw new IllegalStateException(String.format("Unable to find requested account %s, %s",
+        this.accountConnection.getAccountNumberStripped(), this.accountConnection.getBankCode()));
   }
 
   public long acquireBalance() {
@@ -158,8 +152,7 @@ public class HbciSession {
     GVRSaldoReq result = (GVRSaldoReq) job.getJobResult();
 
     if (!result.isOK()) {
-      throw new IllegalStateException("Fetching balance failed: "
-          + result.getJobStatus().getErrorString() + " / "
+      throw new IllegalStateException("Fetching balance failed: " + result.getJobStatus().getErrorString() + " / "
           + result.getGlobStatus().getErrorString());
     }
 
@@ -186,17 +179,22 @@ public class HbciSession {
 
     GVRKUms jobResult = (GVRKUms) job.getJobResult();
     if (!jobResult.isOK()) {
-      throw new IllegalStateException("Fetching balance failed: "
-          + jobResult.getJobStatus().getErrorString() + " / "
-          + jobResult.getGlobStatus().getErrorString());
+      throw new IllegalStateException("Fetching balance failed: " + jobResult.getJobStatus().getErrorString()
+          + " / " + jobResult.getGlobStatus().getErrorString());
     }
+    return jobResult.getFlatData().stream().map(Mapper::map).collect(Collectors.toList());
 
-    return jobResult
-        .getFlatData()
-        .stream()
-        .map(Mapper::map)
-        .collect(Collectors.toList());
+  }
 
+  public void close() {
+    if (handler != null) {
+      if (handler.getPassport() != null) {
+        handler.getPassport().close();
+      }
+      handler.close();
+    }
+    HBCIUtils.done();
+    logger.info("closed session");
   }
 
 }

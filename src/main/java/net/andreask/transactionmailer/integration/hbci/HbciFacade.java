@@ -15,4 +15,6 @@ public interface HbciFacade {
     List<AccountTransaction> acquireTransactions();
 
     long acquireBalance();
+
+	void close();
 }

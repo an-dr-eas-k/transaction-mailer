@@ -23,7 +23,7 @@ public class App {
 
   public void run() throws IOException {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    System.out.print("encrypted PIN: ");
+    System.out.print("PIN: ");
 
     hbciFacade
         .setAccountConnection(
@@ -36,7 +36,7 @@ public class App {
                 .setBankCode("70010080")
                 .setCustomerId("4245801")
                 .setAccountNumber("4245801")
-                .setEncryptedPin(br.readLine())
+                .setPin(br.readLine())
                 .setHbciVersion("300"))
         .init()
         .acquireTransactions()
