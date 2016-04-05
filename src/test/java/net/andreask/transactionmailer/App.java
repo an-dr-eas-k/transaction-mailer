@@ -1,8 +1,10 @@
 package net.andreask.transactionmailer;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 
 import net.andreask.transactionmailer.integration.hbci.HbciAccessImpl;
 import net.andreask.transactionmailer.integration.hbci.HbciFacade;
@@ -23,25 +25,25 @@ public class App {
 
   public void run() throws IOException {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    System.out.print("PIN: ");
+    System.out.print("BLZ,CUSTOMERID[,KONTONR],PIN: ");
+
+    String[] vals = br.readLine().split(",");
+
+    HbciAccessImpl hai = new HbciAccessImpl()
+        .setBankCode(vals[0])
+        .setCustomerId(vals[1])
+        .setAccountNumber(vals.length == 4 ? vals[2] : vals[1])
+        .setPin(vals[vals.length - 1])
+        .setHbciVersion("300");
+
+    PrintWriter pw = new PrintWriter(new File("bin-test", String.format("%s.txt", hai.getGeneratedIban())));
 
     hbciFacade
-        .setAccountConnection(
-            new HbciAccessImpl()
-//            .setBankCode("70090500")
-//            .setCustomerId("3964620")
-//            .setAccountNumber("3964620")
-//            .setEncryptedPin(br.readLine())
-//            .setHbciVersion("300"))
-                .setBankCode("70010080")
-                .setCustomerId("4245801")
-                .setAccountNumber("4245801")
-                .setPin(br.readLine())
-                .setHbciVersion("300"))
+        .setAccountConnection(hai)
         .init()
         .acquireTransactions()
         .stream()
-        .forEach(System.out::println);
+        .forEach(pw::println);
 
   }
 }
