@@ -4,6 +4,8 @@
  */
 package net.andreask.transactionmailer.integration.hbci.hbci4java;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,7 +53,10 @@ public class HbciSession {
         break;
 
       case NEED_CUSTOMERID:
-        retData.append(HbciSession.this.accountConnection.getCustomerId());
+        if (!retData.toString().equals(HbciSession.this.accountConnection.getCustomerId())) {
+          retData.delete(0, retData.length());
+          retData.append(HbciSession.this.accountConnection.getCustomerId());
+        }
         break;
 
       case NEED_USERID:
@@ -68,9 +73,19 @@ public class HbciSession {
         break;
 
       case NEED_PT_SECMECH:
+        List<String> secMechList = new ArrayList<>();
+        String[] entries = retData.toString().split("\\|");
+        int len = entries.length;
+        for (int i = 0; i < len; i++) {
+          String entry = entries[i];
+          String[] values = entry.split(":");
+          secMechList.add(values[0]);
+        }
+        Collections.sort(secMechList);
 
+        // retData.replace(0,retData.length(),getInStream().readLine());
         retData.setLength(0);
-        retData.append("997");
+        retData.append(secMechList.get(secMechList.size() - 1));
         break;
 
       case NEED_COUNTRY:
