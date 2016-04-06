@@ -84,7 +84,8 @@ public class AccountConnectionManager implements Serializable {
                 }
                 validAccounts.add(ac.getGeneratedIban());
               } catch (Exception e) {
-                logger.warn("illegal accountConnection: {}, reason{}", ac, e.getMessage());
+                logger.warn("illegal accountConnection: {} (blz) {} (ac), reason {}",
+                    ac.getBankCode(), ac.getAccountNumber(), e.getMessage());
                 this.accountConnectionFacade.remove(ac);
               }
             });
@@ -94,7 +95,8 @@ public class AccountConnectionManager implements Serializable {
   private void cancelRemovedTimers(TimerService timerService, List<String> validAccounts) {
     createLocalActiveTimerStream(timerService)
         .filter(timer -> !validAccounts.contains(((AccountConnection) timer.getInfo()).getGeneratedIban()))
-        .peek(timer -> logger.debug("canceling timer for {}", timer.getInfo()))
+        .peek(timer -> logger.debug("canceling timer for account {}",
+            ((AccountConnection) timer.getInfo()).getGeneratedIban()))
         .forEach(Timer::cancel);
   }
 
