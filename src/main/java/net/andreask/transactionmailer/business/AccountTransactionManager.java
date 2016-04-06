@@ -96,10 +96,13 @@ public class AccountTransactionManager implements Serializable {
   }
 
   private String toContent(AccountTransaction at) {
+    if (at == null) {
+      return "";
+    }
     StringBuilder sb = new StringBuilder();
 
     sb.append(String.format("<tr><td>%s</td><td>%s</td><td>%.2fEuro</td><td>%s</td></tr>",
-        at.getOther().getName(),
+        at.getOther() != null ? at.getOther().getName() : "",
         at.getUsage(),
         ((double) at.getValue() / 100d),
         new SimpleDateFormat("yyyy-MM-dd_hh:mm").format(at.getValuta())));
