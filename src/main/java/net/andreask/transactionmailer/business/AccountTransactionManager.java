@@ -44,7 +44,7 @@ public class AccountTransactionManager implements Serializable {
           .init()
           .acquireTransactions()
           .stream()
-          .filter(e -> accountTransactionFacade.find(e).isEmpty())
+          .filter(e -> accountTransactionFacade.find(e, ac).isEmpty())
           .peek(logger::debug)
           .peek(at -> at.setAccountConnection(ac))
           .peek(accountTransactionFacade::save)

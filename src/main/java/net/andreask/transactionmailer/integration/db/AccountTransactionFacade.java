@@ -19,6 +19,7 @@ import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import net.andreask.transactionmailer.domain.AccountConnection;
 import net.andreask.transactionmailer.domain.AccountTransaction;
 
 /**
@@ -38,13 +39,14 @@ public class AccountTransactionFacade extends AbstractFacade<AccountTransaction>
     super(AccountTransaction.class);
   }
 
-  public List<AccountTransaction> find(AccountTransaction template) {
+  public List<AccountTransaction> find(AccountTransaction template, AccountConnection ac) {
     // noinspection unchecked
     return getEntityManager()
         .createNamedQuery("findFromTemplate", AccountTransaction.class)
         .setParameter("usage", template.getUsage())
         .setParameter("value", template.getValue())
         .setParameter("valuta", template.getValuta())
+        .setParameter("accountConnection", ac)
         .getResultList()
         .stream()
         .peek(getEntityManager()::refresh)
