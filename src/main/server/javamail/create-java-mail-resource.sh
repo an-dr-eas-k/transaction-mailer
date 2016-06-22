@@ -1,7 +1,7 @@
 
 jndi_name="mail/hv"
 
-dir=$(cygpath . -wa)
+# dir=$(cygpath . -wa)
 
 read -p "passwd>" passwd
 
@@ -27,7 +27,7 @@ cd "${glassfish_home}"/bin
 create-javamail-resource \
 --mailhost smtp.netclusive.de \
 --mailuser nch812p1 \
---fromaddress transaction-mailer@zimmer3.de \
+--fromaddress "tm <transaction-mailer@zimmer3.de>" \
 --property mail.smtp.auth=true:mail.smtp.password=${passwd} \
 ${jndi_name}
 
