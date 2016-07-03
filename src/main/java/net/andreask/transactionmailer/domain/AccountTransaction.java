@@ -1,6 +1,8 @@
 package net.andreask.transactionmailer.domain;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 
 import javax.enterprise.inject.Model;
@@ -11,20 +13,24 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
 @Model
 @Entity
-@NamedQuery(
-    name = "findFromTemplate",
-    query = ""
+@NamedQueries({
+    @NamedQuery(name = "findFromTemplate", query = ""
         + "SELECT at "
         + "FROM AccountTransaction at "
         + "WHERE at.usage = :usage "
         + "AND at.value = :value "
         + "AND at.valuta = :valuta "
-        + "AND at.accountConnection = :accountConnection" 
-        )
+        + "AND at.accountConnection = :accountConnection"),
+    @NamedQuery(name = "findWithAccountConnection", query = ""
+        + "SELECT at "
+        + "FROM AccountTransaction at "
+        + "WHERE at.accountConnection = :accountConnection")
+})
 public class AccountTransaction implements Serializable {
 
   @Id
@@ -296,15 +302,6 @@ public class AccountTransaction implements Serializable {
     return this;
   }
 
-  @Override
-  public String toString() {
-    return "AccountTransaction [id=" + id + ", accountConnection=" + accountConnection + ", valuta=" + valuta
-        + ", bdate=" + bdate + ", value=" + value + ", isStorno=" + isStorno + ", saldo=" + saldo + ", customerref="
-        + customerref + ", instref=" + instref + ", charge_value=" + charge_value + ", gvcode=" + gvcode
-        + ", additional=" + additional + ", text=" + text + ", primanota=" + primanota + ", usage=" + usage
-        + ", addkey=" + addkey + ", isSepa=" + isSepa + ", other=" + other + "]";
-  }
-
   /**
    * Created by andreask on 1/18/16.
    */
@@ -437,5 +434,45 @@ public class AccountTransaction implements Serializable {
           + name + ", name2=" + name2 + ", bic=" + bic + ", iban=" + iban + "]";
     }
 
+    public String toCSV() {
+
+      return String.join(", ", Arrays.asList(new String[] {
+          country,
+          number,
+          subnumber,
+          acctype,
+          type,
+          curr,
+          customerid,
+          name,
+          name2,
+          bic,
+          iban }));
+    }
+  }
+
+  public String toCSV() {
+
+    SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+
+    return String.join(", ", Arrays.asList(new String[] {
+        Integer.toString(id),
+        accountConnection.toString(),
+        sd.format(valuta),
+        sd.format(bdate),
+        Long.toString(value),
+        Boolean.toString(isStorno),
+        Long.toString(saldo),
+        customerref,
+        instref,
+        Long.toString(charge_value),
+        gvcode,
+        additional,
+        text,
+        primanota,
+        usage,
+        addkey,
+        Boolean.toString(isSepa),
+        other.toCSV() }));
   }
 }

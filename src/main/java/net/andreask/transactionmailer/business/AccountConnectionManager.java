@@ -1,24 +1,31 @@
 package net.andreask.transactionmailer.business;
 
 import java.io.Serializable;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.ejb.NoSuchObjectLocalException;
 import javax.ejb.Timer;
 import javax.ejb.TimerConfig;
 import javax.ejb.TimerService;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.andreask.transactionmailer.domain.AccountConnection;
+import net.andreask.transactionmailer.domain.AccountTransaction;
 import net.andreask.transactionmailer.integration.db.AccountConnectionFacade;
+import net.andreask.transactionmailer.integration.db.AccountTransactionFacade;
 
 @RequestScoped
 @Named
@@ -28,6 +35,9 @@ public class AccountConnectionManager implements Serializable {
 
   @Inject
   AccountConnectionFacade accountConnectionFacade;
+
+  @Inject
+  AccountTransactionFacade accountTransactionFacade;
 
   public void initTimerService(TimerService timerService) {
 
@@ -62,7 +72,7 @@ public class AccountConnectionManager implements Serializable {
               try {
                 Timer existingTimer = timerAcMap.get(ac.getGeneratedIban());
                 boolean createSchedule = false;
-                if (existingTimer == null) {
+                if (existingTimer == null || isTimerExpired(existingTimer)) {
                   createSchedule = true;
                   logger.info("found new account {}, schedule: {}",
                       ac.getGeneratedIban(),
@@ -86,10 +96,21 @@ public class AccountConnectionManager implements Serializable {
               } catch (Exception e) {
                 logger.warn("illegal accountConnection: {} (blz) {} (ac), reason {}",
                     ac.getBankCode(), ac.getAccountNumber(), e.getMessage());
-                this.accountConnectionFacade.remove(ac);
+                logger.warn(e);
+                // this.accountConnectionFacade.remove(ac);
               }
             });
     return validAccounts;
+  }
+
+  private boolean isTimerExpired(Timer t) {
+    try {
+      t.getInfo();
+    } catch (NoSuchObjectLocalException e) {
+      logger.info("timer expired");
+      return true;
+    }
+    return false;
   }
 
   private void cancelRemovedTimers(TimerService timerService, List<String> validAccounts) {
@@ -114,5 +135,30 @@ public class AccountConnectionManager implements Serializable {
 
   public void delete(int primaryKey) {
     this.accountConnectionFacade.remove(queryFromId(primaryKey));
+  }
+
+  public void export(int parseInt) {
+
+    FacesContext fc = FacesContext.getCurrentInstance();
+    HttpServletResponse response = (HttpServletResponse) fc.getExternalContext().getResponse();
+
+    response.reset();
+    response.setContentType("text/comma-separated-values");
+    try (
+        OutputStream output = response.getOutputStream()) {
+      AccountConnection ac = accountConnectionFacade.find(parseInt);
+      for (AccountTransaction at : accountTransactionFacade.findAllTransactions(ac)) {
+        output.write(at.toCSV().getBytes());
+      }
+
+      output.flush();
+      output.close();
+
+      fc.responseComplete();
+    } catch (IOException e) {
+      logger.error(e);
+    } finally {
+      fc.responseComplete();
+    }
   }
 }

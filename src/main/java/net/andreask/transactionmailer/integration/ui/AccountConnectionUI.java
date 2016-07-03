@@ -18,7 +18,7 @@ import net.andreask.transactionmailer.business.AccountConnectionManager;
 import net.andreask.transactionmailer.domain.AccountConnection;
 
 /**
- * @author ian
+ * @author andreask
  */
 @ManagedBean
 @RequestScoped
@@ -32,6 +32,11 @@ public class AccountConnectionUI {
 
   @PostConstruct
   public void init() {
+    String exportId = ((javax.servlet.http.HttpServletRequest) javax.faces.context.FacesContext.getCurrentInstance()
+        .getExternalContext().getRequest()).getParameter("exportId");
+    if (exportId != null) {
+      this.accountConnectionManager.export(Integer.parseInt(exportId));
+    }
     String deleteId = ((javax.servlet.http.HttpServletRequest) javax.faces.context.FacesContext.getCurrentInstance()
         .getExternalContext().getRequest()).getParameter("deleteId");
     if (deleteId != null) {

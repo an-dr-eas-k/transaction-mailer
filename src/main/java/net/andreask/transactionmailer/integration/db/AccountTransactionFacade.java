@@ -59,4 +59,16 @@ public class AccountTransactionFacade extends AbstractFacade<AccountTransaction>
     super.create(ac);
   }
 
+  public List<AccountTransaction> findAllTransactions(AccountConnection ac) {
+    return getEntityManager()
+        .createNamedQuery("findWithAccountConnection", AccountTransaction.class)
+        .setParameter("accountConnection", ac)
+        .getResultList()
+        .stream()
+        .peek(getEntityManager()::refresh)
+
+    .collect(Collectors.toList());
+    
+  }
+
 }

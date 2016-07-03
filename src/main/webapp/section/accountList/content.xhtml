@@ -5,44 +5,49 @@
 	<h:form>
 		<h:dataTable value="#{accountConnectionUI.allAccountConnections}" var="ac" styleClass="employeeTable" headerClass="employeeTableHeader"
 			rowClasses="employeeTableOddRow,employeeTableEvenRow">
-			<h:column>
-				<f:facet name="header">#{msgs.bankCode}</f:facet>
+		<h:column>
+			<f:facet name="header">#{msgs.bankCode}</f:facet>
           #{ac.bankCode}
         </h:column>
-			<h:column>
-				<f:facet name="header">#{msgs.customerId}</f:facet>
+		<h:column>
+			<f:facet name="header">#{msgs.customerId}</f:facet>
           #{ac.customerId}
         </h:column>
-			<h:column>
-				<f:facet name="header">#{msgs.accountNumber}</f:facet> 
+		<h:column>
+			<f:facet name="header">#{msgs.accountNumber}</f:facet> 
           #{ac.accountNumber}
         </h:column>
-			<h:column>
-				<f:facet name="header">#{msgs.email}</f:facet>
+		<h:column>
+			<f:facet name="header">#{msgs.email}</f:facet>
           #{ac.email}
         </h:column>
-			<h:column>
-				<f:facet name="header">#{msgs.cronScheduleExpression}</f:facet>
+		<h:column>
+			<f:facet name="header">#{msgs.cronScheduleExpression}</f:facet>
           #{ac.cronScheduleExpression}
         </h:column>
-			<h:column>
-				<f:facet name="header">#{msgs.encryptedPin}</f:facet>
+		<h:column>
+			<f:facet name="header">#{msgs.encryptedPin}</f:facet>
           #{ac.encryptedPin}
         </h:column>
-			<h:column>
-				<f:facet name="header">#{msgs.transactionCount}</f:facet>
+		<h:column>
+			<f:facet name="header">#{msgs.transactionCount}</f:facet>
           #{ac.transactions.size()}
         </h:column>
-			<h:column>
-				<h:link value="edit" outcome="/view/accountEditor">
-					<f:param name="editId" value="#{ac.id}" />
-				</h:link>
-			</h:column>
-			<h:column>
-				<h:link value="delete" outcome="/view/accountList">
-					<f:param name="deleteId" value="#{ac.id}" />
-				</h:link>
-			</h:column>
+		<h:column>
+			<h:link value="export" outcome="/view/accountList">
+				<f:param name="exportId" value="#{ac.id}" />
+			</h:link>
+		</h:column>
+		<h:column>
+			<h:link value="edit" outcome="/view/accountEditor">
+				<f:param name="editId" value="#{ac.id}" />
+			</h:link>
+		</h:column>
+		<h:column>
+			<h:link value="delete" outcome="/view/accountList">
+				<f:param name="deleteId" value="#{ac.id}" />
+			</h:link>
+		</h:column>
 		</h:dataTable>
 	</h:form>
 

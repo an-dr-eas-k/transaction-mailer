@@ -7,7 +7,7 @@ cd "${glassfish_home}"/bin
 create-jdbc-connection-pool \
 --datasourceclassname org.apache.derby.jdbc.EmbeddedXADataSource \
 --restype javax.sql.XADataSource \
---property User=APP:Password=APP:DatabaseName=hv:ServerName=localhost:PortNumber=1527:connectionAttributes=\;create\\=true \
+--property User=APP:Password=APP:DatabaseName=/var/glassfish/databases/hv:ServerName=localhost:PortNumber=1527:connectionAttributes=\;create\\=true \
 hv-pool
 
 ./asadmin create-jdbc-resource --connectionpoolid hv-pool hv-jndi
