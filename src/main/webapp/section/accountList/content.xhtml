@@ -6,6 +6,9 @@
 		<h:dataTable value="#{accountConnectionUI.allAccountConnections}" var="ac" styleClass="employeeTable" headerClass="employeeTableHeader"
 			rowClasses="employeeTableOddRow,employeeTableEvenRow">
 		<h:column>
+			<f:facet name="header">#{msgs.title}</f:facet>
+          #{ac.title}
+        </h:column>		<h:column>
 			<f:facet name="header">#{msgs.bankCode}</f:facet>
           #{ac.bankCode}
         </h:column>

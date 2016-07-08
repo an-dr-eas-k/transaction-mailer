@@ -1,6 +1,7 @@
 package net.andreask.transactionmailer.domain;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Set;
 
 import javax.ejb.ScheduleExpression;
@@ -23,6 +24,11 @@ import net.andreask.transactionmailer.business.Encryptor;
 
 public class AccountConnection implements Serializable {
 
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
+
   @Inject
   @Transient
   private Encryptor encryptor;
@@ -31,11 +37,13 @@ public class AccountConnection implements Serializable {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
 
+  private String title;
+
   private String encryptedPin;
 
   private String accountNumber; // kontonummer
   private String bankCode; // blz
-  private String hbciVersion;
+
   private String cronScheduleExpression;
 
   private String customerId; // login username
@@ -44,6 +52,14 @@ public class AccountConnection implements Serializable {
 
   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "accountConnection")
   protected Set<AccountTransaction> transactions;
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
   public ScheduleExpression getScheduleExpression() {
     String[] scheduleValues = this.cronScheduleExpression.split(" +");
@@ -122,14 +138,6 @@ public class AccountConnection implements Serializable {
     this.bankCode = bankCode;
   }
 
-  public String getHbciVersion() {
-    return hbciVersion;
-  }
-
-  public void setHbciVersion(String hbciVersion) {
-    this.hbciVersion = hbciVersion;
-  }
-
   public String getCronScheduleExpression() {
     return cronScheduleExpression;
   }
@@ -160,6 +168,22 @@ public class AccountConnection implements Serializable {
 
   public void setTransactions(Set<AccountTransaction> transactions) {
     this.transactions = transactions;
+  }
+
+  public String toCSV() {
+    return String.join(", ", Arrays.asList(new String[] {
+        Long.toString(id),
+        customerId,
+        email,
+        getGeneratedIban() }));
+  }
+
+  static public String toCSVHeader() {
+    return String.join(", ", Arrays.asList(new String[] {
+        "id",
+        "customerId",
+        "email",
+        "GeneratedIban" }));
   }
 
 }

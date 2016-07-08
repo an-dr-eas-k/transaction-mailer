@@ -7,6 +7,11 @@ import org.kapott.hbci.passport.HBCIPassportPinTan;
  */
 public class HBCIPassportNonPersistentPinTan extends HBCIPassportPinTan {
 
+    /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
+
     public HBCIPassportNonPersistentPinTan(Object initObject) {
         super(initObject);
         askForMissingData(true, true, true, true, true, true, true);

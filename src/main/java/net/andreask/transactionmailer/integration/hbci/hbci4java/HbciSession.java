@@ -30,7 +30,7 @@ import net.andreask.transactionmailer.integration.hbci.HbciAccess;
  */
 public class HbciSession {
 
-  private final HbciAccess accountConnection;
+  private final HbciAccess hbciAccess;
   private static Logger logger = LogManager.getLogger(HbciSession.class);
   private HBCIHandler handler;
 
@@ -49,22 +49,22 @@ public class HbciSession {
 
       switch (reason) {
       case NEED_BLZ:
-        retData.append(HbciSession.this.accountConnection.getBankCode());
+        retData.append(HbciSession.this.hbciAccess.getBankCode());
         break;
 
       case NEED_CUSTOMERID:
-        if (!retData.toString().equals(HbciSession.this.accountConnection.getCustomerId())) {
+        if (!retData.toString().equals(HbciSession.this.hbciAccess.getCustomerId())) {
           retData.delete(0, retData.length());
-          retData.append(HbciSession.this.accountConnection.getCustomerId());
+          retData.append(HbciSession.this.hbciAccess.getCustomerId());
         }
         break;
 
       case NEED_USERID:
-        retData.append(HbciSession.this.accountConnection.getCustomerId());
+        retData.append(HbciSession.this.hbciAccess.getCustomerId());
         break;
 
       case NEED_PT_PIN:
-        retData.append(HbciSession.this.accountConnection.getPin());
+        retData.append(HbciSession.this.hbciAccess.getPin());
         break;
 
       case NEED_PASSPHRASE_SAVE:
@@ -101,21 +101,21 @@ public class HbciSession {
   }
 
   public HbciSession(HbciAccess a) {
-    this.accountConnection = a;
+    this.hbciAccess = a;
     this.initParams();
   }
 
   private HBCIHandler createHbciHandler() {
     HBCIPassportPinTan passport = new HBCIPassportNonPersistentPinTan("");
 
-    return new HBCIHandler(this.accountConnection.getHbciVersion(), passport);
+    return new HBCIHandler(HBCIUtils.getPinTanVersionForBLZ(this.hbciAccess.getBankCode()), passport);
   }
 
   private void initParams() {
     HBCIUtils.init(null, new Callback());
 
     // Set basic parameters
-    HBCIUtils.setParam("client.passport.hbciversion.default", accountConnection.getHbciVersion());
+    HBCIUtils.setParam("client.passport.hbciversion.default", HBCIUtils.getPinTanVersionForBLZ("70090500"));
     HBCIUtils.setParam("client.connection.localPort", null);
     HBCIUtils.setParam("log.loglevel.default", "0");
     HBCIUtils.setParam("kernel.rewriter", HBCIUtils.getParam("kernel.rewriter"));
@@ -138,8 +138,8 @@ public class HbciSession {
     Konto[] accounts = handler.getPassport().getAccounts();
 
     for (Konto account : accounts) {
-      if (this.accountConnection.getBankCode().equals(account.blz)
-          && this.accountConnection.getAccountNumberStripped().equals(account.number))
+      if (this.hbciAccess.getBankCode().equals(account.blz)
+          && this.hbciAccess.getAccountNumberStripped().equals(account.number))
         return account;
     }
 
@@ -149,7 +149,7 @@ public class HbciSession {
     }
 
     throw new IllegalStateException(String.format("Unable to find requested account %s, %s",
-        this.accountConnection.getAccountNumberStripped(), this.accountConnection.getBankCode()));
+        this.hbciAccess.getAccountNumberStripped(), this.hbciAccess.getBankCode()));
   }
 
   public long acquireBalance() {

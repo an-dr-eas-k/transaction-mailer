@@ -12,6 +12,10 @@ import javax.xml.bind.DatatypeConverter;
 @RequestScoped
 public class Encryptor implements Serializable {
 
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
   @Inject
   private Configuration configuration;
 

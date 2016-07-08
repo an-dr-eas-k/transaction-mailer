@@ -4,8 +4,6 @@ public interface HbciAccess {
 
   String getBankCode();
 
-  String getHbciVersion();
-
   String getCustomerId();
 
   String getAccountNumberStripped();

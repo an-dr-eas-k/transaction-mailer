@@ -33,8 +33,7 @@ public class App {
         .setBankCode(vals[0])
         .setCustomerId(vals[1])
         .setAccountNumber(vals.length == 4 ? vals[2] : vals[1])
-        .setPin(vals[vals.length - 1])
-        .setHbciVersion("300");
+        .setPin(vals[vals.length - 1]);
 
     PrintWriter pw = new PrintWriter(new File("bin-test", String.format("%s.txt", hai.getGeneratedIban())));
 

@@ -29,8 +29,7 @@ public class PrepareHBCIMock {
                 .setBankCode("70090500")
                 .setCustomerId("3964620")
                 .setAccountNumber("103964620")
-                .setPin(br.readLine())
-                .setHbciVersion("300"))
+                .setPin(br.readLine()))
         .init()
         .acquireTransactions();
 

@@ -11,6 +11,10 @@
 			<h:graphicImage value="#{resource['images:wave.med.gif']}" />
 			<h:panelGrid columns="3">
 
+				#{msgs.title} 
+				<h:inputText id="title" value="#{accountConnectionUI.accountConnection.title}" />
+				<h:message showSummary="true" showDetail="true" for="title" style="red" />
+									
 				#{msgs.bankCode} 
 				<h:inputText id="bankCode" value="#{accountConnectionUI.accountConnection.bankCode}">
 					<f:validateRegex pattern="^\d{8}$" />
@@ -47,12 +51,6 @@
 				</h:inputText>
 				<h:message showSummary="true" showDetail="true" for="cronScheduleExpression" style="red" />
 				 
-				#{msgs.hbciVersion} 
-				<h:inputText id="hbciVersion" value="#{accountConnectionUI.accountConnection.hbciVersion}">
-					<f:validateRegex pattern="^\d+$" />
-				</h:inputText>
-				<h:message showSummary="true" showDetail="true" for="hbciVersion" style="red" />
-
 				<h:commandButton id="submit" value="#{msgs.goButtonText}" action="#{accountConnectionUI.save}" style="font-family:Palatino;font-style:italic" />
 
 

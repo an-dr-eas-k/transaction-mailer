@@ -1,8 +1,9 @@
 package net.andreask.transactionmailer.business;
 
-import java.io.Serializable;
+import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,11 @@ import net.andreask.transactionmailer.integration.db.AccountTransactionFacade;
 @RequestScoped
 @Named
 public class AccountConnectionManager implements Serializable {
+
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
 
   Logger logger = LogManager.getLogger(AccountTransactionManager.class);
 
@@ -144,12 +150,25 @@ public class AccountConnectionManager implements Serializable {
 
     response.reset();
     response.setContentType("text/comma-separated-values");
-    try (
-        OutputStream output = response.getOutputStream()) {
+    response.setHeader("Content-Disposition", "attachment; filename=\"transactions.csv\"");
+
+    try (BufferedWriter output = new BufferedWriter(new OutputStreamWriter(response.getOutputStream()))) {
       AccountConnection ac = accountConnectionFacade.find(parseInt);
-      for (AccountTransaction at : accountTransactionFacade.findAllTransactions(ac)) {
-        output.write(at.toCSV().getBytes());
-      }
+      output.write(AccountTransaction.toCSVHeader());
+      ac
+          .getTransactions()
+          .stream()
+          .sorted((AccountTransaction a, AccountTransaction b) -> {
+            return Integer.compare(a.getId(), b.getId());
+          })
+          .forEach(at -> {
+            try {
+              output.write(at.toCSV());
+              output.newLine();
+            } catch (Exception e) {
+              throw new RuntimeException(e);
+            }
+          });
 
       output.flush();
       output.close();

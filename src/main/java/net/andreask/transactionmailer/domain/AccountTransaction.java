@@ -33,6 +33,11 @@ import javax.persistence.NamedQuery;
 })
 public class AccountTransaction implements Serializable {
 
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
+
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
@@ -306,6 +311,11 @@ public class AccountTransaction implements Serializable {
    * Created by andreask on 1/18/16.
    */
   public static class Konto implements Serializable {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     private String country;
     private String blz;
     private String number;
@@ -437,41 +447,78 @@ public class AccountTransaction implements Serializable {
     public String toCSV() {
 
       return String.join(", ", Arrays.asList(new String[] {
-          country,
+          '"' + country + '"',
           number,
           subnumber,
-          acctype,
-          type,
-          curr,
+          '"' + acctype + '"',
+          '"' + type + '"',
+          '"' + curr + '"',
           customerid,
-          name,
-          name2,
+          '"' + name + '"',
+          '"' + name2 + '"',
           bic,
           iban }));
     }
+
+    static public String toCSVHeader() {
+      return String.join(", ", Arrays.asList(new String[] {
+          "country",
+          "number",
+          "subnumber",
+          "acctype",
+          "type",
+          "curr",
+          "customerid",
+          "name",
+          "name2",
+          "bic",
+          "iban" }));
+    }
+  }
+
+  static public String toCSVHeader() {
+    return String.join(", ", Arrays.asList(new String[] {
+        "id",
+        AccountConnection.toCSVHeader(),
+        "valuta",
+        "bdate",
+        "value",
+        "isStorno",
+        "saldo",
+        "customerref",
+        "instref",
+        "charge_value",
+        "gvcode",
+        "additional",
+        "text",
+        "primanota",
+        "usage",
+        "addkey",
+        "isSepa",
+        Konto.toCSVHeader() }));
   }
 
   public String toCSV() {
 
-    SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+    SimpleDateFormat sd = new SimpleDateFormat("\"yyyy-MM-dd'T'HH:mm:ss.SSSZ\"");
 
     return String.join(", ", Arrays.asList(new String[] {
         Integer.toString(id),
-        accountConnection.toString(),
+        accountConnection.toCSV(),
         sd.format(valuta),
         sd.format(bdate),
         Long.toString(value),
         Boolean.toString(isStorno),
         Long.toString(saldo),
-        customerref,
-        instref,
+        '"' + customerref + '"',
+        '"' + instref + '"',
         Long.toString(charge_value),
-        gvcode,
-        additional,
-        text,
-        primanota,
-        usage,
-        addkey,
+        '"' + gvcode + '"',
+        '"' + additional + '"',
+        '"' + text + '"',
+        '"' + primanota + '"',
+        '"' + usage + '"',
+        '"' + addkey + '"',
         Boolean.toString(isSepa),
         other.toCSV() }));
   }

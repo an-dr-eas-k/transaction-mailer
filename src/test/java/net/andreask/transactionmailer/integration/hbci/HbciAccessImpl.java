@@ -70,15 +70,6 @@ public class HbciAccessImpl implements HbciAccess {
     return this;
   }
 
-  public String getHbciVersion() {
-    return ac.getHbciVersion();
-  }
-
-  public HbciAccessImpl setHbciVersion(String hbciVersion) {
-    ac.setHbciVersion(hbciVersion);
-    return this;
-  }
-
   public String getCronScheduleExpression() {
     return ac.getCronScheduleExpression();
   }

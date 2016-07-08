@@ -22,6 +22,11 @@ import net.andreask.transactionmailer.integration.mail.Mailer;
 @RequestScoped
 public class AccountTransactionManager implements Serializable {
 
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
+
   Logger logger = LogManager.getLogger(AccountTransactionManager.class);
 
   @Inject
@@ -66,7 +71,7 @@ public class AccountTransactionManager implements Serializable {
       @Override
       public String getSubject() {
         return String.format("%s: delta %.2f (%d)",
-            ac.getGeneratedIban(),
+            ac.getTitle(),
             toNotify
                 .stream()
                 .mapToDouble(ac -> ((double) ac.getValue() / 100d))
@@ -118,11 +123,6 @@ public class AccountTransactionManager implements Serializable {
       }
 
       @Override
-      public String getHbciVersion() {
-        return ac.getHbciVersion();
-      }
-
-      @Override
       public String getCustomerId() {
         return ac.getCustomerId();
       }
@@ -140,7 +140,7 @@ public class AccountTransactionManager implements Serializable {
       @Override
       public String toString() {
         return "HbciAccessImpl [getAccountNumberStripped()=" + getAccountNumberStripped()
-            + ", getBankCode()=" + getBankCode() + ", getHbciVersion()=" + getHbciVersion() + ", getCustomerId()="
+            + ", getBankCode()=" + getBankCode() + ", getCustomerId()="
             + getCustomerId() + "]";
       }
     };
