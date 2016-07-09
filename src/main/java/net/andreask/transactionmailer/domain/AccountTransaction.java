@@ -36,7 +36,7 @@ public class AccountTransaction implements Serializable {
   /**
    * 
    */
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1;
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -315,7 +315,7 @@ public class AccountTransaction implements Serializable {
     /**
      * 
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 9192736240028809354L;
     private String country;
     private String blz;
     private String number;
@@ -520,6 +520,6 @@ public class AccountTransaction implements Serializable {
         '"' + usage + '"',
         '"' + addkey + '"',
         Boolean.toString(isSepa),
-        other.toCSV() }));
+        other != null ? other.toCSV() : new Konto().toCSV() }));
   }
 }
