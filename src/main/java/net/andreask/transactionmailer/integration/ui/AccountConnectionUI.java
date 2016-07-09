@@ -59,9 +59,9 @@ public class AccountConnectionUI {
         .getAllAccountConnections();
   }
 
-  public String save() {
+  public String save() throws Exception {
     this.accountConnectionManager.save(accountConnection);
-    return null;
+    return "/view/accountList.xhtml";
   }
 
 }
