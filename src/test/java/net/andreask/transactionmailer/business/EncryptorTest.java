@@ -10,9 +10,6 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import net.andreask.transactionmailer.business.Configuration;
-import net.andreask.transactionmailer.business.Encryptor;
-
 /**
  * Created by andreask on 1/19/16.
  */
@@ -80,5 +77,8 @@ public class EncryptorTest {
     System.out.printf("encryption.\nsource: '%s'\ntarget: '%s'",
         toEncrypt,
         Encryptor.encrypt(toEncrypt, c.produceKey(), c.produceAlgorithmParameterSpec()));
+    System.out.printf("decryption.\nsource: '%s'\ntarget: '%s'",
+        toEncrypt,
+        Encryptor.decrypt(toEncrypt, c.produceKey(), c.produceAlgorithmParameterSpec()));
   }
 }
