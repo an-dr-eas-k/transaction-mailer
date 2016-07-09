@@ -1,0 +1,18 @@
+[Unit]
+Description=GlassFish Server 4.1.1
+After=network.target remote-fs.target
+
+[Service]
+User=glassfish
+Environment=PATH=/bin:/usr/lib/java/bin:/usr/bin
+Type=forking
+PIDFile=/opt/glassfish4/glassfish/domains/raspberrypi/config/pid
+ExecStart=/bin/sh -c "/opt/glassfish4/bin/asadmin --passwordfile /home/glassfish/passwd.gf start-domain raspberrypi >>/var/log/glassfish 2>&1"
+ExecReload=/bin/sh -c "/opt/glassfish4/bin/asadmin --passwordfile /home/glassfish/passwd.gf restart-domain raspberrypi >>/var/log/glassfish 2>&1"
+ExecStop=/bin/sh -c "/opt/glassfish4/bin/asadmin --passwordfile /home/glassfish/passwd.gf stop-domain raspberrypi >>/var/log/glassfish 2>&1"
+
+TimeoutStartSec=600
+TimeoutStopSec=300
+
+[Install]
+WantedBy = multi-user.target
