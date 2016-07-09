@@ -9,8 +9,9 @@ Use it to stay informed about your bank transactions.
 ### How do I get set up? ###
 
 * buy a raspberry pi
-* install a glassfish server
-* alter the domain.xml file and set <jvm-options>-Xmx128m</jvm-options>
+* install a glassfish server (here to /opt/glassfish)
+* to reduce glassfishs memory usage: alter the domain.xml file and set <jvm-options>-Xmx128m</jvm-options>
+* to 
 * run all scripts in /src/main/server/
 
 
