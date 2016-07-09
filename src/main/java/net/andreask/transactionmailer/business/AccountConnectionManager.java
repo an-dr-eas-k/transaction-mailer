@@ -150,11 +150,13 @@ public class AccountConnectionManager implements Serializable {
 
     response.reset();
     response.setContentType("text/comma-separated-values");
-    response.setHeader("Content-Disposition", "attachment; filename=\"transactions.csv\"");
 
     try (BufferedWriter output = new BufferedWriter(new OutputStreamWriter(response.getOutputStream()))) {
       AccountConnection ac = accountConnectionFacade.find(parseInt);
+      response.setHeader("Content-Disposition",
+          String.format("attachment; filename=\"%s-transactions.csv\"", ac.getTitle()));
       output.write(AccountTransaction.toCSVHeader());
+      output.newLine();
       ac
           .getTransactions()
           .stream()
