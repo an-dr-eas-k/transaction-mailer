@@ -63,7 +63,11 @@ public class AccountTransactionManager implements Serializable {
 
   private void notifyUser(AccountConnection ac, List<AccountTransaction> toNotify) {
     if (toNotify == null || toNotify.isEmpty() || ac.getEmail() == null || ac.getEmail().isEmpty()) {
-      logger.debug("not sending email");
+      logger.debug("not sending email, reason {}, {}, {}, {}",
+          toNotify == null,
+          toNotify.isEmpty(),
+          ac.getEmail() == null,
+          ac.getEmail().isEmpty());
       return;
     }
     mailer.sendMail(new EMailContent() {
