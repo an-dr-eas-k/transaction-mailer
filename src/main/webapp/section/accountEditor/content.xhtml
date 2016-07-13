@@ -1,61 +1,82 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:util="http://java.sun.com/jsf/composite/components/util">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  xmlns:util="http://java.sun.com/jsf/composite/components/util">
 
 
 
-	<div class="accountEditorForm">
-		<div class="accountEditorFormHeading">#{msgs.enterAnAccount}</div>
+  <div class="accountEditorForm">
+    <div class="accountEditorFormHeading">#{msgs.enterAnAccount}</div>
 
-		<h:form>
-			<h:inputHidden value="#{accountConnectionUI.accountConnection.id}" />
-			<h:graphicImage value="#{resource['images:wave.med.gif']}" />
-			<h:panelGrid columns="3">
+    <h:form>
+      <h:inputHidden value="#{accountConnectionUI.accountConnection.id}" />
+      <h:graphicImage value="#{resource['images:wave.med.gif']}" />
+      <h:panelGrid columns="3">
 
 				#{msgs.title} 
-				<h:inputText id="title" value="#{accountConnectionUI.accountConnection.title}" />
-				<h:message showSummary="true" showDetail="true" for="title" style="red" />
+				<h:inputText id="title"
+          value="#{accountConnectionUI.accountConnection.title}" />
+        <h:message showSummary="true" showDetail="true" for="title"
+          style="red" />
 									
 				#{msgs.bankCode} 
-				<h:inputText id="bankCode" value="#{accountConnectionUI.accountConnection.bankCode}">
-					<f:validateRegex pattern="^\d{8}$" />
-				</h:inputText>
-				<h:message showSummary="true" showDetail="true" for="bankCode" style="red" />
+				<h:inputText id="bankCode"
+          value="#{accountConnectionUI.accountConnection.bankCode}">
+          <f:validateRegex pattern="^\d{8}$" />
+        </h:inputText>
+        <h:message showSummary="true" showDetail="true" for="bankCode"
+          style="red" />
 
 				#{msgs.customerId} 
-				<h:inputText id="customerId" value="#{accountConnectionUI.accountConnection.customerId}">
-					<f:validateRegex pattern="^\d{1,10}$" />
-				</h:inputText>
-				<h:message showSummary="true" showDetail="true" for="customerId" style="red" />
+				<h:inputText id="customerId"
+          value="#{accountConnectionUI.accountConnection.customerId}">
+          <f:validateRegex pattern="^\d{1,10}$" />
+        </h:inputText>
+        <h:message showSummary="true" showDetail="true" for="customerId"
+          style="red" />
 				
 				#{msgs.accountNumber} 
-				<h:inputText id="accountNumberStripped" value="#{accountConnectionUI.accountConnection.accountNumberStripped}">
-					<f:validateRegex pattern="^\d{1,10}$" />
-				</h:inputText>
-				<h:message showSummary="true" showDetail="true" for="accountNumberStripped" style="red" />
+				<h:inputText id="accountNumberStripped"
+          value="#{accountConnectionUI.accountConnection.accountNumberStripped}">
+          <f:validateRegex pattern="^\d{1,10}$" />
+        </h:inputText>
+        <h:message showSummary="true" showDetail="true"
+          for="accountNumberStripped" style="red" />
 				
 				#{msgs.email} 
-				<h:inputText id="email" value="#{accountConnectionUI.accountConnection.email}">
-					<f:validateRegex pattern="(^$)|(^.+@.+\..+$)" />
-				</h:inputText>
-				<h:message showSummary="true" showDetail="true" for="email" style="red" />
+				<h:inputText id="email"
+          value="#{accountConnectionUI.accountConnection.email}">
+          <f:validateRegex pattern="(^$)|(^.+@.+\..+$)" />
+        </h:inputText>
+        <h:message showSummary="true" showDetail="true" for="email"
+          style="red" />
 				
 				#{msgs.pin} 
-				<h:inputSecret id="pin" value="#{accountConnectionUI.accountConnection.pin}" redisplay="true" >
-					<f:validateRegex pattern="^\d+$" />
-				</h:inputSecret>
-				<h:message showSummary="true" showDetail="true" for="pin" style="red" />
+				<h:inputSecret id="pin"
+          value="#{accountConnectionUI.accountConnection.pin}"
+          redisplay="true">
+          <f:validateRegex pattern="^\d+$" />
+        </h:inputSecret>
+        <h:message showSummary="true" showDetail="true" for="pin"
+          style="red" />
 				
 				#{msgs.cronScheduleExpression} 
-				<h:inputText id="cronScheduleExpression" value="#{accountConnectionUI.accountConnection.cronScheduleExpression}">
-					<f:validateRegex pattern="^.+ .+ .+$" for="cronScheduleExpression" />
-				</h:inputText>
-				<h:message showSummary="true" showDetail="true" for="cronScheduleExpression" style="red" />
-				 
-				<h:commandButton id="submit" value="#{msgs.goButtonText}" action="#{accountConnectionUI.save}" style="font-family:Palatino;font-style:italic" />
+				<h:inputText id="cronScheduleExpression"
+          value="#{accountConnectionUI.accountConnection.cronScheduleExpression}">
+          <f:validateRegex pattern="^.+ .+ .+$"
+            for="cronScheduleExpression" />
+        </h:inputText>
+        <h:message showSummary="true" showDetail="true"
+          for="cronScheduleExpression" style="red" />
+
+        <h:commandButton id="submit" value="#{msgs.goButtonText}"
+          action="#{accountConnectionUI.save}"
+          style="font-family:Palatino;font-style:italic" />
 
 
-			</h:panelGrid>
-		</h:form>
-	</div>
+      </h:panelGrid>
+    </h:form>
+  </div>
 
 </ui:composition>

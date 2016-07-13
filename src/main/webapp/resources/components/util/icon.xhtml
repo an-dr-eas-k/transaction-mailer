@@ -19,23 +19,22 @@
 -->
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:composite="http://java.sun.com/jsf/composite">
-    
-    <!-- INTERFACE -->
-    <composite:interface>
-      <composite:attribute name="image"/>
-      <composite:attribute name="actionMethod" 
-               method-signature="java.lang.String action()"/>        
-    </composite:interface>
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:composite="http://java.sun.com/jsf/composite">
 
-    <!-- IMPLEMENATION -->          
-    <composite:implementation>
-	    <h:form>  
-				<h:commandLink action="#{cc.attrs.actionMethod}" immediate="true">  			
-				  <h:graphicImage value="#{cc.attrs.image}"
-				             styleClass="icon"/>
-				</h:commandLink>
-	    </h:form>
-    </composite:implementation>    
+<!-- INTERFACE -->
+<composite:interface>
+  <composite:attribute name="image" />
+  <composite:attribute name="actionMethod"
+    method-signature="java.lang.String action()" />
+</composite:interface>
+
+<!-- IMPLEMENATION -->
+<composite:implementation>
+  <h:form>
+    <h:commandLink action="#{cc.attrs.actionMethod}" immediate="true">
+      <h:graphicImage value="#{cc.attrs.image}" styleClass="icon" />
+    </h:commandLink>
+  </h:form>
+</composite:implementation>
 </html>

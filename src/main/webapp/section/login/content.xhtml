@@ -3,17 +3,16 @@
   xmlns:h="http://java.sun.com/jsf/html"
   xmlns:ui="http://java.sun.com/jsf/facelets"
   xmlns:util="http://java.sun.com/jsf/composite/components/util">
-  
+
   <util:login loginPrompt="#{msgs.loginPrompt}"
-               namePrompt="#{msgs.namePrompt}"
-           passwordPrompt="#{msgs.passwordPrompt}"
-          loginButtonText="#{msgs.loginButtonText}"
-              loginAction="#{user.login}"          
-              managedBean="#{user}">
-                 
-    <f:actionListener for="loginButton" 
-                     type="net.andreask.transactionmailer.integration.ui.LoginActionListener"/>
-                            
+    namePrompt="#{msgs.namePrompt}"
+    passwordPrompt="#{msgs.passwordPrompt}"
+    loginButtonText="#{msgs.loginButtonText}"
+    loginAction="#{user.login}" managedBean="#{user}">
+
+    <f:actionListener for="loginButton"
+      type="net.andreask.transactionmailer.integration.ui.LoginActionListener" />
+
   </util:login>
-               
+
 </ui:composition>
