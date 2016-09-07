@@ -14,6 +14,8 @@ Use it to stay informed about your bank transactions.
 * to register your email-provider: run /transaction-mailer/src/main/server/javamail/create-java-mail-resource.sh
 * to setup a derby embedded db: run /transaction-mailer/src/main/server/db/create-connectionpool.sh
 * to setup glassfish as a system service copy /transaction-mailer/src/main/server/glassfish.service to /etc/systemd/system
+* build the transaction-mailer app with the command: gradle war
+* deploy the created app binary with issuing:  /opt/glassfish4/bin/asadmin deploy --force <warpackage>
 * configure your transaction-mailer at http://<raspberrypihost>:8080/transaction-mailer/
 
 
