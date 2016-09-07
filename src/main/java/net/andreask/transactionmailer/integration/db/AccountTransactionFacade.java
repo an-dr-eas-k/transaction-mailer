@@ -51,12 +51,16 @@ public class AccountTransactionFacade extends AbstractFacade<AccountTransaction>
         .stream()
         .peek(getEntityManager()::refresh)
 
-    .collect(Collectors.toList());
+        .collect(Collectors.toList());
 
   }
 
   public void save(AccountTransaction ac) {
     super.create(ac);
+  }
+
+  public void save(List<AccountTransaction> ac) {
+    ac.stream().forEach(super::create);
   }
 
   public List<AccountTransaction> findAllTransactions(AccountConnection ac) {
@@ -67,8 +71,8 @@ public class AccountTransactionFacade extends AbstractFacade<AccountTransaction>
         .stream()
         .peek(getEntityManager()::refresh)
 
-    .collect(Collectors.toList());
-    
+        .collect(Collectors.toList());
+
   }
 
 }

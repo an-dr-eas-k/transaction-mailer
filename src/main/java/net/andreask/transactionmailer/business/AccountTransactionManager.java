@@ -42,9 +42,8 @@ public class AccountTransactionManager implements Serializable {
   private Mailer mailer;
 
   public void mirrorTransactions(AccountConnection ac) {
-    List<AccountTransaction> toNotify = null;
     try {
-      toNotify = hbciFacade
+      List<AccountTransaction> toNotify = hbciFacade
           .setAccountConnection(toHbciAccess(ac))
           .init()
           .acquireTransactions()
@@ -52,13 +51,13 @@ public class AccountTransactionManager implements Serializable {
           .filter(e -> accountTransactionFacade.find(e, ac).isEmpty())
           .peek(logger::debug)
           .peek(at -> at.setAccountConnection(ac))
-          .peek(accountTransactionFacade::save)
+          // .peek(accountTransactionFacade::save)
           .collect(Collectors.toList());
+      notifyUser(ac, toNotify);
+      accountTransactionFacade.save(toNotify);
     } finally {
       hbciFacade.close();
     }
-    notifyUser(ac, toNotify);
-
   }
 
   private void notifyUser(AccountConnection ac, List<AccountTransaction> toNotify) {
@@ -74,32 +73,32 @@ public class AccountTransactionManager implements Serializable {
 
       @Override
       public String getSubject() {
-        return String.format("%s: delta %.2f (%d)",
-            ac.getTitle(),
-            toNotify
-                .stream()
-                .mapToDouble(ac -> ((double) ac.getValue() / 100d))
-                .sum(),
-            toNotify.size());
+	return String.format("%s: delta %.2f (%d)",
+	    ac.getTitle(),
+	    toNotify
+	        .stream()
+	        .mapToDouble(ac -> ((double) ac.getValue() / 100d))
+	        .sum(),
+	    toNotify.size());
       }
 
       @Override
       public String getRecipient() {
-        return ac.getEmail();
+	return ac.getEmail();
       }
 
       @Override
       public String getMessageBody() {
-        return String.format(""
-            + "<html><body><table>"
-            + "<tr><td>Other</td><td>Reason</td><td>amount</td><td>time</td></tr>"
-            + "%s"
-            + "</table></body></html>", toNotify
-                .stream()
-                .sorted((a, b) -> -1 * a.getValuta().compareTo(b.getValuta()))
-                .map(AccountTransactionManager.this::toContent)
-                .collect(
-                    Collectors.joining("")));
+	return String.format(""
+	    + "<html><body><table>"
+	    + "<tr><td>Other</td><td>Reason</td><td>amount</td><td>time</td></tr>"
+	    + "%s"
+	    + "</table></body></html>", toNotify
+	        .stream()
+	        .sorted((a, b) -> -1 * a.getValuta().compareTo(b.getValuta()))
+	        .map(AccountTransactionManager.this::toContent)
+	        .collect(
+	            Collectors.joining("")));
       }
     });
   }
@@ -123,29 +122,29 @@ public class AccountTransactionManager implements Serializable {
 
       @Override
       public String getBankCode() {
-        return ac.getBankCode();
+	return ac.getBankCode();
       }
 
       @Override
       public String getCustomerId() {
-        return ac.getCustomerId();
+	return ac.getCustomerId();
       }
 
       @Override
       public String getAccountNumberStripped() {
-        return ac.getAccountNumberStripped();
+	return ac.getAccountNumberStripped();
       }
 
       @Override
       public String getPin() {
-        return encryptor.decrypt(ac.getEncryptedPin());
+	return encryptor.decrypt(ac.getEncryptedPin());
       }
 
       @Override
       public String toString() {
-        return "HbciAccessImpl [getAccountNumberStripped()=" + getAccountNumberStripped()
-            + ", getBankCode()=" + getBankCode() + ", getCustomerId()="
-            + getCustomerId() + "]";
+	return "HbciAccessImpl [getAccountNumberStripped()=" + getAccountNumberStripped()
+	    + ", getBankCode()=" + getBankCode() + ", getCustomerId()="
+	    + getCustomerId() + "]";
       }
     };
   }
