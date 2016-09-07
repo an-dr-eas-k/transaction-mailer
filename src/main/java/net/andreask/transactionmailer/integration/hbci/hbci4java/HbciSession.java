@@ -49,51 +49,51 @@ public class HbciSession {
 
       switch (reason) {
       case NEED_BLZ:
-        retData.append(HbciSession.this.hbciAccess.getBankCode());
-        break;
+	retData.append(HbciSession.this.hbciAccess.getBankCode());
+	break;
 
       case NEED_CUSTOMERID:
-        if (!retData.toString().equals(HbciSession.this.hbciAccess.getCustomerId())) {
-          retData.delete(0, retData.length());
-          retData.append(HbciSession.this.hbciAccess.getCustomerId());
-        }
-        break;
+	if (!retData.toString().equals(HbciSession.this.hbciAccess.getCustomerId())) {
+	  retData.delete(0, retData.length());
+	  retData.append(HbciSession.this.hbciAccess.getCustomerId());
+	}
+	break;
 
       case NEED_USERID:
-        retData.append(HbciSession.this.hbciAccess.getCustomerId());
-        break;
+	retData.append(HbciSession.this.hbciAccess.getCustomerId());
+	break;
 
       case NEED_PT_PIN:
-        retData.append(HbciSession.this.hbciAccess.getPin());
-        break;
+	retData.append(HbciSession.this.hbciAccess.getPin());
+	break;
 
       case NEED_PASSPHRASE_SAVE:
       case NEED_PASSPHRASE_LOAD:
-        retData.append(PASSPHRASE);
-        break;
+	retData.append(PASSPHRASE);
+	break;
 
       case NEED_PT_SECMECH:
-        List<String> secMechList = new ArrayList<>();
-        String[] entries = retData.toString().split("\\|");
-        int len = entries.length;
-        for (int i = 0; i < len; i++) {
-          String entry = entries[i];
-          String[] values = entry.split(":");
-          secMechList.add(values[0]);
-        }
-        Collections.sort(secMechList);
+	List<String> secMechList = new ArrayList<>();
+	String[] entries = retData.toString().split("\\|");
+	int len = entries.length;
+	for (int i = 0; i < len; i++) {
+	  String entry = entries[i];
+	  String[] values = entry.split(":");
+	  secMechList.add(values[0]);
+	}
+	Collections.sort(secMechList);
 
-        // retData.replace(0,retData.length(),getInStream().readLine());
-        retData.setLength(0);
-        retData.append(secMechList.get(secMechList.size() - 1));
-        break;
+	// retData.replace(0,retData.length(),getInStream().readLine());
+	retData.setLength(0);
+	retData.append(secMechList.get(secMechList.size() - 1));
+	break;
 
       case NEED_COUNTRY:
       case NEED_HOST:
       case NEED_CONNECTION:
       case CLOSE_CONNECTION:
       default:
-        // Intentionally empty!
+	// Intentionally empty!
       }
 
       HBCIUtils.log("Returning " + retData.toString(), HBCIUtils.LOG_DEBUG);
@@ -107,8 +107,9 @@ public class HbciSession {
 
   private HBCIHandler createHbciHandler() {
     HBCIPassportPinTan passport = new HBCIPassportNonPersistentPinTan("");
+    String hbciVersion = HBCIUtils.getPinTanVersionForBLZ(this.hbciAccess.getBankCode());
 
-    return new HBCIHandler(HBCIUtils.getPinTanVersionForBLZ(this.hbciAccess.getBankCode()), passport);
+    return new HBCIHandler(hbciVersion.length() > 0 ? hbciVersion : "300", passport);
   }
 
   private void initParams() {
@@ -117,7 +118,7 @@ public class HbciSession {
     // Set basic parameters
     HBCIUtils.setParam("client.passport.hbciversion.default", "300");
     HBCIUtils.setParam("client.connection.localPort", null);
-    HBCIUtils.setParam("log.loglevel.default", "0");
+    HBCIUtils.setParam("log.loglevel.default", "5");
     HBCIUtils.setParam("kernel.rewriter", HBCIUtils.getParam("kernel.rewriter"));
 
     // Configure for PinTan
@@ -140,7 +141,7 @@ public class HbciSession {
     for (Konto account : accounts) {
       if (this.hbciAccess.getBankCode().equals(account.blz)
           && this.hbciAccess.getAccountNumberStripped().equals(account.number))
-        return account;
+	return account;
     }
 
     if (accounts.length == 1) {
@@ -173,7 +174,7 @@ public class HbciSession {
 
     for (Info info : result.getEntries()) {
       if (!k.equals(info.konto))
-        continue;
+	continue;
       return info.ready.value.getLongValue();
 
     }
@@ -204,7 +205,7 @@ public class HbciSession {
   public void close() {
     if (handler != null) {
       if (handler.getPassport() != null) {
-        handler.getPassport().close();
+	handler.getPassport().close();
       }
       handler.close();
     }

@@ -77,8 +77,11 @@ public class EncryptorTest {
     System.out.printf("encryption.\nsource: '%s'\ntarget: '%s'",
         toEncrypt,
         Encryptor.encrypt(toEncrypt, c.produceKey(), c.produceAlgorithmParameterSpec()));
-    System.out.printf("decryption.\nsource: '%s'\ntarget: '%s'",
-        toEncrypt,
-        Encryptor.decrypt(toEncrypt, c.produceKey(), c.produceAlgorithmParameterSpec()));
+    try {
+      System.out.printf("decryption.\nsource: '%s'\ntarget: '%s'",
+          toEncrypt,
+          Encryptor.decrypt(toEncrypt, c.produceKey(), c.produceAlgorithmParameterSpec()));
+    } catch (Throwable t) {
+    }
   }
 }
