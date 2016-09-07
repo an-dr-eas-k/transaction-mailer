@@ -115,7 +115,7 @@ public class HbciSession {
     HBCIUtils.init(null, new Callback());
 
     // Set basic parameters
-    HBCIUtils.setParam("client.passport.hbciversion.default", HBCIUtils.getPinTanVersionForBLZ("70090500"));
+    HBCIUtils.setParam("client.passport.hbciversion.default", "300");
     HBCIUtils.setParam("client.connection.localPort", null);
     HBCIUtils.setParam("log.loglevel.default", "0");
     HBCIUtils.setParam("kernel.rewriter", HBCIUtils.getParam("kernel.rewriter"));
