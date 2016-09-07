@@ -56,7 +56,7 @@
 				<h:inputSecret id="pin"
           value="#{accountConnectionUI.accountConnection.pin}"
           redisplay="true">
-          <f:validateRegex pattern="^\d+$" />
+          <f:validateRegex pattern="^\s+$" />
         </h:inputSecret>
         <h:message showSummary="true" showDetail="true" for="pin"
           style="red" />
