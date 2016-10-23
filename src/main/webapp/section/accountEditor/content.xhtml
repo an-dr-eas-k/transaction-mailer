@@ -31,7 +31,7 @@
 				#{msgs.customerId} 
 				<h:inputText id="customerId"
           value="#{accountConnectionUI.accountConnection.customerId}">
-          <f:validateRegex pattern="^\d{1,10}$" />
+          <f:validateRegex pattern="^\S+$" />
         </h:inputText>
         <h:message showSummary="true" showDetail="true" for="customerId"
           style="red" />
