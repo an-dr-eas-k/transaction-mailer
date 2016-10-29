@@ -60,7 +60,18 @@ public class AccountTransactionFacade extends AbstractFacade<AccountTransaction>
   }
 
   public void save(List<AccountTransaction> ac) {
-    ac.stream().forEach(super::create);
+    try {
+      getEntityManager().getTransaction().begin();
+      ac.stream().forEach(super::create);
+      getEntityManager().getTransaction().commit();
+    } catch (Exception e) {
+      logger.warn(e);
+      try {
+	getEntityManager().getTransaction().rollback();
+      } catch (Exception f) {
+	logger.error(f);
+      }
+    }
   }
 
   public List<AccountTransaction> findAllTransactions(AccountConnection ac) {
