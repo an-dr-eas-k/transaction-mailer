@@ -15,7 +15,7 @@ package net.andreask.transactionmailer.integration.db;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.ejb.Singleton;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -24,7 +24,7 @@ import net.andreask.transactionmailer.domain.AccountConnection;
 /**
  * @author andreask
  */
-@Singleton
+@Stateless
 public class AccountConnectionFacade extends AbstractFacade<AccountConnection> {
 
   @PersistenceContext(unitName = "hv-pu")

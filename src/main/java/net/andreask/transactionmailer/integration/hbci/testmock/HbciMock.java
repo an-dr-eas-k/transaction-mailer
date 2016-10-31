@@ -2,6 +2,7 @@ package net.andreask.transactionmailer.integration.hbci.testmock;
 
 import java.io.File;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -45,8 +46,19 @@ public class HbciMock implements HbciFacade {
   public List<AccountTransaction> acquireTransactions() {
     LogManager.getLogger(this.getClass()).info("acquireTransactions Alternative");
     XStream xStream = new XStream(new StaxDriver());
-    List<AccountTransaction> result = (List<AccountTransaction>) xStream
-        .fromXML(new File(configuration.getProperty("hbcimock.data.file")));
+    try {
+      Thread.sleep((long) Math.ceil(Math.random() * 10 * 1000));
+    } catch (Exception e) {
+    }
+    List<AccountTransaction> result = ((List<AccountTransaction>) xStream
+        .fromXML(new File(configuration.getProperty("hbcimock.data.file"))))
+            .stream()
+            .map(at -> {
+              at.setUsage(String.format("%06.0f-%s", (Math.random() * 1000000), at.getUsage()));
+              return at;
+            })
+            .collect(Collectors.toList());
+
     LogManager.getLogger(this.getClass()).info("found {} transactions", result.size());
     return result;
   }

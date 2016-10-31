@@ -15,7 +15,7 @@ package net.andreask.transactionmailer.integration.db;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.inject.Singleton;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -25,7 +25,7 @@ import net.andreask.transactionmailer.domain.AccountTransaction;
 /**
  * @author andreask
  */
-@Singleton
+@Stateless
 public class AccountTransactionFacade extends AbstractFacade<AccountTransaction> {
   @PersistenceContext(unitName = "hv-pu")
   private EntityManager em;
@@ -60,18 +60,7 @@ public class AccountTransactionFacade extends AbstractFacade<AccountTransaction>
   }
 
   public void save(List<AccountTransaction> ac) {
-    try {
-      getEntityManager().getTransaction().begin();
-      ac.stream().forEach(super::create);
-      getEntityManager().getTransaction().commit();
-    } catch (Exception e) {
-      logger.warn(e);
-      try {
-	getEntityManager().getTransaction().rollback();
-      } catch (Exception f) {
-	logger.error(f);
-      }
-    }
+    ac.stream().forEach(super::create);
   }
 
   public List<AccountTransaction> findAllTransactions(AccountConnection ac) {
