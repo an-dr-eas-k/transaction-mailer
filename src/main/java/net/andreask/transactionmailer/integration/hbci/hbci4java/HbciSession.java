@@ -118,7 +118,7 @@ public class HbciSession {
     // Set basic parameters
     HBCIUtils.setParam("client.passport.hbciversion.default", "300");
     HBCIUtils.setParam("client.connection.localPort", null);
-    HBCIUtils.setParam("log.loglevel.default", "5");
+    HBCIUtils.setParam("log.loglevel.default", "0");
     HBCIUtils.setParam("kernel.rewriter", HBCIUtils.getParam("kernel.rewriter"));
 
     // Configure for PinTan

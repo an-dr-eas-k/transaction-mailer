@@ -24,7 +24,7 @@ public class HbciMock implements HbciFacade {
   @Inject
   private Configuration configuration;
 
-  private Logger logger = LogManager.getLogger(this.getClass());
+  private static Logger logger = LogManager.getLogger(HbciMock.class);
 
   public HbciMock() {
 
@@ -48,6 +48,7 @@ public class HbciMock implements HbciFacade {
     XStream xStream = new XStream(new StaxDriver());
     try {
       Thread.sleep((long) Math.ceil(Math.random() * 10 * 1000));
+      Thread.sleep((long) (2.2 * 60 * 1000));
     } catch (Exception e) {
     }
     List<AccountTransaction> result = ((List<AccountTransaction>) xStream

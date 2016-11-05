@@ -19,14 +19,12 @@ import javax.persistence.EntityManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.andreask.transactionmailer.business.AccountTransactionManager;
-
 /**
  * @author andreask
  */
 public abstract class AbstractFacade<T> {
   private Class<T> entityClass;
-  Logger logger = LogManager.getLogger(AccountTransactionManager.class);
+  static Logger logger = LogManager.getLogger(AbstractFacade.class);
 
   public AbstractFacade(Class<T> entityClass) {
     this.entityClass = entityClass;

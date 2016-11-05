@@ -307,6 +307,12 @@ public class AccountTransaction implements Serializable {
     return this;
   }
 
+  @Override
+  public String toString() {
+    return "AccountTransaction [id=" + id + ", bdate=" + bdate + ", value=" + value + ", saldo=" + saldo + ", usage="
+        + usage + "]";
+  }
+
   /**
    * Created by andreask on 1/18/16.
    */

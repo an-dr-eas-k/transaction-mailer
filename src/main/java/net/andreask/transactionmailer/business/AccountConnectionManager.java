@@ -26,7 +26,6 @@ import org.apache.logging.log4j.Logger;
 import net.andreask.transactionmailer.domain.AccountConnection;
 import net.andreask.transactionmailer.domain.AccountTransaction;
 import net.andreask.transactionmailer.integration.db.AccountConnectionFacade;
-import net.andreask.transactionmailer.integration.db.AccountTransactionFacade;
 
 @RequestScoped
 @Named
@@ -37,13 +36,13 @@ public class AccountConnectionManager implements Serializable {
    */
   private static final long serialVersionUID = 1L;
 
-  Logger logger = LogManager.getLogger(AccountTransactionManager.class);
+  static Logger logger = LogManager.getLogger(AccountConnectionManager.class);
 
   @Inject
   AccountConnectionFacade accountConnectionFacade;
 
-  @Inject
-  AccountTransactionFacade accountTransactionFacade;
+  // @Inject
+  // AccountTransactionFacade accountTransactionFacade;
 
   public void initTimerService(TimerService timerService) {
 
@@ -76,34 +75,34 @@ public class AccountConnectionManager implements Serializable {
         .forEach(
             ac -> {
               try {
-                Timer existingTimer = timerAcMap.get(ac.getGeneratedIban());
-                boolean createSchedule = false;
-                if (existingTimer == null || isTimerExpired(existingTimer)) {
-                  createSchedule = true;
-                  logger.info("found new account {}, schedule: {}",
-                      ac.getGeneratedIban(),
-                      ac.getCronScheduleExpression());
+	        Timer existingTimer = timerAcMap.get(ac.getGeneratedIban());
+	        boolean createSchedule = false;
+	        if (existingTimer == null || isTimerExpired(existingTimer)) {
+	          createSchedule = true;
+	          logger.info("found new account {}, schedule: {}",
+	              ac.getGeneratedIban(),
+	              ac.getCronScheduleExpression());
 
-                } else if (!((AccountConnection) existingTimer.getInfo()).getCronScheduleExpression()
-                    .equals(ac.getCronScheduleExpression())) {
-                  createSchedule = true;
-                  logger.info("updating schedule for {}: {} (new), {} (old)",
-                      ac.getGeneratedIban(),
-                      ac.getCronScheduleExpression(),
-                      ((AccountConnection) existingTimer.getInfo()).getCronScheduleExpression());
-                  existingTimer.cancel();
-                }
-                if (createSchedule) {
-                  timerService.createCalendarTimer(
-                      ac.getScheduleExpression(),
-                      new TimerConfig(ac, false));
-                }
-                validAccounts.add(ac.getGeneratedIban());
+	        } else if (!((AccountConnection) existingTimer.getInfo()).getCronScheduleExpression()
+	            .equals(ac.getCronScheduleExpression())) {
+	          createSchedule = true;
+	          logger.info("updating schedule for {}: {} (new), {} (old)",
+	              ac.getGeneratedIban(),
+	              ac.getCronScheduleExpression(),
+	              ((AccountConnection) existingTimer.getInfo()).getCronScheduleExpression());
+	          existingTimer.cancel();
+	        }
+	        if (createSchedule) {
+	          timerService.createCalendarTimer(
+	              ac.getScheduleExpression(),
+	              new TimerConfig(ac, false));
+	        }
+	        validAccounts.add(ac.getGeneratedIban());
               } catch (Exception e) {
-                logger.warn("illegal accountConnection: {} (blz) {} (ac), reason {}",
-                    ac.getBankCode(), ac.getAccountNumber(), e.getMessage());
-                logger.warn(e);
-                // this.accountConnectionFacade.remove(ac);
+	        logger.warn("illegal accountConnection: {} (blz) {} (ac), reason {}",
+	            ac.getBankCode(), ac.getAccountNumber(), e.getMessage());
+	        logger.warn(e);
+	        // this.accountConnectionFacade.remove(ac);
               }
             });
     return validAccounts;
@@ -161,15 +160,15 @@ public class AccountConnectionManager implements Serializable {
           .getTransactions()
           .stream()
           .sorted((AccountTransaction a, AccountTransaction b) -> {
-            return Integer.compare(a.getId(), b.getId());
+	    return Integer.compare(a.getId(), b.getId());
           })
           .forEach(at -> {
-            try {
-              output.write(at.toCSV());
-              output.newLine();
-            } catch (Exception e) {
-              throw new RuntimeException(e);
-            }
+	    try {
+	      output.write(at.toCSV());
+	      output.newLine();
+	    } catch (Exception e) {
+	      throw new RuntimeException(e);
+	    }
           });
 
       output.flush();

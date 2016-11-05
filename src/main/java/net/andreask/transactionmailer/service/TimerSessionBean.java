@@ -43,6 +43,10 @@ public class TimerSessionBean {
 
   private static final Logger logger = LogManager.getLogger(TimerSessionBean.class);
 
+  public TimerSessionBean() {
+    logger.debug(this.getClass().getSimpleName() + " constructed");
+  }
+
   @Schedule(second = "*/10", minute = "*", hour = "*", persistent = false)
   public void resyncConnections() {
     logger.info(String.format("initTimer,  %tT", new Date()));

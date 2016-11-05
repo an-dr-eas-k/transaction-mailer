@@ -27,7 +27,11 @@ public class AccountTransactionManager implements Serializable {
    */
   private static final long serialVersionUID = 1L;
 
-  Logger logger = LogManager.getLogger(AccountTransactionManager.class);
+  static Logger logger = LogManager.getLogger(AccountTransactionManager.class);
+
+  public AccountTransactionManager() {
+    logger.debug(this.getClass().getSimpleName() + " constructed");
+  }
 
   @Inject
   private AccountTransactionFacade accountTransactionFacade;
@@ -42,6 +46,7 @@ public class AccountTransactionManager implements Serializable {
   private Mailer mailer;
 
   public void mirrorTransactions(AccountConnection ac) {
+    logger.debug("start mirror");
     try {
       List<AccountTransaction> toNotify = hbciFacade
           .setAccountConnection(toHbciAccess(ac))
@@ -69,6 +74,7 @@ public class AccountTransactionManager implements Serializable {
           ac.getEmail().isEmpty());
       return;
     }
+    logger.debug("sending mail with number of transactions: " + toNotify.size());
     mailer.sendMail(new EMailContent() {
 
       @Override

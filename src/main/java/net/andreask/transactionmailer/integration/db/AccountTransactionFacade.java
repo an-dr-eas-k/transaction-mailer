@@ -16,8 +16,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 
 import net.andreask.transactionmailer.domain.AccountConnection;
 import net.andreask.transactionmailer.domain.AccountTransaction;
@@ -25,18 +28,23 @@ import net.andreask.transactionmailer.domain.AccountTransaction;
 /**
  * @author andreask
  */
+@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 @Stateless
 public class AccountTransactionFacade extends AbstractFacade<AccountTransaction> {
-  @PersistenceContext(unitName = "hv-pu")
-  private EntityManager em;
+  @PersistenceUnit(unitName = "hv-pu")
+  private EntityManagerFactory emf;
 
   @Override
   protected EntityManager getEntityManager() {
+    logger.debug("emf hashcode: " + emf.hashCode());
+    EntityManager em = emf.createEntityManager();
+    logger.debug("em hashcode: " + em.hashCode());
     return em;
   }
 
   public AccountTransactionFacade() {
     super(AccountTransaction.class);
+    logger.debug(this.getClass().getSimpleName() + " constructed");
   }
 
   public List<AccountTransaction> find(AccountTransaction template, AccountConnection ac) {
