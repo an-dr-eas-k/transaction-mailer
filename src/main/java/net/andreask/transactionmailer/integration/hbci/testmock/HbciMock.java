@@ -51,14 +51,16 @@ public class HbciMock implements HbciFacade {
       Thread.sleep((long) (2.2 * 60 * 1000));
     } catch (Exception e) {
     }
-    List<AccountTransaction> result = ((List<AccountTransaction>) xStream
-        .fromXML(new File(configuration.getProperty("hbcimock.data.file"))))
-            .stream()
-            .map(at -> {
-              at.setUsage(String.format("%06.0f-%s", (Math.random() * 1000000), at.getUsage()));
-              return at;
-            })
-            .collect(Collectors.toList());
+    List<AccountTransaction> pre = ((List<AccountTransaction>) xStream
+        .fromXML(new File(configuration.getProperty("hbcimock.data.file"))));
+    List<AccountTransaction> result = pre.subList(1, pre.size())
+        .stream()
+        .map(at -> {
+          at.setUsage(String.format("%06.0f-%s", (Math.random() * 1000000), at.getUsage()));
+          return at;
+        })
+        .collect(Collectors.toList());
+    result.set(0, pre.get(0));
 
     LogManager.getLogger(this.getClass()).info("found {} transactions", result.size());
     return result;

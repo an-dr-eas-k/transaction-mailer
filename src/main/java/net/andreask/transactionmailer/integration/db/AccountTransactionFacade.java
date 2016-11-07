@@ -49,15 +49,15 @@ public class AccountTransactionFacade extends AbstractFacade<AccountTransaction>
 
   public List<AccountTransaction> find(AccountTransaction template, AccountConnection ac) {
     // noinspection unchecked
-    return getEntityManager()
-        .createNamedQuery("findFromTemplate", AccountTransaction.class)
+    EntityManager em = getEntityManager();
+    return em.createNamedQuery("findFromTemplate", AccountTransaction.class)
         .setParameter("usage", template.getUsage())
         .setParameter("value", template.getValue())
         .setParameter("valuta", template.getValuta())
         .setParameter("accountConnection", ac)
         .getResultList()
         .stream()
-        .peek(getEntityManager()::refresh)
+        .peek(em::refresh)
 
         .collect(Collectors.toList());
 
