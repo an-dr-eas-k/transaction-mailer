@@ -1,14 +1,18 @@
 package net.andreask.transactionmailer.integration.ui;
 
+import java.io.Serializable;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ValueChangeEvent;
 
-@ManagedBean
+@ManagedBean(name = "user")
 @SessionScoped
-public class User {
+public class User implements Serializable {
+
+  private static final long serialVersionUID = 1L;
   private String name;
-  private String password, nameError;
+  private String password;
 
   public String getName() {
     return name;
@@ -16,14 +20,6 @@ public class User {
 
   public void setName(String newValue) {
     name = newValue;
-  }
-
-  public void setNameError(String error) {
-    nameError = error;
-  }
-
-  public String getNameError() {
-    return nameError;
   }
 
   public String getPassword() {
@@ -39,7 +35,7 @@ public class User {
   }
 
   public String logout() {
-    name = password = nameError = null;
+    name = password = null;
     return "/views/login";
   }
 
